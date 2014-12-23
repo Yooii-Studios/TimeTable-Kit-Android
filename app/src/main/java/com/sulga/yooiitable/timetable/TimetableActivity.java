@@ -75,6 +75,7 @@ import com.sulga.yooiitable.utils.UserNameFactory;
 import com.sulga.yooiitable.utils.ViewPagerFakeDragger;
 import com.sulga.yooiitable.utils.YTBitmapLoader;
 import com.viewpagerindicator.UnderlinePageIndicator;
+import com.yooiistudios.common.ad.AdUtils;
 import com.yooiistudios.common.ad.QuitAdDialogFactory;
 import com.yooiistudios.common.network.InternetConnectionManager;
 
@@ -243,7 +244,8 @@ public class TimetableActivity extends Activity{
 		MyLog.d("FixedSizes", "Actionbar size : " + FixedSizes.ACTIONBAR_HEIGHT);
 
         initQuitAdView();
-	}
+        AdUtils.showPopupAdIfSatisfied(this);
+    }
 
 	private void initActionBar(){
 		// 2) Set your display to custom next
