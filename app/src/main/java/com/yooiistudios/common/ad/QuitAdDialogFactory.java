@@ -5,10 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
-import android.view.Window;
 
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
@@ -23,7 +19,7 @@ import com.sulga.yooiitable.R;
 public class QuitAdDialogFactory {
     private QuitAdDialogFactory() { throw new AssertionError("Must not create this class!"); }
 
-    public static final String AD_UNIT_ID = "ca-app-pub-2310680050309555/3689313020";
+    public static final String AD_UNIT_ID = "ca-app-pub-2310680050309555/7539796228";
 
     public static AdView initAdView(Context context, AdSize adSize,
                                     final com.google.android.gms.ads.AdRequest adRequest) {
@@ -36,8 +32,7 @@ public class QuitAdDialogFactory {
         return adView;
     }
 
-    public static AlertDialog makeDialog(final Activity activity, final AdView mediumAdView,
-                                         final AdView largeBannerAdView) {
+    public static AlertDialog makeDialog(final Activity activity, final AdView adView) {
         Context context = activity.getApplicationContext();
         AlertDialog.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -57,54 +52,7 @@ public class QuitAdDialogFactory {
 
         final AlertDialog wakeDialog = builder.create();
         // 세로 전용 앱이라서 동현 파트를 제거할 경우 아래 주석을 해제할 것
-//        wakeDialog.setView(adView); // Android L 에서 윗 공간이 좀 이상하긴 하지만 기본으로 가야할듯
-
-        /**
-         * 동현 파트
-         */
-        final View tempContentView = new View(activity);
-        tempContentView.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        wakeDialog.setView(tempContentView);
-        wakeDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-
-            @Override
-            public void onShow(DialogInterface dialog) {
-                ViewParent parentView = tempContentView.getParent();
-                if (parentView instanceof ViewGroup) {
-                    final ViewGroup contentWrapper = ((ViewGroup)parentView);
-                    contentWrapper.removeView(tempContentView);
-
-                    int contentWidth = tempContentView.getWidth();
-                    int contentHeight = tempContentView.getHeight();
-                    float screenDensity = activity.getResources().getDisplayMetrics().density;
-
-                    if (contentWidth >= 300 * screenDensity && contentHeight >= 250 * screenDensity) {
-                        // medium rectangle
-                        contentWrapper.addView(mediumAdView);
-                        wakeDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                            @Override
-                            public void onDismiss(DialogInterface dialog) {
-                                contentWrapper.removeView(mediumAdView);
-                            }
-                        });
-                    } else if (contentWidth >= 320 * screenDensity && contentHeight >= 100 * screenDensity) {
-                        // large banner
-                        contentWrapper.addView(largeBannerAdView);
-                        wakeDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                            @Override
-                            public void onDismiss(DialogInterface dialog) {
-                                contentWrapper.removeView(largeBannerAdView);
-                            }
-                        });
-                    }
-                }
-            }
-        });
-        wakeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        /**
-         * 동현 파트 끝
-         */
+        wakeDialog.setView(adView); // Android L 에서 윗 공간이 좀 이상하긴 하지만 기본으로 가야할듯
 
         // 기타 필요한 설정
         wakeDialog.setCanceledOnTouchOutside(false);
