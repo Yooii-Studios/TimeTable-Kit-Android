@@ -2,7 +2,8 @@
 
     <!--
          Customize dimensions originally defined in res/values/dimens.xml (such as
-         screen margins) for sw600dp devices (e.g. 7" tablets) here.
+         screen margins) for sw600dp devices (e.g. 7" tablets) here.
+
     -->
     <dimen name="dogear_wh">45dp</dimen>
     <dimen name="dialog_top_offset">45dp</dimen>
@@ -77,7 +78,20 @@
     <dimen name="view_schedule_contentsview_dday_margin_r">3dp</dimen>
     <dimen name="view_schedule_contentsview_dday_margin_b">3dp</dimen>
     <dimen name="view_schedule_todayline_textsize">9sp</dimen>
-    
-	
+
+    <!-- Store Ad Dialog * 1.5 -->
+    <dimen name="margin_outer">8dp</dimen>                              <!--Done-->
+    <dimen name="setting_store_full_version_title_text_size">29sp</dimen>            <!--Done-->
+    <dimen name="store_ad_dialog_layout_width">448.5dp</dimen>
+    <dimen name="store_ad_dialog_title_padding_top_bottom">16.5dp</dimen>
+    <dimen name="store_ad_dialog_title_padding_left_right">22.5dp</dimen>
+    <dimen name="store_ad_dialog_title_divider_height">0.75dp</dimen>
+    <dimen name="store_ad_dialog_title_divider_margin_left_right">12dp</dimen>
+    <dimen name="store_ad_dialog_image_layout_padding">4.5dp</dimen>
+    <dimen name="store_ad_dialog_image_width">444dp</dimen>
+    <dimen name="store_ad_dialog_image_text_margin_top">1.5dp</dimen>
+    <dimen name="store_ad_dialog_image_text_height">93dp</dimen>
+    <dimen name="store_ad_dialog_button_layout_height">65.5dp</dimen>
+    <dimen name="store_ad_dialog_button_text_size">22.5sp</dimen>
 
 </resources>

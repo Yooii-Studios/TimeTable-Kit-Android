@@ -7,4 +7,7 @@
     <color name="setting_header_background_color">#333333</color>
     <color name="setting_footer_background_color">#333333</color>
     <color name="android_holo_blue">#2099ea</color>
+
+    <!-- Inhouse Store -->
+    <color name="pastel_green_sub_font_color">#797979</color>
 </resources>
