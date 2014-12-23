@@ -1,56 +1,110 @@
 package com.sulga.yooiitable.timetable;
 
-import java.io.*;
-import java.lang.ref.*;
-import java.util.*;
+import android.accounts.AccountManager;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ResolveInfo;
+import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Environment;
+import android.os.Parcelable;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.text.InputType;
+import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout.LayoutParams;
 
-import org.holoeverywhere.app.*;
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.widget.ShareActionProvider;
+import com.flurry.android.FlurryAgent;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.sulga.yooiitable.R;
+import com.sulga.yooiitable.appwidget.YTAppWidgetProvider_2x4;
+import com.sulga.yooiitable.appwidget.YTAppWidgetProvider_4x4;
+import com.sulga.yooiitable.constants.FixedSizes;
+import com.sulga.yooiitable.constants.FlurryConstants;
+import com.sulga.yooiitable.constants.NaverInApp;
+import com.sulga.yooiitable.constants.RequestCodes;
+import com.sulga.yooiitable.constants.YTUrls;
+import com.sulga.yooiitable.customviews.ParentViewPager;
+import com.sulga.yooiitable.customviews.animation.OnDeletePageTransformer;
+import com.sulga.yooiitable.data.Schedule;
+import com.sulga.yooiitable.data.Timetable;
+import com.sulga.yooiitable.data.TimetableDataManager;
+import com.sulga.yooiitable.google.calendar.GCAccountManager;
+import com.sulga.yooiitable.google.calendar.GCCalendarSyncManager;
+import com.sulga.yooiitable.language.YTLanguage;
+import com.sulga.yooiitable.language.YTLanguageType;
+import com.sulga.yooiitable.mylog.MyLog;
+import com.sulga.yooiitable.overlapviewer.OverlapTablesViewerActivity;
+import com.sulga.yooiitable.sharetable.BannerInfo;
+import com.sulga.yooiitable.sharetable.TimetableNetworkManager;
+import com.sulga.yooiitable.showalltables.ShowAllTimetablesActivity;
+import com.sulga.yooiitable.timetable.fragments.ScheduleFragment;
+import com.sulga.yooiitable.timetable.fragments.TimetableFragment;
+import com.sulga.yooiitable.timetableinfo.activity.NaverStoreActivity;
+import com.sulga.yooiitable.timetableinfo.activity.StoreActivity;
+import com.sulga.yooiitable.timetablesetting.SelectOptionDialogCreator;
+import com.sulga.yooiitable.timetablesetting.TimetableSettingFragment;
+import com.sulga.yooiitable.utils.AlertDialogCreator;
+import com.sulga.yooiitable.utils.AppRater;
+import com.sulga.yooiitable.utils.DeviceUuidFactory;
+import com.sulga.yooiitable.utils.InAppBillingManager;
+import com.sulga.yooiitable.utils.LanguageInitiater;
+import com.sulga.yooiitable.utils.ToastMaker;
+import com.sulga.yooiitable.utils.UserNameFactory;
+import com.sulga.yooiitable.utils.ViewPagerFakeDragger;
+import com.sulga.yooiitable.utils.YTBitmapLoader;
+import com.viewpagerindicator.UnderlinePageIndicator;
+import com.yooiistudios.common.ad.QuitAdDialogFactory;
+import com.yooiistudios.common.network.InternetConnectionManager;
+
+import org.holoeverywhere.app.Activity;
+import org.holoeverywhere.app.Dialog;
 import org.holoeverywhere.app.Fragment;
-import org.holoeverywhere.widget.*;
+import org.holoeverywhere.app.ProgressDialog;
+import org.holoeverywhere.widget.DrawerLayout;
 import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.LinearLayout;
 import org.holoeverywhere.widget.ListView;
 import org.holoeverywhere.widget.TextView;
 import org.holoeverywhere.widget.Toast;
+import org.holoeverywhere.widget.ViewPager;
 
-import android.accounts.*;
-import android.content.*;
-import android.content.pm.*;
-import android.content.res.*;
-import android.graphics.*;
-import android.net.*;
-import android.os.*;
-import android.support.v4.app.*;
-import android.text.*;
-import android.util.*;
-import android.view.*;
-import android.widget.*;
-import android.widget.LinearLayout.LayoutParams;
-
-import com.actionbarsherlock.app.*;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.widget.ShareActionProvider;
-import com.flurry.android.*;
-import com.google.android.gms.ads.*;
-import com.sulga.yooiitable.R;
-import com.sulga.yooiitable.appwidget.*;
-import com.sulga.yooiitable.constants.*;
-import com.sulga.yooiitable.customviews.*;
-import com.sulga.yooiitable.customviews.animation.*;
-import com.sulga.yooiitable.data.*;
-import com.sulga.yooiitable.google.calendar.*;
-import com.sulga.yooiitable.language.*;
-import com.sulga.yooiitable.mylog.*;
-import com.sulga.yooiitable.overlapviewer.*;
-import com.sulga.yooiitable.sharetable.*;
-import com.sulga.yooiitable.showalltables.*;
-import com.sulga.yooiitable.timetable.fragments.*;
-import com.sulga.yooiitable.timetableinfo.activity.*;
-import com.sulga.yooiitable.timetablesetting.*;
-import com.sulga.yooiitable.utils.*;
-import com.viewpagerindicator.UnderlinePageIndicator;
-import com.viewpagerindicator.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Stack;
 
 public class TimetableActivity extends Activity{
 	public static final int TIMETABLE_PAGE_OFFSET = 0;	
@@ -77,6 +131,11 @@ public class TimetableActivity extends Activity{
 	private ImageView dogEar;
 
 	private AdView adView;
+
+    // Quit Ad Dialog
+    private AdRequest quitAdRequest;
+    private AdView quitAdView;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -182,6 +241,8 @@ public class TimetableActivity extends Activity{
 		LanguageInitiater.setActivityLanguage(this);
 		FixedSizes.ACTIONBAR_HEIGHT = getActionBarHeight();
 		MyLog.d("FixedSizes", "Actionbar size : " + FixedSizes.ACTIONBAR_HEIGHT);
+
+        initQuitAdView();
 	}
 
 	private void initActionBar(){
@@ -279,6 +340,12 @@ public class TimetableActivity extends Activity{
 			}
 		});
 	}
+
+    private void initQuitAdView() {
+        // 애드몹 - Quit Dialog
+        quitAdRequest = new AdRequest.Builder().build();
+        quitAdView = QuitAdDialogFactory.initAdView(this, AdSize.MEDIUM_RECTANGLE, quitAdRequest);
+    }
 
 	private class DownloadImageTask extends AsyncTask<Void, Void, Bitmap> {
 		private BannerInfo bi;
@@ -1634,5 +1701,28 @@ public class TimetableActivity extends Activity{
 		BitmapWorkerTaskFromPhoto task = new BitmapWorkerTaskFromPhoto(imageView);
 		task.execute(tableId);
 	}
+
+    @Override
+    public void onBackPressed() {
+        if ((TimetableDataManager.getCurrentFullVersionState(this) == false) &&
+                InternetConnectionManager.isNetworkAvailable(this)) {
+            AlertDialog adDialog = QuitAdDialogFactory.makeDialog(TimetableActivity.this,
+                    quitAdView);
+            if (adDialog != null) {
+                adDialog.show();
+                // make AdView again for next quit dialog
+                // prevent child reference
+                // 가로 모드는 7.5% 가량 사용하고 있기에 속도를 위해서 광고를 계속 불러오지 않음
+                quitAdView = QuitAdDialogFactory.initAdView(this, AdSize.MEDIUM_RECTANGLE,
+                        quitAdRequest);
+            } else {
+                // just finish activity when dialog is null
+                super.onBackPressed();
+            }
+        } else {
+            // just finish activity when no ad item is bought
+            super.onBackPressed();
+        }
+    }
 }
 
