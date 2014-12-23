@@ -14,13 +14,9 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
-import com.yooiistudios.morningkit.R;
-import com.yooiistudios.morningkit.common.analytic.MNAnalyticsUtils;
-import com.yooiistudios.morningkit.main.MNMainActivity;
-import com.yooiistudios.morningkit.setting.store.MNStoreActivity;
-import com.yooiistudios.morningkit.setting.store.iab.SKIabProducts;
-
-import java.util.List;
+import com.sulga.yooiitable.R;
+import com.sulga.yooiitable.data.TimetableDataManager;
+import com.sulga.yooiitable.timetableinfo.activity.StoreActivity;
 
 /**
  * Created by Wooseong Kim in MorningKit from Yooii Studios Co., LTD. on 2014. 6. 17.
@@ -37,25 +33,18 @@ public class AdUtils {
     private static final String EACH_AD_COUNT = "EACH_AD_COUNT";
 
     // 전면 광고 아이디는 각자의 앱에 맞는 전면 광고 ID를 추가
-    private static final String INTERSTITIAL_ID = "ca-app-pub-2310680050309555/2209471823";
+    private static final String INTERSTITIAL_ID = "ca-app-pub-2310680050309555/6063063023";
 
     public static void showPopupAdIfSatisfied(Context context) {
         if (context == null) {
             return;
         }
-        List<String> ownedSkus = SKIabProducts.loadOwnedIabProducts(context);
 
         // 광고 or 풀버전 구매 아이템이 없을 경우만 진행
-        if (!(ownedSkus.contains(SKIabProducts.SKU_NO_ADS) ||
-                ownedSkus.contains(SKIabProducts.SKU_FULL_VERSION))) {
+        if (TimetableDataManager.getCurrentFullVersionState(context) == false) {
             SharedPreferences prefs = context.getSharedPreferences(KEY, Context.MODE_PRIVATE);
             int launchCount = prefs.getInt(LAUNCH_COUNT, 1);
             if (shouldShowAd(prefs, launchCount)) {
-
-                // 풀버전이 나올 때 아이템들을 체크
-                MNAnalyticsUtils.trackInterstitialAd(
-                        (com.yooiistudios.morningkit.MNApplication) context.getApplicationContext(),
-                        MNMainActivity.TAG);
 
                 // 3번째 마다 인하우스 스토어 광고를 보여주게 로직 수정
                 int eachAdCount = prefs.getInt(EACH_AD_COUNT, 1);
@@ -118,6 +107,7 @@ public class AdUtils {
 
     private static void showInHouseStoreAd(final Context context) {
         final Dialog dialog = new Dialog(context);
+
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.store_ad_dialog_layout);
 
@@ -129,12 +119,12 @@ public class AdUtils {
 
         TextView titleTextView =
                 (TextView) dialog.findViewById(R.id.store_ad_dialog_title_text_view);
-        titleTextView.setText(context.getString(R.string.recommend_app_full_name) + " PRO");
+        titleTextView.setText(context.getString(R.string.app_name) + " PRO");
         titleTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                context.startActivity(new Intent(context, MNStoreActivity.class));
+                context.startActivity(new Intent(context, StoreActivity.class));
             }
         });
 
@@ -143,7 +133,7 @@ public class AdUtils {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                context.startActivity(new Intent(context, MNStoreActivity.class));
+                context.startActivity(new Intent(context, StoreActivity.class));
             }
         });
 
@@ -152,7 +142,7 @@ public class AdUtils {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                context.startActivity(new Intent(context, MNStoreActivity.class));
+                context.startActivity(new Intent(context, StoreActivity.class));
             }
         });
 
