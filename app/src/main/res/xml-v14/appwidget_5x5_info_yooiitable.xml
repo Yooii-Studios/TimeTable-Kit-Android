@@ -1,0 +1,8 @@
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:configure="com.sulga.yooiitable.appwidget.YTAppWidgetConfigure"
+    android:minHeight="@dimen/appwidget_5x5_minHeight_v14"
+    android:minWidth="@dimen/appwidget_5x5_minWidth_v14"
+    android:updatePeriodMillis="1800000"
+    android:widgetCategory="home_screen" >
+
+</appwidget-provider>

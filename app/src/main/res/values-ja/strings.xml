@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="dialog_editlesson_text_subject">講義名</string>
+    <string name="dialog_editlesson_text_location">講義室</string>
+    <string name="dialog_editlesson_text_professor">教授</string>
+    <string name="dialog_editlesson_text_color">色</string>
+    <string name="dialog_editlesson_text_memo">メモ</string>
+    <string name="fragment_timetable_timeline_period">時限</string>
+    <string name="fragment_timetable_notice_lessoncopied">授業がコピーされました。</string>
+    <string name="fragment_timetable_warning_over24h">24時間を越えます。</string>
+    <string name="fragment_timetable_warning_leaveoneperiod">少なくとも1時限以上の時間をご選択ください。</string>
+    <string name="fragment_timetable_warning_tableLengthLowerThanLesson_A"></string>
+    <string name="fragment_timetable_warning_tableLengthLowerThanLesson_B">授業のために最小</string>
+    <string name="fragment_timetable_warning_tableLengthLowerThanLesson_C"></string>
+    <string name="fragment_timetable_warning_tableLengthLowerThanLesson_D">時限以上の時間をご選択ください。</string>
+    <string name="fragment_timetable_warning_deleteMainTable">主な時間割表は削除できません。</string>
+    <string name="fragment_timetable_warning_lessonAlreadyExists">選択した時間と重なる授業があります。</string>
+    <string name="dialog_deletetimetable_title">時間割を削除しますか。</string>
+    <string name="fragment_schedule_title">スケジューラ</string>
+    <string name="fragment_schedule_add_schedule">イベントを追加</string>
+    <string name="fragment_schedule_sync">グーグルカレンダーと同期</string>
+    <string name="activity_schedule_edit_title">イベントを変更</string>
+    <string name="activity_schedule_edit_lessonPick_spinner_prompt">イベントと関連した授業をご選択ください。</string>
+    <string name="activity_schedule_edit_alarm_spinner_prompt">アラーム時間</string>
+    <string name="activity_schedule_edit_date_title">日付</string>
+    <string name="activity_schedule_edit_schedulename_title">題目</string>
+    <string name="activity_schedule_edit_memo_title">メモ</string>
+    <string name="activity_schedule_edit_alarm_title">アラーム</string>
+    <string name="timetable_setting_select_startday_prompt">開始曜日</string>
+    <string name="timetable_setting_select_startday_title">開始曜日をご選択ください。</string>
+    <string name="timetable_setting_select_endday_prompt">最後曜日</string>
+    <string name="timetable_setting_select_endday_title">最後曜日をご選択ください。</string>
+    <string name="timetable_setting_select_columnType_prompt">時限表示タイプ</string>
+    <string name="timetable_setting_select_columnType_title">時限表示タイプをご選択ください。</string>
+    <string name="timetable_setting_select_columnNum_prompt">時限数</string>
+    <string name="timetable_setting_select_columnNum_title">時限数をご選択ください。</string>
+    <string name="timetable_setting_select_startTime_prompt">開始時刻</string>
+    <string name="timetable_setting_select_startTime_title">開始時刻をご選択ください。</string>
+    <string name="timetable_setting_select_timeOffset_prompt">1時限ごとの配分時間</string>
+    <string name="timetable_setting_select_timeOffset_title">1時限ごとの配分時間をご選択ください。</string>
+    <string name="timetable_setting_select_lessonAlarm_prompt">授業アラーム</string>
+    <string name="timetable_setting_select_lessonAlarm_title">授業アラームをご選択ください。</string>
+    <string name="timetable_setting_select_startday_warning_overlapdays">開始曜日と最後曜日が重なっています。</string>
+    <string name="timetable_setting_select_endday_warning_overlapdays">最後曜日と開始曜日が重なっています。</string>
+    <string name="timetable_setting_warning_tableinit_on_starttimechange">授業の開始時刻を変更すると、時間割が初期化されます。</string>
+    <string name="timetable_setting_warning_tableinit_on_timeoffsetchange">授業時間の単位を変更すると、時間割が初期化されます。</string>
+    <string name="timetable_setting_theme_select_theme_prompt">テーマ</string>
+    <string name="timetable_setting_theme_select_theme_title">テーマをご選択ください。</string>
+    <string name="timetable_setting_theme_select_language_prompt">言語(Language)</string>
+    <string name="timetable_setting_info_shop">有料版を購入する</string>
+    <string name="timetable_setting_info_yooii_info">タイムテーブルキットの情報</string>
+    <string name="timetable_setting_info_rate">評価する</string>
+    <string name="timetable_setting_info_linkfacebook">フェイスブックの「いいね!」</string>
+    <string name="timetable_setting_info_credit">クレジット</string>
+    <string name="timetable_setting_info_yooiistudio">ユーイスタジオ</string>
+    <string name="timetable_setting_info_help">ヘルプ</string>
+    <string name="timetable_setting_info_restore_purchases">購入した機能の復元</string>
+    <string name="timetable_setting_info_license">ライセンス</string>
+    <string name="timetable_setting_info_version">バージョン</string>
+    <string name="tab_timetablesetting">設定する</string>
+    <string name="tab_timetabletheme">テーマ</string>
+    <string name="tab_info">ストア / 情報</string>
+    <string name="notice">アラーム</string>
+    <string name="unlock_full_version">フルバージョンをご購入ください！</string>
+    <string name="buy_full_version_explain">有料版ではスケジュールは無制限！広告削除！アラーム機能など便利な機能が満載です</string>
+    <string name="app_name">タイムテーブルキット - 時間割</string>
+    <string name="edit_your_timetable_title">タイトルをご設定ください。</string>
+    <string name="drawer_add_timetable">時間割表を追加する</string>
+    <string name="menu_store">有料版を購入する</string>
+    <string name="menu_settings">設定する</string>
+    <string name="menu_send_feedback">フィードバックを送信する</string>
+    <string name="menu_help">ヘルプ</string>
+    <string name="activity_show_all_goto_overlap_mode">重ねて表示画面に</string>
+    <string name="activity_show_all_select_least_one_table">少なくとも1つの時間割をご選択ください。</string>
+    <string name="activity_overlap_error_null">エラー：重ねて表示するデータがありません。</string>
+    <string name="activity_store_already_unlocked_full">すでにフルバージョンを購入しました。</string>
+    <string name="activity_store_unable_to_pay">現在は購入できません。</string>
+    <string name="activity_store_purchase_cancelled">購入をキャンセルしました。</string>
+    <string name="activity_store_thanks_for_unlock">フルバージョンをご購入いただきありがとうございます。</string>
+    <string name="fragment_timetable_warning_upload_key_duplicate">接続が解除されたか、ネットワークに同じパスワードが既にあります。</string>
+    <string name="fragment_timetable_notice_adding_timetable">時間割を追加中...</string>
+    <string name="fragment_timetable_share_upload_succeed">送信成功！</string>
+    <string name="fragment_timetable_share_download_succeed">受信成功！</string>
+    <string name="dialog_cleartimetable_title">授業を完全に削除します。</string>
+    <string name="dialog_deleteschedule_title">このイベントを削除しますか。</string>
+    <string name="dialog_sharetimetable_title">時間割データを共有しましょう！</string>
+    <string name="fragment_to_addtable_title">追加機能</string>
+    <string name="dialog_editschedule_text_class">授業</string>
+    <string name="dialog_editschedule_spinner_picklesson_prompt">授業に関連するイベントをご選択ください。</string>
+    <string name="dialog_editschedule_spinner_pickalarm_prompt">アラームの設定時間をご選択ください。</string>
+    <string name="dialog_settings_daypick_title">曜日設定</string>
+    <string name="dialog_settings_periodpick_title">時限設定</string>
+    <string name="dialog_settings_timepick_title">開始時間と間隔</string>
+    <string name="dialog_sharedata_now_uploading_message">時間割を送信中...</string>
+    <string name="dialog_sharedata_now_downloading_message">時間割を受信中...</string>
+    <string name="title_gc_sync">イベントをアップロードしましょう​​!</string>
+    <string name="gc_sync_btn">同期</string>
+    <string name="warning_gc_sync_must_have_google_account">Googleカレンダーの同期するため,Gmailのアカウントをご設定ください。</string>
+    <string name="warning_gc_sync_must_have_latest_google_play">最新バージョンのGoogleプレイをインストールしてください。</string>
+    <string name="warning_gc_sync_device_reject">この機器では、同期できません。</string>
+    <string name="progress_err">接続をキャンセルしました。</string>
+    <string name="progress_checking">カレンダーのデータを確認中......</string>
+    <string name="progress_create_calendar">カレンダーを作成中...</string>
+    <string name="progress_clear_event">イベントを更新中...</string>
+    <string name="progress_upload_schedule">イベントをアップロード中...</string>
+    <string name="progress_download_event">イベントをダウンロード中...</string>
+    <string name="progress_done">完了！</string>
+    <string name="sync_failed">同期失敗</string>
+    <string name="timetable_setting_alarm_cancelled">授業のアラームを解除しました。</string>
+    <string name="timetable_setting_alarm_on_time">授業のアラームを定刻に設定しました。</string>
+    <string name="timetable_setting_alarm_before_A"></string>
+    <string name="timetable_setting_alarm_before_B">分前にアラームが設定されました。</string>
+    <string name="loading">読み込み中...</string>
+    <string name="delete">削除</string>
+    <string name="pleaseWaitWhileLoading">読み込み中...</string>
+    <string name="starting_connection">接続中...</string>
+    <string name="cancelled">キャンセルしました。</string>
+    <string name="unlock_full_version_pagenum_overflow">無料版では4つの時間割をご利用できます。</string>
+    <string name="buy_full_version">フルバージョン購入して、ご利用できます。</string>
+    <string name="send_feedback_subject">タイムテーブルキットのフィードバック</string>
+    <string name="send_feedback_title">フィードバックをお送りください。</string>
+    <string name="dialog_share_data_upload_limited_A">一日にアップロードできる時間割の数は</string>
+    <string name="dialog_share_data_upload_limited_B">個です。</string>
+    <string name="dialog_share_data_download_limited_A">一日にダウンロードできる時間割の数は</string>
+    <string name="dialog_share_data_download_limited_B">個です。</string>
+    <string name="dialog_sharedata_upload_title">送信 </string>
+    <string name="dialog_sharedata_download_title">受信 </string>
+    <string name="activity_setting_viewpager_dayprompt">曜日 </string>
+    <string name="activity_setting_viewpager_periodprompt">時限</string>
+    <string name="activity_setting_viewpager_timeprompt">開始時間と間隔</string>
+    <string name="activity_setting_viewpager_alarmprompt">アラーム</string>
+    <string name="activity_setting_viewpager_themeprompt">背景テーマ</string>
+    <string name="activity_setting_viewpager_languageprompt">言語 (Language)</string>
+    <string name="connector_result_failed">接続に失敗しました。</string>
+    <string name="connector_result_network_error">ネットワークエラー！</string>
+    <string name="connector_result_data_null">接続に失敗したか、時間割データがありません。</string>
+    <string name="connector_result_data_limit_reached">一日の転送量を超えました。</string>
+    <string name="connector_result_duplicated_key">ネットワークに同じ共有番号が既にあります。</string>
+    <string name="dialog_share_data_dataremovedafter24hours">* 24時間が経過すると、ファイルは自動的に消えます。</string>
+    <string name="terms_of_service">利用規約</string>
+    <string name="drawer_overlap_timetables">重ねて表示する</string>
+    <string name="drawer_show_all_timetables">全てを表示する</string>
+    <string name="dialog_share_data_upload">送信 </string>
+    <string name="dialog_share_data_download">受信 </string>
+    <string name="activity_store_common_error">接続に失敗しました。</string>
+    <string name="already_full_version">すでにフルバージョンを購入しました。</string>
+    <string name="already_full_version_explain">ご購入いただきありがとうございます。</string>
+    <string name="dialog_editschedule_text_date">日付</string>
+    <string name="dialog_editschedule_text_title">お名前</string>
+    <string name="dialog_editschedule_text_memo">メモ</string>
+    <string name="dialog_editschedule_text_alarm">アラーム</string>
+    <string name="activity_overlap_title">重ねて表示</string>
+    <string name="activity_showall_title">全てを表示</string>
+    <string name="dialog_rate_title">評価する</string>
+    <string name="dialog_rate_message">タイムテーブルキットレビューをお願いします。\nお客様のレビューは、より良い製品を作るのに役立ちます！^^</string>
+    <string name="dialog_rate_later">後で</string>
+    <string name="dialog_rate_now">評価する</string>
+    <string name="activity_timetable_max_timetable_count">時間割は最大10個以上追加できません。</string>
+    <string name="activity_overlap_goto_showall_mode">重ねて表示する時間割を選択</string>
+    <string name="dialog_share_data_send_file_num">送信時間割数</string>
+    <string name="dialog_share_data_receive_file_num">受信時間割数 </string>
+    <string name="fragment_schedule_schedulenum_overflows">無料版ではスケジュールを最大12個までご利用できます。</string>
+    <string name="activity_store_moretheme">すべてのテーマ </string>
+    <string name="activity_store_noads">広告削除 </string>
+    <string name="activity_store_alarm">アラーム機能</string>
+    <string name="activity_store_moretables">時間割表は１０個まで</string>
+    <string name="activity_store_moreschedules">スケジュール数無制限</string>
+    <string name="timetable_setting_select_timeoffset">時間間隔</string>
+    <string name="connector_result_key_not_exists">時間割がありません。</string>
+    <string name="dialog_editlesson_warn_timewrong">時間範囲が間違って設定しました。</string>
+    <string name="dialog_editlesson_warn_lessonUnder30Min">授業時間は最小30分以上が必要です。</string>
+    <string name="dialog_editlesson_text_time">時間</string>
+    <string name="dialog_sharedata_hint">共有番号</string>
+    <string name="activity_appwidget_configure_color">明るさ</string>
+    <string name="activity_appwidget_configure_alpha">透明度</string>
+    <string name="activity_appwidget_configure_preview">プレビュー</string>
+    <string name="dialog_connector_uploadinfo_received_times_A">の他 </string>
+    <string name="dialog_connector_uploadinfo_received_times_B">回受けました。</string>
+    <string name="dialog_connector_uploadinfo_received_noone">まだ誰も受けませんでした</string>
+	<string name="dialog_connector_uploadinfo_received">が受けました。</string>
+	<string name="fragment_timetable_oneditlesson_toast">時間をクリックすると、授業時間を１分単位で設定ができます。</string>
+	
+	<string name="menu_recommend_friends">このアプリを薦める</string>
+    <string name="recommend_to_friends_subject">[タイムテーブルキット - 時間割] このアプリをおすすめ!</string>
+    <string name="recommend_to_friends_body">[タイムテーブルキット Google Play Store ：ダウンロード]</string>    
+	
+    <string-array name="timetable_setting_startdays">
+        <item>日曜日</item>
+        <item>月曜日</item>
+    </string-array>
+    <string-array name="timetable_setting_enddays">
+        <item>金曜日</item>
+        <item>土曜日</item>
+        <item>日曜日</item>
+    </string-array>
+    <string-array name="timetable_setting_columnTypes">
+        <item>時限</item>
+        <item>アルファベット</item>
+        <item>時間</item>
+    </string-array>
+    <string-array name="timetable_setting_columnNums">
+        <item>6</item>
+        <item>8</item>
+        <item>10</item>
+        <item>12</item>
+    </string-array>
+    <string-array name="timetable_setting_timeOffsets">
+        <item>30分</item>
+        <item>45分</item>
+        <item>60分</item>
+        <item>90分</item>
+    </string-array>
+    <string-array name="timetable_setting_lessonAlarms">
+        <item>アラームなし</item>
+        <item>定刻</item>
+        <item>1分前</item>
+        <item>5分前</item>
+        <item>10分前</item>
+        <item>20分前</item>
+        <item>30分前</item>
+        <item>40分前</item>
+        <item>50分前</item>
+        <item>1時間前</item>
+        <item>2時間前</item>
+        <item>3時間前</item>
+    </string-array>
+    <string-array name="timetable_setting_theme_themes">
+        <item>春日</item>
+        <item>イカルス</item>
+        <item>格子</item>
+        <item>キーライムパイ</item>
+        <item>ブラック\u0026ホワイト</item>
+        <item>灰色</item>
+        <item>マグノリア</item>
+        <item>ストロベリースムージー</item>
+        <item>サマータイム</item>
+        <item>陶器オーバーロード</item>
+        <item>写真</item>
+    </string-array>
+
+    <string name="MON">月</string>
+    <string name="TUE">火</string>
+    <string name="WED">水</string>
+    <string name="THU">木</string>
+    <string name="FRI">金</string>
+    <string name="SAT">土</string>
+    <string name="SUN">日</string>
+    <string name="Monday">月曜日</string>
+    <string name="Tuesday">火曜日</string>
+    <string name="Wednesday">水曜日</string>
+    <string name="Thursday">木曜日</string>
+    <string name="Friday">金曜日</string>
+    <string name="Saturday">土曜日</string>
+    <string name="Sunday">日曜日</string>
+
+</resources>

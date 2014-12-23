@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#333333"
+    android:orientation="vertical" >
+
+    <!-- 탭호스트가 관리하도록 변경
+    <LinearLayout
+        android:id="@+id/fragment_timetable_option_buttons_wrapper"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal" >
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="5" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Timetable Option"
+                android:textSize="20sp"
+                android:textStyle="italic"
+                android:textColor="#ffffff"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dip"
+                />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/fragment_timetable_option_ok"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="V"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/fragment_timetable_option_cancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="X"
+            android:textSize="16sp" />
+    </LinearLayout>
+    -->
+
+    <ScrollView
+        android:id="@+id/fragment_timetable_option_theme_scroll"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" 
+        android:fadingEdge="none">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/fragment_timetable_option_select_startday"
+                android:layout_width="fill_parent"
+                android:layout_height="70dip"
+                android:layout_margin="5dip"
+                android:background="@drawable/yooiitable_buttons" >
+
+                <TextView
+                    android:id="@+id/fragment_timetable_option_startday_prompt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginTop="5dip"
+                    android:text="@string/timetable_setting_select_startday_prompt"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/fragment_settings_textsize_big" />
+
+                <TextView
+                    android:id="@+id/fragment_timetable_option_startday_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/fragment_timetable_option_startday_prompt"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="30dip"
+                    android:layout_marginBottom="5dip"
+                    android:text="MON"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/fragment_settings_textsize_small" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/fragment_timetable_option_select_endday"
+                android:layout_width="fill_parent"
+                android:layout_height="70dip"
+                android:layout_margin="5dip"
+                android:background="@drawable/yooiitable_buttons" >
+
+                <TextView
+                    android:id="@+id/fragment_timetable_option_endday_prompt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginTop="5dip"
+                    android:text="@string/timetable_setting_select_endday_prompt"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/fragment_settings_textsize_big" />
+
+                <TextView
+                    android:id="@+id/fragment_timetable_option_endday_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/fragment_timetable_option_endday_prompt"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="30dip"
+                    android:layout_marginBottom="5dip"
+                    
+                    android:text="SUN"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/fragment_settings_textsize_small" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/fragment_timetable_option_select_columntype"
+                android:layout_width="fill_parent"
+                android:layout_height="70dip"
+                android:layout_margin="5dip"
+                android:background="@drawable/yooiitable_buttons" >
+
+                <TextView
+                    android:id="@+id/fragment_timetable_option_columntype_prompt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginTop="5dip"
+                    android:text="@string/timetable_setting_select_columnType_prompt"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/fragment_settings_textsize_big" />
+
+                <TextView
+                    android:id="@+id/fragment_timetable_option_columntype_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/fragment_timetable_option_columntype_prompt"
+                    android:layout_centerVertical="true"
+                    android:layout_marginBottom="5dip"
+                    android:layout_marginLeft="30dip"
+                    android:text="By Time"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/fragment_settings_textsize_small" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/fragment_timetable_option_select_columnnum"
+                android:layout_width="fill_parent"
+                android:layout_height="70dip"
+                android:layout_margin="5dip"
+                android:background="@drawable/yooiitable_buttons" >
+
+                <TextView
+                    android:id="@+id/fragment_timetable_option_columnnum_prompt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginTop="5dip"
+                    android:text="@string/timetable_setting_select_columnNum_prompt"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/fragment_settings_textsize_big" />
+
+                <TextView
+                    android:id="@+id/fragment_timetable_option_columnnum_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/fragment_timetable_option_columnnum_prompt"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="30dip"
+                    android:layout_marginBottom="5dip"
+                    
+                    android:text="10"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/fragment_settings_textsize_small" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/fragment_timetable_option_select_starttime"
+                android:layout_width="fill_parent"
+                android:layout_height="70dip"
+                android:layout_margin="5dip"
+                android:background="@drawable/yooiitable_buttons" >
+
+                <TextView
+                    android:id="@+id/fragment_timetable_option_starttime_prompt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginTop="5dip"
+                    android:text="@string/timetable_setting_select_startTime_prompt"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/fragment_settings_textsize_big" />
+
+                <TextView
+                    android:id="@+id/fragment_timetable_option_starttime_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/fragment_timetable_option_starttime_prompt"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="30dip"
+                    android:layout_marginBottom="5dip"
+                    
+                    android:text="09 : 00"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/fragment_settings_textsize_small" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/fragment_timetable_option_select_timeoffset"
+                android:layout_width="fill_parent"
+                android:layout_height="70dip"
+                android:layout_margin="5dip"
+                android:background="@drawable/yooiitable_buttons" >
+
+                <TextView
+                    android:id="@+id/fragment_timetable_option_timeoffset_prompt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginTop="5dip"
+                    android:text="@string/timetable_setting_select_timeOffset_prompt"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/fragment_settings_textsize_big" />
+
+                <TextView
+                    android:id="@+id/fragment_timetable_option_timeoffset_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/fragment_timetable_option_timeoffset_prompt"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="30dip"
+                    android:layout_marginBottom="5dip"
+                    
+                    android:text="60 min"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/fragment_settings_textsize_small" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/fragment_timetable_option_select_alarm"
+                android:layout_width="fill_parent"
+                android:layout_height="70dip"
+                android:layout_margin="5dip"
+                android:background="@drawable/yooiitable_buttons" >
+
+                <TextView
+                    android:id="@+id/fragment_timetable_option_alarm_prompt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginTop="5dip"
+                    android:text="@string/timetable_setting_select_lessonAlarm_prompt"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/fragment_settings_textsize_big" />
+
+                <TextView
+                    android:id="@+id/fragment_timetable_option_alarm_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/fragment_timetable_option_alarm_prompt"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="30dip"
+                    android:layout_marginBottom="5dip"
+                    
+                    android:text="Before 5 min"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/fragment_settings_textsize_small" />
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -1,0 +1,51 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.0.0'
+    }
+}
+
+apply plugin: 'com.android.application'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "21.1.2"
+
+    defaultConfig {
+        applicationId "com.sulga.yooiitable"
+        minSdkVersion 10
+        targetSdkVersion 19
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
+
+dependencies {
+    // 모든 jar 파일 로딩
+    compile fileTree(dir: 'libs', include: '*.jar')
+
+    compile 'com.android.support:support-v4:19.0.0'
+    compile project(':libraries:holoeverywhere:library')
+    compile project(':libraries:holoeverywhere:addons:preferences')
+    compile project(':libraries:holoeverywhere:addons:slider')
+    compile project(':libraries:viewpagerindicator_library')
+
+//    compile project(':libraries:viewpagerindicator_library')
+    compile 'com.google.android.gms:play-services:4.2.42' // 4.0.+ 에서 버전업
+//    compile 'org.holoeverywhere:library:1.6.1'
+//    compile 'org.holoeverywhere:addon-preferences:1.6.1'
+//    compile 'org.holoeverywhere:addon-slider:1.6.1'
+}

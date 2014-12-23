@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+    <color name="light_blue">#87CEFA</color>
+    <color name="setting_background_color">#333333</color>
+    <color name="setting_header_background_color">#333333</color>
+    <color name="setting_footer_background_color">#333333</color>
+    <color name="android_holo_blue">#2099ea</color>
+</resources>

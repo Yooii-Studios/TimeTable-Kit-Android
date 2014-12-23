@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_show_all_root"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#2e2e2e" >
+
+    <com.sulga.yooiitable.customviews.SnappingHorizontalScrollView
+        android:id="@+id/activity_show_all_scroll"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:scrollbars="none" >
+
+        <com.sulga.yooiitable.customviews.TransformLinearLayout
+            android:id="@+id/activity_show_all_wrapper"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" />
+    </com.sulga.yooiitable.customviews.SnappingHorizontalScrollView>
+
+    <TextView
+        android:id="@+id/activity_show_all_tabletitle"
+        android:layout_above="@+id/activity_show_all_tabletitle_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/activity_show_all_chat_bubble_background"
+        android:gravity="center"
+        android:minWidth="200dp"
+        android:padding="5dp"
+        android:text="TEXTTTT"
+        android:textColor="#ffffff"
+        android:textSize="@dimen/activity_show_all_title_textsize" />
+    <ImageView
+        android:id="@+id/activity_show_all_tabletitle_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/activity_show_all_scroll"
+        android:layout_alignLeft="@id/activity_show_all_tabletitle"
+        android:layout_marginLeft="20dp"
+        android:src="@drawable/chat_bubble_tip"
+        />
+
+    <Button
+        android:id="@+id/activity_show_all_tooverlap_btn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/yooiitable_buttons"
+        android:text="@string/activity_show_all_goto_overlap_mode" />
+
+</RelativeLayout>

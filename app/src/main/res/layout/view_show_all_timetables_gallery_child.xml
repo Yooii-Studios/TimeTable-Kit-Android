@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    ></FrameLayout>
+
+    <!-- 각 이미지 표시 영역 -->
+<!-- 
+    <ImageView
+        android:id="@+id/view_show_all_timetables_gallery_child_image"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" >
+    </ImageView>
+-->

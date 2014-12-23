@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#2e2e2e"
+    android:orientation="vertical" >
+
+    <ScrollView
+        android:id="@+id/activity_timetable_option_ytinfo_scroll"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/activity_timetable_option_ytinfo_yooiistudios"
+                android:layout_width="fill_parent"
+                android:layout_height="70dip"
+                android:layout_margin="5dip"
+                android:background="@drawable/yt_setting_item_background" >
+
+                <TextView
+                    android:id="@+id/activity_timetable_option_ytinfo_yooiistudios_prompt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginTop="5dip"
+                    android:text="@string/timetable_setting_info_yooiistudio"
+                    android:textColor="#000000"
+                    android:textSize="22sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/activity_timetable_option_ytinfo_help"
+                android:layout_width="fill_parent"
+                android:layout_height="70dip"
+                android:layout_margin="5dip"
+                android:background="@drawable/yt_setting_item_background" >
+
+                <TextView
+                    android:id="@+id/activity_timetable_option_ytinfo_help_prompt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginTop="5dip"
+                    android:text="@string/timetable_setting_info_help"
+                    android:textColor="#000000"
+                    android:textSize="22sp" />
+            </RelativeLayout>
+            
+            <RelativeLayout
+                android:id="@+id/activity_timetable_option_ytinfo_termsofservice"
+                android:layout_width="fill_parent"
+                android:layout_height="70dip"
+                android:layout_margin="5dip"
+                android:background="@drawable/yt_setting_item_background" >
+
+                <TextView
+                    android:id="@+id/activity_timetable_option_ytinfo_termsofservice_prompt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginTop="5dip"
+                    android:text="@string/terms_of_service"
+                    android:textColor="#000000"
+                    android:textSize="22sp" />
+            </RelativeLayout>
+            
+            
+            
+              <RelativeLayout
+                android:id="@+id/activity_timetable_option_ytinfo_license"
+                android:layout_width="fill_parent"
+                android:layout_height="70dip"
+                android:layout_margin="5dip"
+                android:background="@drawable/yt_setting_item_background" >
+
+                <TextView
+                    android:id="@+id/activity_timetable_option_ytinfo_yooiistudios_license_prompt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginTop="5dip"
+                    android:text="@string/timetable_setting_info_license"
+                    android:textColor="#000000"
+                    android:textSize="22sp" />
+            </RelativeLayout>
+            
+                <RelativeLayout
+                android:id="@+id/activity_timetable_option_ytinfo_version"
+                android:layout_width="fill_parent"
+                android:layout_height="70dip"
+                android:layout_margin="5dip"
+                android:background="@drawable/yt_setting_item_background" >
+
+                <TextView
+                    android:id="@+id/activity_timetable_option_ytinfo_version_prompt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginTop="5dip"
+                    android:text="@string/timetable_setting_info_version"
+                    android:textColor="#000000"
+                    android:textSize="22sp" />
+                <TextView
+                    android:id="@+id/activity_timetable_option_ytinfo_version_prompt2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dip"
+                    android:layout_marginTop="5dip"
+                    android:text="0.0.0"
+                    android:textColor="#000000"
+                    android:textSize="22sp"
+                    />
+            </RelativeLayout>
+              
+            
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

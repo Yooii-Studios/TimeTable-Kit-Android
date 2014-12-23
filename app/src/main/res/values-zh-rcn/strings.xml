@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="dialog_editlesson_text_subject">课程名</string>
+    <string name="dialog_editlesson_text_location">教室</string>
+    <string name="dialog_editlesson_text_professor">教师</string>
+    <string name="dialog_editlesson_text_color">颜色</string>
+    <string name="dialog_editlesson_text_memo">备忘录</string>
+    <string name="fragment_timetable_timeline_period">时段</string>
+    <string name="fragment_timetable_notice_lessoncopied">已复制课程</string>
+    <string name="fragment_timetable_warning_over24h">一天不可超过24小时</string>
+    <string name="fragment_timetable_warning_leaveoneperiod">无法删除时段。</string>
+    <string name="fragment_timetable_warning_tableLengthLowerThanLesson_A">由于现存</string>
+    <string name="fragment_timetable_warning_tableLengthLowerThanLesson_B">课时，</string>
+    <string name="fragment_timetable_warning_tableLengthLowerThanLesson_C"></string>
+    <string name="fragment_timetable_warning_tableLengthLowerThanLesson_D">无法删除时段。</string>
+    <string name="fragment_timetable_warning_deleteMainTable">你应该至少有一个时间表。</string>
+    <string name="fragment_timetable_warning_lessonAlreadyExists">时间冲突：课时重叠</string>
+    <string name="dialog_deletetimetable_title">确定删除时间表吗？</string>
+    <string name="fragment_schedule_title">事件详细</string>
+    <string name="fragment_schedule_add_schedule">添加事件</string>
+    <string name="fragment_schedule_sync">同步至Google Calendar</string>
+    <string name="activity_schedule_edit_title">编辑事件</string>
+    <string name="activity_schedule_edit_lessonPick_spinner_prompt">事件是为了****？</string>
+    <string name="activity_schedule_edit_alarm_spinner_prompt">添加闹钟</string>
+    <string name="activity_schedule_edit_date_title">日期</string>
+    <string name="activity_schedule_edit_schedulename_title">标题</string>
+    <string name="activity_schedule_edit_memo_title">备忘录</string>
+    <string name="activity_schedule_edit_alarm_title">提醒</string>
+    <string name="timetable_setting_select_startday_prompt">这个星期的第一天</string>
+    <string name="timetable_setting_select_startday_title">选择这个星期的第一天</string>
+    <string name="timetable_setting_select_endday_prompt">这个星期的最后一天</string>
+    <string name="timetable_setting_select_endday_title">选择这个星期的最后一天</string>
+    <string name="timetable_setting_select_columnType_prompt">时段标签</string>
+    <string name="timetable_setting_select_columnType_title">选择时段标签</string>
+    <string name="timetable_setting_select_columnNum_prompt">以数目</string>
+    <string name="timetable_setting_select_columnNum_title">选择时段数目</string>
+    <string name="timetable_setting_select_startTime_prompt">开始时间</string>
+    <string name="timetable_setting_select_startTime_title">选择您的开始时间</string>
+    <string name="timetable_setting_select_timeOffset_prompt">时段长度</string>
+    <string name="timetable_setting_select_timeOffset_title">选择时段长度</string>
+    <string name="timetable_setting_select_lessonAlarm_prompt">闹钟设定</string>
+    <string name="timetable_setting_select_lessonAlarm_title">添加闹钟</string>
+    <string name="timetable_setting_select_startday_warning_overlapdays">第一天和最后一天重叠</string>
+    <string name="timetable_setting_select_endday_warning_overlapdays">结束和起始日期重叠</string>
+    <string name="timetable_setting_warning_tableinit_on_starttimechange">若更改起始时间，时间表将会重置</string>
+    <string name="timetable_setting_warning_tableinit_on_timeoffsetchange">若更改时间设置，时间表将会重置</string>
+    <string name="timetable_setting_theme_select_theme_prompt">主题背景</string>
+    <string name="timetable_setting_theme_select_theme_title">选择主题</string>
+    <string name="timetable_setting_theme_select_language_prompt">语言(Language)</string>
+    <string name="timetable_setting_info_shop">商店</string>
+    <string name="timetable_setting_info_yooii_info">Timetable Kit 信息</string>
+    <string name="timetable_setting_info_rate">给 Timetable Kit 打分</string>
+    <string name="timetable_setting_info_linkfacebook">在Facebook上“赞”一下我们</string>
+    <string name="timetable_setting_info_credit">制作团队</string>
+    <string name="timetable_setting_info_yooiistudio">Yooii Studios</string>
+    <string name="timetable_setting_info_help">Timetable Kit 帮助</string>
+    <string name="timetable_setting_info_restore_purchases">恢复购买</string>
+    <string name="timetable_setting_info_license">许可证</string>
+    <string name="timetable_setting_info_version">软件版本</string>
+    <string name="tab_timetablesetting">细节设置</string>
+    <string name="tab_timetabletheme">主题背景</string>
+    <string name="tab_info">商店 / 信息</string>
+    <string name="notice">闹钟!</string>
+    <string name="unlock_full_version">购买完整版!</string>
+    <string name="buy_full_version_explain">请购买完整版来解锁所有功能和主题背景！</string>
+    <string name="app_name">Timetable Kit - 时间表</string>
+    <string name="edit_your_timetable_title">时间表标题</string>
+    <string name="drawer_add_timetable">添加时间表</string>
+    <string name="menu_store">商店</string>
+    <string name="menu_settings">细节设置</string>
+    <string name="menu_send_feedback">送意见</string>
+    <string name="menu_help">帮助</string>
+    <string name="activity_show_all_goto_overlap_mode">覆合时间表</string>
+    <string name="activity_show_all_select_least_one_table">请至少选择一个时间表</string>
+    <string name="activity_overlap_error_null">没有可堆叠的时间表！</string>
+    <string name="activity_store_already_unlocked_full">已解锁专业版。</string>
+    <string name="activity_store_unable_to_pay">现在无法购买。</string>
+    <string name="activity_store_purchase_cancelled">购买取消了</string>
+    <string name="activity_store_thanks_for_unlock">谢谢购买专业版。</string>
+    <string name="fragment_timetable_warning_upload_key_duplicate">连接失败或所输密码已经存在。</string>
+    <string name="fragment_timetable_notice_adding_timetable">正在添加时间表。。。</string>
+    <string name="fragment_timetable_share_upload_succeed">发送成功！</string>
+    <string name="fragment_timetable_share_download_succeed">下载成功！</string>
+    <string name="dialog_cleartimetable_title">确定删除说有课程吗？</string>
+    <string name="dialog_deleteschedule_title">确定删除这个事件吗？</string>
+    <string name="dialog_sharetimetable_title">与好友分享你的时间表！</string>
+    <string name="fragment_to_addtable_title">附加功能</string>
+    <string name="dialog_editschedule_text_class">课程</string>
+    <string name="dialog_editschedule_spinner_picklesson_prompt">请选择对事件关联的课程。</string>
+    <string name="dialog_editschedule_spinner_pickalarm_prompt">请设置闹钟时间</string>
+    <string name="dialog_settings_daypick_title">设置星期</string>
+    <string name="dialog_settings_periodpick_title">设置时段</string>
+    <string name="dialog_settings_timepick_title">开始时间和时间间隔</string>
+    <string name="dialog_sharedata_now_uploading_message">正在送您的时间表。。。</string>
+    <string name="dialog_sharedata_now_downloading_message">正在下载您朋友的时间表。。。</string>
+    <string name="title_gc_sync">请上载您的事件！</string>
+    <string name="gc_sync_btn">同步化</string>
+    <string name="warning_gc_sync_must_have_google_account">同步至Google Calerder需要Gmail帐户。</string>
+    <string name="warning_gc_sync_must_have_latest_google_play">需要最新版Google Play.</string>
+    <string name="warning_gc_sync_device_reject">这个机器不能同步。</string>
+    <string name="progress_err">连接取消了</string>
+    <string name="progress_checking">正在确认事件资料。。。</string>
+    <string name="progress_create_calendar">正在添加事件。。</string>
+    <string name="progress_clear_event">正在刷新事件。。。</string>
+    <string name="progress_upload_schedule">正在上载事件。。。</string>
+    <string name="progress_download_event">正在下载事件。。。</string>
+    <string name="progress_done">完了！</string>
+    <string name="sync_failed">同步化失败</string>
+    <string name="timetable_setting_alarm_cancelled">课程闹钟被解除</string>
+    <string name="timetable_setting_alarm_on_time">课程闹钟设置为整点了</string>
+    <string name="timetable_setting_alarm_before_A">现在距离您设定的时间还有</string>
+    <string name="timetable_setting_alarm_before_B">分钟</string>
+    <string name="loading">载入中…</string>
+    <string name="delete">删除</string>
+    <string name="pleaseWaitWhileLoading">载入中…</string>
+    <string name="starting_connection">连接中。。。</string>
+    <string name="cancelled">取消了。</string>
+    <string name="unlock_full_version_pagenum_overflow">请升级至专业版以解锁更多时间表。</string>
+    <string name="buy_full_version">请升级至专业版解锁全部功能！</string>
+    <string name="send_feedback_subject">Timetable Kit Feedback</string>
+    <string name="send_feedback_title">请发给我们意见！</string>
+    <string name="dialog_share_data_upload_limited_A">一天可以发送最多</string>
+    <string name="dialog_share_data_upload_limited_B">个时间表。</string>
+    <string name="dialog_share_data_download_limited_A">一天可以接收最多</string>
+    <string name="dialog_share_data_download_limited_B">个时间表。</string>
+    <string name="dialog_sharedata_upload_title">发送</string>
+    <string name="dialog_sharedata_download_title">下载</string>
+    <string name="activity_setting_viewpager_dayprompt">星期</string>
+    <string name="activity_setting_viewpager_periodprompt">时段</string>
+    <string name="activity_setting_viewpager_timeprompt">开始时间和时间间隔</string>
+    <string name="activity_setting_viewpager_alarmprompt">闹钟</string>
+    <string name="activity_setting_viewpager_themeprompt">主题背景</string>
+    <string name="activity_setting_viewpager_languageprompt">语言 (Language)</string>
+    <string name="connector_result_failed">连接失败</string>
+    <string name="connector_result_network_error">网络错误</string>
+    <string name="connector_result_data_null">连接失败或没有时间表数据。</string>
+    <string name="connector_result_data_limit_reached">已经达到最大传送量。</string>
+    <string name="connector_result_duplicated_key">密码已经存在。</string>
+    <string name="dialog_share_data_dataremovedafter24hours">*24小时后时间表数据会自动删除。</string>
+    <string name="terms_of_service">服务条款</string>
+    <string name="drawer_overlap_timetables">堆栈时间表</string>
+    <string name="drawer_show_all_timetables">时间表流视图</string>
+    <string name="dialog_share_data_upload">发送</string>
+    <string name="dialog_share_data_download">下载</string>
+    <string name="activity_store_common_error">连接失败</string>
+    <string name="already_full_version">已经购买了!</string>
+    <string name="already_full_version_explain">谢谢购买专业版。</string>
+    <string name="dialog_editschedule_text_date">日期</string>
+    <string name="dialog_editschedule_text_title">标题</string>
+    <string name="dialog_editschedule_text_memo">备忘录</string>
+    <string name="dialog_editschedule_text_alarm">提醒</string>
+    <string name="activity_overlap_title">堆栈时间表</string>
+    <string name="activity_showall_title">时间表流视图</string>
+    <string name="dialog_rate_title">评论</string>
+    <string name="dialog_rate_message">给个好评吧！\n您的鼓励会让我们做出更好的产品！</string>
+    <string name="dialog_rate_later">稍后</string>
+    <string name="dialog_rate_now">评论</string>
+    <string name="activity_timetable_max_timetable_count">不能添加10个以上的时间表。</string>
+    <string name="activity_overlap_goto_showall_mode">选择时间表</string>
+    <string name="dialog_share_data_send_file_num">已发送的时间表个数</string>
+    <string name="dialog_share_data_receive_file_num">已下载的时间表个数</string>
+    <string name="fragment_schedule_schedulenum_overflows">购买完整版，你可以添加12个以上日程表。</string>
+    <string name="activity_store_moretheme">所有主题背景</string>
+    <string name="activity_store_noads">移除广告</string>
+    <string name="activity_store_alarm">闹钟功能</string>
+    <string name="activity_store_moretables">增加更多时间表（最多10个）</string>
+    <string name="activity_store_moreschedules">增加无数事件</string>
+    <string name="timetable_setting_select_timeoffset">时间间隔</string>
+    <string name="connector_result_key_not_exists">时间表不存在</string>
+    <string name="dialog_editlesson_warn_timewrong">时段选择不正确。</string>
+    <string name="dialog_editlesson_warn_lessonUnder30Min">一个课程时段必须超过30分钟。</string>
+    <string name="dialog_editlesson_text_time">时间</string>
+    <string name="dialog_sharedata_hint">共有密码</string>
+    <string name="activity_appwidget_configure_color">屏幕光亮</string>
+    <string name="activity_appwidget_configure_alpha">屏幕透明度</string>
+    <string name="activity_appwidget_configure_preview">预览</string>
+    <string name="dialog_connector_uploadinfo_received_times_A">\u0020以及另外</string>
+    <string name="dialog_connector_uploadinfo_received_times_B">次下载</string>
+    <string name="dialog_connector_uploadinfo_received_noone">未能接收</string>
+    <string name="dialog_connector_uploadinfo_received">\u0020已接收</string>
+    <string name="fragment_timetable_oneditlesson_toast">点击"时间"，以一分钟为单位调整课程时间</string>
+    
+    <string name="menu_recommend_friends">推荐给好友</string>
+    <string name="recommend_to_friends_subject">[Timetable Kit - 时间表] 向您推荐！</string>
+    <string name="recommend_to_friends_body">[Timetable Kit Google Play：下载]</string> 
+    
+    <!--  -->
+    <string-array name="timetable_setting_startdays">
+        <item>星期日</item>
+        <item>星期一</item>
+    </string-array>
+    <string-array name="timetable_setting_enddays">
+        <item>星期五</item>
+        <item>星期六</item>
+        <item>星期日</item>
+    </string-array>
+    <string-array name="timetable_setting_columnTypes">
+        <item>时段</item>
+        <item>以字母</item>
+        <item>以时间</item>
+    </string-array>
+    <string-array name="timetable_setting_columnNums">
+        <item>6</item>
+        <item>8</item>
+        <item>10</item>
+        <item>12</item>
+    </string-array>
+    <string-array name="timetable_setting_timeOffsets">
+        <item>30分钟</item>
+        <item>45分钟</item>
+        <item>60分钟</item>
+        <item>90分钟</item>
+    </string-array>
+    <string-array name="timetable_setting_lessonAlarms">
+        <item>关闭闹钟</item>
+        <item>准时</item>
+        <item>1分钟前</item>
+        <item>5分钟前</item>
+        <item>10分钟前</item>
+        <item>20分钟前</item>
+        <item>30分钟前</item>
+        <item>40分钟前</item>
+        <item>50分钟前</item>
+        <item>1小时前</item>
+        <item>2小时前</item>
+        <item>3小时前</item>
+    </string-array>
+    <string-array name="timetable_setting_theme_themes">
+        <item>春天</item>
+        <item>伊卡洛斯</item>
+        <item>方格花纹</item>
+        <item>番石榴蛋糕</item>
+        <item>黑与白</item>
+        <item>灰色</item>
+        <item>玉兰</item>
+        <item>草莓冰沙</item>
+        <item>那一年夏天</item>
+        <item>小狗小狗</item>
+        <item>照片</item>
+    </string-array>
+
+    <string name="MON">周一</string>
+    <string name="TUE">周二</string>
+    <string name="WED">周三</string>
+    <string name="THU">周四</string>
+    <string name="FRI">周五</string>
+    <string name="SAT">周六</string>
+    <string name="SUN">周日</string>
+    <string name="Monday">星期一</string>
+    <string name="Tuesday">星期二</string>
+    <string name="Wednesday">星期三</string>
+    <string name="Thursday">星期四</string>
+    <string name="Friday">星期五</string>
+    <string name="Saturday">星期六</string>
+    <string name="Sunday">星期日</string>
+
+</resources>

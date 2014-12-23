@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.sulga.yooiitable.customviews.ScheduleViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_schedule_viewpager"
+    android:layout_width="fill_parent"
+    android:layout_height="@dimen/view_schedule_height"
+    android:overScrollMode="never" />

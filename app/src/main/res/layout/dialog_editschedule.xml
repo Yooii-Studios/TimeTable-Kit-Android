@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dialog_editschedule_root"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="#333333"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    android:padding="3pt" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:id="@+id/dialog_editschedule_buttonswrapper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:orientation="horizontal" >
+
+            <ImageButton
+                android:id="@+id/dialog_editschedule_button_check"
+                android:layout_width="@dimen/dialog_editschedule_buttons_wh"
+                android:layout_height="@dimen/dialog_editschedule_buttons_wh"
+                android:layout_margin="5dp"
+                android:background="@drawable/yt_icon_popup_ok" />
+
+            <ImageButton
+                android:id="@+id/dialog_editschedule_button_cancel"
+                android:layout_width="@dimen/dialog_editschedule_buttons_wh"
+                android:layout_height="@dimen/dialog_editschedule_buttons_wh"
+                android:layout_margin="5dp"
+                android:background="@drawable/yt_icon_popup_cancel" />
+        </LinearLayout>
+        <ImageButton
+                android:id="@+id/dialog_editschedule_button_delete"
+                android:layout_width="@dimen/dialog_editschedule_buttons_wh"
+                android:layout_height="@dimen/dialog_editschedule_buttons_wh"
+                android:layout_margin="5dp"
+                android:layout_alignBaseline="@id/dialog_editschedule_buttonswrapper"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:background="@drawable/yt_icon_popup_trashcan" />
+    </RelativeLayout>
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/dialog_editschedule_line_height"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="2" >
+
+            <TextView
+                android:id="@+id/dialog_editschedule_textview_date"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/dialog_editschedule_layout_margin_tb"
+                android:layout_marginLeft="@dimen/dialog_editschedule_layout_margin_lr"
+                android:layout_marginRight="@dimen/dialog_editschedule_layout_margin_lr"
+                android:layout_marginTop="@dimen/dialog_editschedule_layout_margin_tb"
+                android:background="@drawable/yt_settingsdialog_background"
+                android:gravity="center"
+                android:padding="@dimen/dialog_editschedule_padding"
+                android:text="@string/dialog_editschedule_text_date"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/dialog_editschedule_textsize" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="4" >
+
+            <RelativeLayout
+                android:id="@+id/dialog_editschedule_button_editdate"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/dialog_editschedule_layout_margin_tb"
+                android:layout_marginLeft="@dimen/dialog_editschedule_layout_margin_lr"
+                android:layout_marginRight="@dimen/dialog_editschedule_layout_margin_lr"
+                android:layout_marginTop="@dimen/dialog_editschedule_layout_margin_tb"
+                android:background="@drawable/yt_settingsdialog_background"
+                android:clickable="true"
+                android:padding="@dimen/dialog_editschedule_padding" >
+
+                <TextView
+                    android:id="@+id/dialog_editschedule_editdate_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:text="TEXTTTTTTT!!"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/dialog_editschedule_textsize" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="3" >
+
+            <RelativeLayout
+                android:id="@+id/dialog_editschedule_button_edittime"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/dialog_editschedule_layout_margin_tb"
+                android:layout_marginLeft="@dimen/dialog_editschedule_layout_margin_lr"
+                android:layout_marginRight="@dimen/dialog_editschedule_layout_margin_lr"
+                android:layout_marginTop="@dimen/dialog_editschedule_layout_margin_tb"
+                android:background="@drawable/yt_settingsdialog_background"
+                android:clickable="true"
+                android:padding="@dimen/dialog_editschedule_padding" >
+
+                <TextView
+                    android:id="@+id/dialog_editschedule_edittime_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:text="TEXT!!"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/dialog_editschedule_textsize" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <!-- 날짜/시간 선택 버튼 2개 들어가야함 -->
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/dialog_editschedule_line_height"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="2" >
+
+            <TextView
+                android:id="@+id/dialog_editschedule_textview_title"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/dialog_editschedule_layout_margin_tb"
+                android:layout_marginLeft="@dimen/dialog_editschedule_layout_margin_lr"
+                android:layout_marginRight="@dimen/dialog_editschedule_layout_margin_lr"
+                android:layout_marginTop="@dimen/dialog_editschedule_layout_margin_tb"
+                android:background="@drawable/yt_settingsdialog_background"
+                android:gravity="center"
+                android:padding="@dimen/dialog_editschedule_padding"
+                android:text="@string/dialog_editschedule_text_title"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/dialog_editschedule_textsize" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="7" >
+
+            <EditText
+                android:id="@+id/dialog_editschedule_edit_title"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/dialog_editschedule_layout_margin_tb"
+                android:layout_marginLeft="@dimen/dialog_editschedule_layout_margin_lr"
+                android:layout_marginRight="@dimen/dialog_editschedule_layout_margin_lr"
+                android:layout_marginTop="@dimen/dialog_editschedule_layout_margin_tb"
+                android:background="@drawable/yt_settingsdialog_background"
+                android:inputType="text"
+                android:padding="@dimen/dialog_editschedule_padding"
+                android:selectAllOnFocus="true"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/dialog_editschedule_textsize" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/dialog_editschedule_line_height"
+        android:baselineAligned="false"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="2" >
+
+            <TextView
+                android:id="@+id/dialog_editschedule_textview_class"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/dialog_editschedule_layout_margin_tb"
+                android:layout_marginLeft="@dimen/dialog_editschedule_layout_margin_lr"
+                android:layout_marginRight="@dimen/dialog_editschedule_layout_margin_lr"
+                android:layout_marginTop="@dimen/dialog_editschedule_layout_margin_tb"
+                android:background="@drawable/yt_settingsdialog_background"
+                android:gravity="center"
+                android:padding="@dimen/dialog_editschedule_padding"
+                android:text="@string/dialog_editschedule_text_class"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/dialog_editschedule_textsize" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="7" >
+
+            <Spinner
+                android:id="@+id/dialog_editschedule_lessonpick_spinner"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/dialog_editschedule_layout_margin_tb"
+                android:layout_marginLeft="@dimen/dialog_editschedule_layout_margin_lr"
+                android:layout_marginRight="@dimen/dialog_editschedule_layout_margin_lr"
+                android:layout_marginTop="@dimen/dialog_editschedule_layout_margin_tb"
+                android:background="@drawable/yt_settingsdialog_background"
+                android:gravity="center"
+                android:padding="@dimen/dialog_editschedule_padding"
+                android:prompt="@string/dialog_editschedule_spinner_picklesson_prompt" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="2"
+            android:gravity="top|center_horizontal" >
+
+            <TextView
+                android:id="@+id/dialog_editschedule_textview_memo"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="top|center_horizontal"
+                android:layout_marginBottom="@dimen/dialog_editschedule_layout_margin_tb"
+                android:layout_marginLeft="@dimen/dialog_editschedule_layout_margin_lr"
+                android:layout_marginRight="@dimen/dialog_editschedule_layout_margin_lr"
+                android:layout_marginTop="@dimen/dialog_editschedule_layout_margin_tb"
+                android:background="@drawable/yt_settingsdialog_background"
+                android:gravity="center"
+                android:padding="@dimen/dialog_editschedule_padding"
+                android:text="@string/dialog_editschedule_text_memo"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/dialog_editschedule_textsize" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="7" >
+
+            <EditText
+                android:id="@+id/dialog_editschedule_edit_memo"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="top|center_horizontal"
+                android:layout_marginBottom="@dimen/dialog_editschedule_layout_margin_tb"
+                android:layout_marginLeft="@dimen/dialog_editschedule_layout_margin_lr"
+                android:layout_marginRight="@dimen/dialog_editschedule_layout_margin_lr"
+                android:layout_marginTop="@dimen/dialog_editschedule_layout_margin_tb"
+                android:background="@drawable/yt_settingsdialog_background"
+                android:inputType="textMultiLine|text"
+                android:lines="5"
+                android:padding="@dimen/dialog_editschedule_padding"
+                android:scrollHorizontally="false"
+                android:scrollbars="vertical"
+                android:singleLine="false"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/dialog_editschedule_textsize" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/dialog_editschedule_line_height"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="2" >
+
+            <TextView
+                android:id="@+id/dialog_editschedule_textview_alarm"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/dialog_editschedule_layout_margin_tb"
+                android:layout_marginLeft="@dimen/dialog_editschedule_layout_margin_lr"
+                android:layout_marginRight="@dimen/dialog_editschedule_layout_margin_lr"
+                android:layout_marginTop="@dimen/dialog_editschedule_layout_margin_tb"
+                android:background="@drawable/yt_settingsdialog_background"
+                android:gravity="center"
+                android:padding="@dimen/dialog_editschedule_padding"
+                android:text="@string/dialog_editschedule_text_alarm"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/dialog_editschedule_textsize" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="7" >
+
+            <Spinner
+                android:id="@+id/dialog_editschedule_alarmpick_spinner"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/dialog_editschedule_layout_margin_tb"
+                android:layout_marginLeft="@dimen/dialog_editschedule_layout_margin_lr"
+                android:layout_marginRight="@dimen/dialog_editschedule_layout_margin_lr"
+                android:layout_marginTop="@dimen/dialog_editschedule_layout_margin_tb"
+                android:background="@drawable/yt_settingsdialog_background"
+                android:gravity="center"
+                android:padding="@dimen/dialog_editschedule_padding"
+                android:prompt="@string/dialog_editschedule_spinner_pickalarm_prompt" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+	<FrameLayout
+        android:id="@+id/view_showalltables_item_content"
+        android:layout_width="@dimen/view_show_all_item_width"
+        android:layout_height="@dimen/view_show_all_item_height"
+        android:layout_below="@+id/view_showalltables_item_pagetext"
+        android:background="@drawable/yt_showall_item_background"
+        android:padding="1dp" >
+
+        <CheckBox
+            android:id="@+id/view_showalltables_item_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </FrameLayout>
+    
+    <TextView
+        android:id="@+id/view_showalltables_item_pagetext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@id/view_showalltables_item_content"
+        android:layout_margin="5dp"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:text="2/3"
+        android:textColor="#219aca"
+        android:textSize="10dp" />
+
+</RelativeLayout>

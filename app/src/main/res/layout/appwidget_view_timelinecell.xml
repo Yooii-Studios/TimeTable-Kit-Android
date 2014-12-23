@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="0dp"
+    android:layout_height="fill_parent"
+    android:layout_weight="0.75"
+    android:background="@drawable/yt_appwidget_root_background_shape"
+    android:layout_margin="@dimen/appwidget_daycell_margin"
+    android:orientation="vertical" >
+    <TextView
+        android:id="@+id/appwidget_view_timelinecell_text"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:textSize="10sp"
+        android:layout_gravity="center"
+        />
+</LinearLayout>

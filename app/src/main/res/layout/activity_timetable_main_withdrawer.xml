@@ -1,0 +1,55 @@
+<org.holoeverywhere.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <com.viewpagerindicator.UnderlinePageIndicator
+            android:id="@+id/indicator"
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:layout_alignParentTop="true" />
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            ads:adSize="BANNER"
+            ads:adUnitId="a152c7a2654e695"
+            android:background="@color/transparent" />
+
+        <com.sulga.yooiitable.customviews.ParentViewPager
+            android:id="@+id/activity_timetable_main_pager"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_above="@id/adView"
+            android:layout_below="@id/indicator"
+            android:background="#ffffff" />
+
+        <ImageView
+            android:id="@+id/dogear_to_store"
+            android:layout_width="@dimen/dogear_wh"
+            android:layout_height="@dimen/dogear_wh"
+            android:layout_below="@+id/indicator"
+            android:layout_alignRight="@+id/indicator"
+            android:src="@drawable/dogear_to_store" />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/listview_drawer"
+        android:layout_width="240dp"
+        android:layout_height="fill_parent"
+        android:layout_gravity="start"
+        android:background="#111"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp" />
+
+</org.holoeverywhere.widget.DrawerLayout>

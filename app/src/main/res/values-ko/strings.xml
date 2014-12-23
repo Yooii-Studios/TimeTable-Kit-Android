@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dialog_editlesson_text_subject">이름</string>
+    <string name="dialog_editlesson_text_location">장소</string>
+    <string name="dialog_editlesson_text_professor">교수</string>
+    <string name="dialog_editlesson_text_color">색상</string>
+    <string name="dialog_editlesson_text_memo">메모</string>
+    <string name="fragment_timetable_timeline_period">교시</string>
+    <string name="fragment_timetable_notice_lessoncopied">수업이 복사되었습니다.</string>
+    <string name="fragment_timetable_warning_over24h">하루는 24시간 입니다!</string>
+    <string name="fragment_timetable_warning_leaveoneperiod">최소 1교시는 존재하여야 합니다.  </string>
+    <string name="fragment_timetable_warning_tableLengthLowerThanLesson_A"></string>
+    <string name="fragment_timetable_warning_tableLengthLowerThanLesson_B">수업으로 인해 최소 </string>
+    <string name="fragment_timetable_warning_tableLengthLowerThanLesson_C"></string>
+    <string name="fragment_timetable_warning_tableLengthLowerThanLesson_D">교시 이상 존재하여야 합니다.</string>
+    <string name="fragment_timetable_warning_deleteMainTable">메인 타임테이블은 삭제가 불가능합니다.</string>
+    <string name="fragment_timetable_warning_lessonAlreadyExists">시간대가 겹치는 수업이 존재합니다.</string>
+    <string name="dialog_deletetimetable_title">시간표를 삭제하시겠습니까?</string>
+    <string name="fragment_schedule_title">스케줄러</string>
+    <string name="fragment_schedule_add_schedule">이벤트 추가</string>
+    <string name="fragment_schedule_sync">구글 캘린더와 동기화</string>
+    <string name="activity_schedule_edit_title">이벤트 수정</string>
+    <string name="activity_schedule_edit_lessonPick_spinner_prompt">이벤트와 관련된 수업을 선택하세요.</string>
+    <string name="activity_schedule_edit_alarm_spinner_prompt">알람 시간</string>
+    <string name="activity_schedule_edit_date_title">날짜</string>
+    <string name="activity_schedule_edit_schedulename_title">이름</string>
+    <string name="activity_schedule_edit_memo_title">메모</string>
+    <string name="activity_schedule_edit_alarm_title">알람</string>
+    <string name="timetable_setting_select_startday_title">시작 요일을 선택하세요.</string>
+    <string name="timetable_setting_select_endday_title">마지막 요일을 선택하세요.</string>
+    <string name="timetable_setting_select_columnType_title">교시를 표기할 타입을 선택하세요.</string>
+    <string name="timetable_setting_select_columnNum_title">교시 개수를 선택하세요.</string>
+    <string name="timetable_setting_select_startTime_title">시작 시간을 선택하세요.</string>
+    <string name="timetable_setting_select_timeOffset_prompt">1교시당 배분 시간</string>
+    <string name="timetable_setting_select_timeOffset_title">1교시당 배분 시간을 선택하세요.</string>
+    <string name="timetable_setting_select_lessonAlarm_prompt">수업 알람</string>
+    <string name="timetable_setting_select_lessonAlarm_title">수업 알람을 선택하세요.</string>
+    <string name="timetable_setting_select_startday_warning_overlapdays">시작 요일과 끝 요일이 겹칩니다.</string>
+    <string name="timetable_setting_select_endday_warning_overlapdays">끝 요일과 시작 요일이 겹칩니다.</string>
+    <string name="timetable_setting_warning_tableinit_on_starttimechange">수업 시작 시간을 바꾸면 시간표가 초기화됩니다.</string>
+    <string name="timetable_setting_warning_tableinit_on_timeoffsetchange">수업 시간 단위를 바꾸면 시간표가 초기화됩니다.</string>
+    <string name="timetable_setting_theme_select_theme_prompt">테마</string>
+    <string name="timetable_setting_theme_select_theme_title">테마를 선택하세요.</string>
+    <string name="timetable_setting_info_shop">상점</string>
+    <string name="timetable_setting_info_yooii_info">타임테이블 키트 정보</string>
+    <string name="timetable_setting_info_rate">타임테이블 키트 평가하기</string>
+    <string name="timetable_setting_info_linkfacebook">페이스북 좋아요!</string>
+    <string name="timetable_setting_info_credit">크레디트</string>
+    <string name="timetable_setting_info_yooiistudio">유이스튜디오</string>
+    <string name="timetable_setting_info_help">도움말</string>
+    <string name="timetable_setting_info_restore_purchases">구매내역 복구</string>
+    <string name="timetable_setting_info_license">라이센스</string>
+    <string name="timetable_setting_info_version">버전</string>
+    <string name="tab_timetablesetting">세부설정</string>
+    <string name="tab_timetabletheme">테마</string>
+    <string name="tab_info">상점\\정보</string>
+    <string name="notice">알람!</string>
+    <string name="unlock_full_version">풀버전을 구매해 주세요!</string>
+    <string name="buy_full_version_explain">시간표와 이벤트 개수 증가, 광고 제거, 모든 테마와 알람을 사용하실 수 있습니다.</string>
+    <string name="app_name">타임테이블 키트</string>
+    <string name="edit_your_timetable_title">타이틀을 설정하세요!</string>
+    <string name="drawer_add_timetable">시간표 추가</string>
+    <string name="menu_store">상점</string>
+    <string name="menu_settings">세부설정</string>
+    <string name="menu_send_feedback">피드백 보내기</string>
+    <string name="menu_help">도움말</string>
+    <string name="activity_show_all_goto_overlap_mode">겹쳐보기 화면으로</string>
+    <string name="activity_show_all_select_least_one_table">최소한 한 개의 시간표를 선택하셔야 합니다.</string>
+    <string name="activity_overlap_error_null">에러 : 겹쳐보기용 데이터가 존재하지 않습니다!</string>
+    <string name="activity_store_already_unlocked_full">이미 풀 버전을 구매하셨습니다!</string>
+    <string name="activity_store_unable_to_pay">현재 구매가 불가능합니다.</string>
+    <string name="activity_store_purchase_cancelled">구매가 취소되었습니다.</string>
+    <string name="activity_store_thanks_for_unlock">풀 버전을 언락해 주셔서 감사합니다!</string>
+    <string name="fragment_timetable_warning_upload_key_duplicate">연결이 취소되었거나 네트워크에 동일한 비밀번호가 이미 존재합니다</string>
+    <string name="fragment_timetable_notice_adding_timetable">시간표 추가 중...</string>
+    <string name="fragment_timetable_share_upload_succeed">보내기 성공!</string>
+    <string name="fragment_timetable_share_download_succeed">받기 성공!</string>
+    <string name="dialog_cleartimetable_title">수업을 모두 삭제하시겠습니까?</string>
+    <string name="dialog_deleteschedule_title">이 이벤트를 삭제하시겠습니까?</string>
+    <string name="dialog_sharetimetable_title">시간표를 공유하세요!</string>
+    <string name="fragment_to_addtable_title">부가 기능</string>
+    <string name="dialog_editschedule_text_class">수업</string>
+    <string name="dialog_editschedule_spinner_picklesson_prompt">수업과 연관된 이벤트를 선택하세요.</string>
+    <string name="dialog_editschedule_spinner_pickalarm_prompt">알람 시간을 선택하세요.</string>
+    <string name="dialog_sharedata_now_uploading_message">시간표 보내는중...</string>
+    <string name="dialog_sharedata_now_downloading_message">시간표 받는중...</string>
+    <string name="title_gc_sync">이벤트를 업로드하세요!</string>
+    <string name="gc_sync_btn">동기화</string>
+    <string name="warning_gc_sync_must_have_google_account">구글 캘린더에 동기화하기 위해서는 지메일 계정을 설정하셔야 합니다.</string>
+    <string name="warning_gc_sync_must_have_latest_google_play">최신 버전의 구글 플레이가 설치되어 있어야 합니다.</string>
+    <string name="warning_gc_sync_device_reject">이 기기에서는 동기화하실 수 없습니다.</string>
+    <string name="progress_err">연결 취소됨!</string>
+    <string name="progress_checking">캘린더 데이터 체크중...</string>
+    <string name="progress_create_calendar">캘린더 생성 중...</string>
+    <string name="progress_clear_event">이벤트 새로고침중...</string>
+    <string name="progress_upload_schedule">이벤트 업로드중...</string>
+    <string name="progress_download_event">이벤트 다운로드중...</string>
+    <string name="progress_done">완료!</string>
+    <string name="sync_failed">동기화 실패...</string>
+    <string name="timetable_setting_alarm_cancelled">수업들의 알람이 해지되었습니다.</string>
+    <string name="timetable_setting_alarm_on_time">수업들의 알람이 정각에 설정되었습니다.</string>
+    <string name="timetable_setting_alarm_before_A"></string>
+    <string name="timetable_setting_alarm_before_B">분 전에 알람이 설정되었습니다.</string>
+    <string name="loading">로딩 중...</string>
+    <string name="delete">삭제</string>
+    <string name="pleaseWaitWhileLoading">로딩 중입니다...</string>
+    <string name="starting_connection">연결 중...</string>
+    <string name="cancelled">취소되었습니다.</string>
+    <string name="unlock_full_version_pagenum_overflow">무료 버전에서는 시간표 개수가 4개까지 지원됩니다.</string>
+    <string name="buy_full_version">풀버전을 구매해 주세요.</string>
+    <string name="send_feedback_subject">타임테이블 키트 피드백</string>
+    <string name="send_feedback_title">피드백을 보내주세요!</string>
+    <string name="dialog_share_data_upload_limited_A">하루에 최대 </string>
+    <string name="dialog_share_data_upload_limited_B">개의 시간표만 보내실 수 있습니다.</string>
+    <string name="dialog_share_data_download_limited_A">하루에 최대 </string>
+    <string name="dialog_share_data_download_limited_B">개의 시간표만 받으실 수 있습니다.</string>
+    <string name="dialog_sharedata_upload_title">보내기</string>
+    <string name="dialog_sharedata_download_title">받기</string>
+    <string name="activity_setting_viewpager_dayprompt">요일</string>
+    <string name="activity_setting_viewpager_periodprompt">교시</string>
+    <string name="activity_setting_viewpager_timeprompt">시작 시간과 간격</string>
+    <string name="activity_setting_viewpager_alarmprompt">알람</string>
+    <string name="activity_setting_viewpager_themeprompt">테마</string>
+    <string name="activity_setting_viewpager_languageprompt">언어(Language)</string>
+    <string name="connector_result_failed">연결에 실패했습니다.</string>
+    <string name="connector_result_network_error">네트워크 에러!</string>
+    <string name="connector_result_data_null">연결에 실패했거나 시간표 데이터가 존재하지 않습니다.</string>
+    <string name="connector_result_data_limit_reached">하루 전송량을 초과하셨습니다.</string>
+    <string name="connector_result_duplicated_key">동일한 비밀번호가 이미 네트워크에 존재합니다.</string>
+    <string name="dialog_share_data_dataremovedafter24hours">*24시간이 지나면 보낸 파일은 자동으로 사라지게 됩니다.</string>
+    <string name="terms_of_service">이용 약관</string>
+    <string name="drawer_show_all_timetables">전체보기</string>
+    <string name="drawer_overlap_timetables">겹쳐보기</string>
+    <string name="dialog_share_data_upload">보내기</string>
+    <string name="dialog_share_data_download">받기</string>
+    <string name="activity_store_common_error">연결에 실패했습니다.</string>
+    <string name="already_full_version">풀 버전을 이미 구매하셨습니다.</string>
+    <string name="already_full_version_explain">구매해 주셔서 감사합니다.</string>
+    <string name="dialog_editschedule_text_date">날짜</string>
+    <string name="dialog_editschedule_text_title">이름</string>
+    <string name="dialog_editschedule_text_memo">메모</string>
+    <string name="dialog_editschedule_text_alarm">알람</string>
+    <string name="activity_overlap_title">겹쳐보기</string>
+    <string name="activity_showall_title">전체보기</string>
+    <string name="dialog_settings_daypick_title">요일 설정</string>
+    <string name="dialog_settings_periodpick_title">교시 설정</string>
+    <string name="dialog_settings_timepick_title">시작 시간과 간격</string>
+    <string name="dialog_rate_title">평가하기</string>
+    <string name="dialog_rate_message">타임테이블 키트 리뷰 부탁 드립니다.\n소중한 리뷰가 더 좋은 제품을 만드는데 도움이 됩니다! ^^</string>
+    <string name="dialog_rate_later">나중에 하기</string>
+    <string name="dialog_rate_now">평가하기</string>
+    <string name="activity_timetable_max_timetable_count">시간표는 최대 10개 이상 추가하실 수 없습니다.</string>
+    <string name="dialog_share_data_send_file_num">보낸 시간표 개수</string>
+    <string name="dialog_share_data_receive_file_num">받은 시간표 개수</string>
+    <string name="activity_overlap_goto_showall_mode">겹쳐 볼 시간표 선택하기</string>
+    <string name="dialog_sharedata_hint">공유번호</string>
+    <string name="fragment_schedule_schedulenum_overflows">무료 버전에서 스케줄은 최대 12개까지 지원됩니다.</string>
+    <string name="activity_store_moretheme">모든 테마</string>
+    <string name="activity_store_noads">광고 제거</string>
+    <string name="activity_store_alarm">알람 기능</string>
+    <string name="activity_store_moretables">시간표 최대 10개까지</string>
+    <string name="activity_store_moreschedules">스케줄 개수 무제한</string>
+    <string name="timetable_setting_select_startTime_prompt">시작 시간</string> <!-- 있던거임 -->
+    <string name="timetable_setting_select_columnType_prompt">교시 표시 타입</string> <!-- 있던거임 -->
+    <string name="timetable_setting_select_columnNum_prompt">교시 개수</string> <!-- 있던거임 -->
+    <string name="timetable_setting_select_startday_prompt">시작 요일</string>
+    <string name="timetable_setting_select_endday_prompt">마지막 요일</string>
+    <string name="timetable_setting_select_timeoffset">시간 간격</string>
+    <string name="dialog_connector_uploadinfo_received_times_A">\u0020외\u0020</string>
+    <string name="dialog_connector_uploadinfo_received_times_B">회 받아감</string>
+    <string name="connector_result_key_not_exists">시간표가 존재하지 않습니다.</string>
+    <string name="dialog_editlesson_text_time">시간</string>
+    <string name="dialog_editlesson_warn_timewrong">시간 범위가 잘못 설정되었습니다.</string>
+    <string name="dialog_editlesson_warn_lessonUnder30Min">수업 시간은 최소 30분 이상이어야 합니다.</string>
+    <string name="activity_appwidget_configure_color">밝기</string>
+    <string name="activity_appwidget_configure_alpha">투명도</string>
+    <string name="activity_appwidget_configure_preview">미리보기</string>
+    <string name="dialog_connector_uploadinfo_received_noone">아직 아무도 수신하지 않았습니다</string>
+    <string name="dialog_connector_uploadinfo_received">\u0020받아감</string>    
+    <string name="menu_recommend_friends">친구에게 추천하기</string>
+    <string name="recommend_to_friends_subject">[타임테이블 키트] 이 앱을 강추 합니다!</string>
+    <string name="recommend_to_friends_body">[타임테이블 키트 구글 플레이스토어: 다운로드]</string>  
+    <string name="fragment_timetable_oneditlesson_toast">시간을 클릭하시면 수업시간의 분 단위 설정이 가능합니다.</string>
+    <!--  -->
+    <string-array name="timetable_setting_startdays">
+        <item>일요일</item>
+        <item>월요일</item>
+    </string-array>
+    <string-array name="timetable_setting_enddays">
+        <item>금요일</item>
+        <item>토요일</item>
+        <item>일요일</item>
+    </string-array>
+    <string-array name="timetable_setting_columnTypes">
+        <item>교시</item>
+        <item>알파벳</item>
+        <item>시간</item>
+    </string-array>
+    <string-array name="timetable_setting_columnNums">
+        <item>6</item>
+        <item>8</item>
+        <item>10</item>
+        <item>12</item>
+    </string-array>
+    <string-array name="timetable_setting_timeOffsets">
+        <item>30분</item>
+        <item>45분</item>
+        <item>60분</item>
+        <item>90분</item>
+    </string-array>
+    <string-array name="timetable_setting_lessonAlarms">
+        <item>알람 없음</item>
+        <item>정각</item>
+        <item>1분 전</item>
+        <item>5분 전</item>
+        <item>10분 전</item>
+        <item>20분 전</item>
+        <item>30분 전</item>
+        <item>40분 전</item>
+        <item>50분 전</item>
+        <item>1시간 전</item>
+        <item>2시간 전</item>
+        <item>3시간 전</item>
+    </string-array>
+    <string-array name="timetable_setting_theme_themes">
+        <item>봄날</item>
+        <item>이카루스</item>
+        <item>모눈종이</item>
+        <item>키라임파이</item>
+        <item>블랙\u0026화이트</item>
+        <item>회색</item>
+        <item>매그놀리아</item>
+        <item>스트로베리 스무디</item>
+        <item>도시의 여름</item>
+        <item>강아지 귀경길</item>
+        <item>사진</item>
+    </string-array>
+
+    <string name="MON">월</string>
+    <string name="TUE">화</string>
+    <string name="WED">수</string>
+    <string name="THU">목</string>
+    <string name="FRI">금</string>
+    <string name="SAT">토</string>
+    <string name="SUN">일</string>
+    <string name="Monday">월요알</string>
+    <string name="Tuesday">화요일</string>
+    <string name="Wednesday">수요일</string>
+    <string name="Thursday">목요일</string>
+    <string name="Friday">금요일</string>
+    <string name="Saturday">토요일</string>
+    <string name="Sunday">일요일</string>
+
+</resources>

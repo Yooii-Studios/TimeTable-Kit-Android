@@ -1,0 +1,3 @@
+include ':app', ':libraries:holoeverywhere:library', ':libraries:holoeverywhere:addons:preferences', ':libraries:holoeverywhere:addons:slider', ':libraries:holoeverywhere:ActionBarSherlock'
+//, ':libraries:HoloEverywhere-1.6.8', ':libraries:viewpagerindicator_library'
+include ':libraries:viewpagerindicator_library'

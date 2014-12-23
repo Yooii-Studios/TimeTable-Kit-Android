@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/view_timetable_dayrow_daycell"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_weight="1"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/view_timetable_dayrow_daycell_date"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/fragment_timetable_dayrow_date_height"
+        android:gravity="center"
+        android:text="6/23"
+        android:textColor="#ffffff"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/view_timetable_dayrow_daycell_day"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/Fragment_timetable_dayrow_dayoftheweek_height"
+        android:gravity="center"
+        android:text="요일"
+        android:textColor="#ffffff"
+        android:textSize="15sp" />
+
+</LinearLayout>

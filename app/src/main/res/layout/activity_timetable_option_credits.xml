@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#333333"
+    android:orientation="vertical" >
+
+    <ScrollView
+        android:id="@+id/activity_timetable_option_credit_scroll"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/activity_timetable_option_credits_director_wrapper"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dip" >
+
+                <TextView
+                    android:id="@+id/activity_timetable_option_credits_director"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginTop="5dip"
+                    android:text="Executive Producer"
+                    android:textColor="#aaaaaa"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/activity_timetable_option_credits_director"
+                    android:layout_marginLeft="30dip"
+                    android:layout_marginTop="5dip"
+                    android:text="Robert Song"
+                    android:textColor="#ffffff"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:background="#000000" />
+
+            <RelativeLayout
+                android:id="@+id/activity_timetable_option_credits_programmer_wrapper"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dip" >
+
+                <TextView
+                    android:id="@+id/activity_timetable_option_credits_programmer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginTop="5dip"
+                    android:text="Lead Software Engineer"
+                    android:textColor="#aaaaaa"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/activity_timetable_option_credits_programmer"
+                    android:layout_marginLeft="30dip"
+                    android:layout_marginTop="5dip"
+                    android:text="Frank Kim"
+                    android:textColor="#ffffff"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:background="#000000" />
+
+            <RelativeLayout
+                android:id="@+id/activity_timetable_option_credits_designer_wrapper"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dip" >
+
+                <TextView
+                    android:id="@+id/activity_timetable_option_credits_designer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginTop="5dip"
+                    android:text="Main Artist"
+                    android:textColor="#aaaaaa"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/activity_timetable_option_credits_designer"
+                    android:layout_marginLeft="30dip"
+                    android:layout_marginTop="5dip"
+                    android:text="GuavaKong"
+                    android:textColor="#ffffff"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:background="#000000" />
+
+            <RelativeLayout
+                android:id="@+id/activity_timetable_option_credits_network_programmer_wrapper"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dip" >
+
+                <TextView
+                    android:id="@+id/activity_timetable_option_credits_network_programmer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginTop="5dip"
+                    android:text="Connector Software Engineer"
+                    android:textColor="#aaaaaa"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/activity_timetable_option_credits_network_programmer"
+                    android:layout_marginLeft="30dip"
+                    android:layout_marginTop="5dip"
+                    android:text="Yoo Jin Lee"
+                    android:textColor="#ffffff"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:background="#000000" />
+
+            <RelativeLayout
+                android:id="@+id/activity_timetable_option_credits_creative_manager_wrapper"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dip" >
+
+                <TextView
+                    android:id="@+id/activity_timetable_option_credits_creative_manager"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginTop="5dip"
+                    android:text="Creative Manager"
+                    android:textColor="#aaaaaa"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/activity_timetable_option_credits_creative_manager"
+                    android:layout_marginLeft="30dip"
+                    android:layout_marginTop="5dip"
+                    android:text="Jasmine Jeongmin Oh"
+                    android:textColor="#ffffff"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:background="#000000" />
+
+            <RelativeLayout
+                android:id="@+id/activity_timetable_option_credits_bom_wrapper"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dip" >
+
+                <TextView
+                    android:id="@+id/activity_timetable_option_credits_bom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginTop="5dip"
+                    android:text="Business and Operations Manager"
+                    android:textColor="#aaaaaa"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/activity_timetable_option_credits_bom"
+                    android:layout_marginLeft="30dip"
+                    android:layout_marginTop="5dip"
+                    android:text="Jeff Jeong"
+                    android:textColor="#ffffff"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:background="#000000" />
+
+            <RelativeLayout
+                android:id="@+id/activity_timetable_option_credits_intermarketing_wrapper"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dip" >
+
+                <TextView
+                    android:id="@+id/activity_timetable_option_credits_intermarketing"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginTop="5dip"
+                    android:text="International Marketing and SNS Manager"
+                    android:textColor="#aaaaaa"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/activity_timetable_option_credits_intermarketing"
+                    android:layout_marginLeft="30dip"
+                    android:layout_marginTop="5dip"
+                    android:text="Taft Love"
+                    android:textColor="#ffffff"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:background="#000000" />
+
+            <RelativeLayout
+                android:id="@+id/activity_timetable_option_credits_motiongrapper_wrapper"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dip" >
+
+                <TextView
+                    android:id="@+id/activity_timetable_option_credits_motiongrapper"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginTop="5dip"
+                    android:text="Motion Grapher"
+                    android:textColor="#aaaaaa"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/activity_timetable_option_credits_motiongrapper"
+                    android:layout_marginLeft="30dip"
+                    android:layout_marginTop="5dip"
+                    android:text="Young Min Park"
+                    android:textColor="#ffffff"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:background="#000000" />
+
+            <RelativeLayout
+                android:id="@+id/activity_timetable_option_credits_qa_wrapper"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dip" >
+
+                <TextView
+                    android:id="@+id/activity_timetable_option_credits_qa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginTop="5dip"
+                    android:text="QA"
+                    android:textColor="#aaaaaa"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/activity_timetable_option_credits_qa"
+                    android:layout_marginLeft="30dip"
+                    android:layout_marginTop="5dip"
+                    android:text="Yooii Studios Members"
+                    android:textColor="#ffffff"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:background="#000000" />
+
+            <RelativeLayout
+                android:id="@+id/activity_timetable_option_credits_development_consulting_wrapper"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dip" >
+
+                <TextView
+                    android:id="@+id/activity_timetable_option_credits_development_consulting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginTop="5dip"
+                    android:text="Development Consulting by"
+                    android:textColor="#aaaaaa"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/activity_timetable_option_credits_development_consulting"
+                    android:layout_marginLeft="30dip"
+                    android:layout_marginTop="5dip"
+                    android:text="PlayFluent"
+                    android:textColor="#ffffff"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:background="#000000" />
+
+            <RelativeLayout
+                android:id="@+id/activity_timetable_option_credits_localization_wrapper"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dip" >
+
+                <TextView
+                    android:id="@+id/activity_timetable_option_credits_localization"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginTop="5dip"
+                    android:text="Localization"
+                    android:textColor="#aaaaaa"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/activity_timetable_option_credits_localization"
+                    android:layout_marginLeft="30dip"
+                    android:layout_marginTop="5dip"
+                    android:text="Jasmine Jeongmin Oh\nTaft Love\nJeff Wang\nAngela Choi\nOsamu Takahashi"
+                    android:textColor="#ffffff"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:background="#000000" />
+
+            <RelativeLayout
+                android:id="@+id/activity_timetable_option_credits_special_thanks_wrapper"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dip" >
+
+                <TextView
+                    android:id="@+id/activity_timetable_option_credits_special_thanks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginTop="5dip"
+                    android:text="Special Thanks"
+                    android:textColor="#aaaaaa"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/activity_timetable_option_credits_special_thanks"
+                    android:layout_marginLeft="30dip"
+                    android:layout_marginTop="5dip"
+                    android:text="Kyeong Je Lee\nThe Great Frog Party\nFei\nYooii Members \u0026 You!"
+                    android:textColor="#ffffff"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

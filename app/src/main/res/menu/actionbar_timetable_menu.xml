@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menu_item_share"
+        android:actionProviderClass="com.actionbarsherlock.widget.ShareActionProvider"
+        android:icon="@drawable/abs__ic_menu_share_holo_dark"
+        android:showAsAction="always"
+        android:title="Share"/>
+    <item
+        android:id="@+id/menu_item_overflow"
+        android:icon="@drawable/abs__ic_menu_moreoverflow_normal_holo_dark"
+        android:showAsAction="always"
+        android:title="Overflow">
+        <menu>
+            <item
+                android:id="@+id/menu_item_store"
+                android:showAsAction="ifRoom"
+                android:title="@string/menu_store"/>
+            <item
+                android:id="@+id/menu_item_settings"
+                android:showAsAction="ifRoom"
+                android:title="@string/menu_settings"/>
+            <item
+                android:id="@+id/menu_item_language"
+                android:showAsAction="ifRoom"
+                android:title="@string/activity_setting_viewpager_languageprompt"/>
+            <item
+                android:id="@+id/menu_item_send_feedback"
+                android:showAsAction="ifRoom"
+                android:title="@string/menu_send_feedback"/>
+            <item
+                android:id="@+id/menu_item_help"
+                android:showAsAction="ifRoom"
+                android:title="@string/menu_help"/>
+            <item 
+                android:id="@+id/menu_item_recommend"
+                android:showAsAction="ifRoom"
+                android:title="@string/menu_recommend_friends"/>
+        </menu>
+    </item>
+
+</menu>

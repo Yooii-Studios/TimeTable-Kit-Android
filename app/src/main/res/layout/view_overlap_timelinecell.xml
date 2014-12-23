@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/activity_overlap_timeline_width"
+    android:layout_height="fill_parent"
+    android:background="@drawable/yt_overlap_cell_background"
+    android:layout_margin="@dimen/activity_overlap_cell_margin"
+    android:orientation="vertical" >
+    <TextView
+        android:id="@+id/view_overlap_timelinecell_text"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="top|right"
+        android:layout_gravity="center"
+        android:textColor="#ffffff"
+        android:padding="2dp"
+        android:textSize="12sp"
+        />
+</LinearLayout>

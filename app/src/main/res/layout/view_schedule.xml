@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/view_schedule_root"
+    android:layout_width="fill_parent"
+    android:layout_height="@dimen/view_schedule_height"
+    android:background="@color/transparent" >
+
+    <FrameLayout
+        android:id="@+id/view_schedule_fadeoutview"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/view_schedule_height"
+        android:background="#2099ea" 
+        android:visibility="invisible"/>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="@dimen/view_schedule_outermargin_tb"
+        android:layout_marginLeft="@dimen/view_schedule_outermargin_lr"
+        android:layout_marginRight="@dimen/view_schedule_outermargin_lr"
+        android:layout_marginTop="@dimen/view_schedule_outermargin_tb"
+        android:baselineAligned="false"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:id="@+id/view_schedule_dateview"
+            android:layout_width="@dimen/view_schedule_dateview_width"
+            android:layout_height="@dimen/view_schedule_dateview_height"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/view_schedule_innermargin_lr"
+            android:layout_marginRight="@dimen/view_schedule_innermargin_lr"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/view_schedule_dateview_monthtext"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="#d2d0d6"
+                android:gravity="center"
+                android:text="MON"
+                android:textColor="#2e2e2e"
+                android:textSize="@dimen/view_schedule_month_day_textsize" />
+
+            <TextView
+                android:id="@+id/view_schedule_dateview_datetext"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3"
+                android:background="#404040"
+                android:gravity="center"
+                android:text="14"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/view_schedule_date_textsize" />
+
+            <TextView
+                android:id="@+id/view_schedule_dateview_daytext"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="#bababa"
+                android:gravity="center"
+                android:text="Friday"
+                android:textColor="#2e2e2e"
+                android:textSize="@dimen/view_schedule_month_day_textsize" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/view_schedule_contentsview"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/view_schedule_contentsview_height"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/view_schedule_innermargin_lr"
+            android:layout_marginRight="@dimen/view_schedule_innermargin_lr"
+            android:background="@drawable/yt_scheduleview_contents_background" >
+
+            <TextView
+                android:id="@+id/view_schedule_contentsview_title_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="@dimen/view_schedule_contentsview_title_margin_l"
+                android:layout_marginTop="@dimen/view_schedule_contentsview_title_margin_t"
+                android:text="Lunch with Robert"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/view_schedule_contentsview_title_textsize" />
+
+            <TextView
+                android:id="@+id/view_schedule_contentsview_class_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/view_schedule_contentsview_title_text"
+                android:layout_marginLeft="@dimen/view_schedule_contentsview_class_margin_l"
+                android:layout_marginTop="@dimen/view_schedule_contentsview_class_margin_t"
+                android:text="Class : Design 2"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/view_schedule_contentsview_class_textsize" />
+
+            <TextView
+                android:id="@+id/view_schedule_contentsview_dday_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="@dimen/view_schedule_contentsview_dday_margin_b"
+                android:layout_marginRight="@dimen/view_schedule_contentsview_dday_margin_r"
+                android:background="@drawable/yt_scheduleview_contents_dday_background"
+                android:paddingBottom="2dp"
+                android:paddingLeft="9dp"
+                android:paddingRight="9dp"
+                android:paddingTop="2dp"
+                android:text="D-4"
+                android:textColor="#2099ea"
+                android:textSize="@dimen/view_schedule_contentsview_dday_textsize" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</FrameLayout>

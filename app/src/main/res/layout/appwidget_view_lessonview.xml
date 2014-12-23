@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/view_timetable_lessoninfo_root"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#ffffff">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/view_timetable_lessoninfo_subject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:maxLines="2"
+            android:textColor="#000000"
+            android:textSize="@dimen/fragment_timetable_lessonview_5days_textsize"
+            android:text="testt" />
+        
+        <TextView
+            android:id="@+id/view_timetable_lessoninfo_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="center"            
+            android:layout_gravity="center"
+            android:maxLines="2"
+            android:textColor="#000000"
+            android:textSize="@dimen/fragment_timetable_lessonview_5days_textsize"
+            android:text="testc" />
+        
+
+        <TextView
+            android:id="@+id/view_timetable_lessoninfo_professor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="center"            
+            android:layout_gravity="center"
+            android:maxLines="2"
+            android:textColor="#000000"
+            android:textSize="@dimen/fragment_timetable_lessonview_5days_textsize"
+            android:text="testb" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/view_timetable_lessoninfo_schedulenum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:maxLines="1"
+        android:textSize="@dimen/fragment_timetable_lessonview_schedulenum_textsize"
+        android:textColor="#000000"
+        android:text="3" />
+
+</RelativeLayout>

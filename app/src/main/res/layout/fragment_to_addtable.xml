@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:baselineAligned="false"
+    android:orientation="horizontal" >
+
+    <LinearLayout
+        android:id="@+id/fragment_toaddtable_content"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/settings_background_pattern"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+
+        <ImageButton
+            android:id="@+id/fragment_to_addtable_button_add"
+            android:layout_width="@dimen/fragment_addtable_icon_wh"
+            android:layout_height="@dimen/fragment_addtable_icon_wh"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:background="@drawable/yt_icon_add_addtable_theme_a"
+            android:scaleType="centerInside" />
+
+        <ImageButton
+            android:id="@+id/fragment_to_addtable_button_overlap"
+            android:layout_width="@dimen/fragment_addtable_icon_wh"
+            android:layout_height="@dimen/fragment_addtable_icon_wh"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:background="@drawable/yt_icon_overlap_theme_a"
+            android:scaleType="centerInside" />
+            
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="3pt"
+        android:layout_height="fill_parent"
+        android:layout_weight="0"
+        android:background="#282828"
+        android:orientation="vertical" />
+
+</LinearLayout>

@@ -1,0 +1,83 @@
+<resources>
+
+    <!--
+         Customize dimensions originally defined in res/values/dimens.xml (such as
+         screen margins) for sw600dp devices (e.g. 7" tablets) here.
+    -->
+    <dimen name="dogear_wh">45dp</dimen>
+    <dimen name="dialog_top_offset">45dp</dimen>
+    <dimen name="fragment_timetable_title_height">76dip</dimen>
+    <dimen name="fragment_timetable_dayrow_height">60dip</dimen>
+    <dimen name="fragment_timetable_timeline_width">100dip</dimen>
+    <!-- background width = timeline_width - marginLeft - marginRight -->
+    <dimen name="fragment_timetable_timeline_background_width">76dip</dimen>
+    <dimen name="fragment_timetable_timeline_marginleft">16dip</dimen>
+    <dimen name="fragment_timetable_timeline_marginright">8dip</dimen>
+    
+    <dimen name="fragment_timetable_timeline_textsize">12sp</dimen>
+    <!-- 뷰페이저 플링 디스턴스 -->
+    <dimen name="viewpager_minimum_fling_distance">400dip</dimen>
+    <dimen name="fragment_timetable_cell_margin">2dip</dimen>
+    <!-- 타임테이블 셀이 들어가는 바디 레이아웃의 배경과 실제 셀 사이의 padding -->
+    <dimen name="fragment_timetable_body_padding">4dip</dimen>
+    <!-- timetable fragment bottom panels wh values -->
+    <dimen name="fragment_timetable_panel_height">75dp</dimen>
+    <dimen name="fragment_timetable_panel_width">540dp</dimen>
+    <dimen name="fragment_timetable_panelbutton_wh">40dp</dimen>
+    <dimen name="fragment_timetable_panel_button_offset">70dp</dimen>
+    <dimen name="fragment_timetable_panelbutton_marginleft">35dp</dimen>
+    <dimen name="fragment_timetable_panelbutton_wrapper_marginleft">35dp</dimen>
+       <dimen name="fragment_timetable_panelbutton_hitrect_wh">84dp</dimen>
+    <dimen name="fragment_timetable_lessonview_5days_textsize">12sp</dimen>
+    <dimen name="fragment_timetable_lessonview_6days_textsize">11sp</dimen>
+    <dimen name="fragment_timetable_lessonview_7days_textsize">10sp</dimen>
+    <dimen name="fragment_timetable_lessonview_schedulenum_textsize">11sp</dimen>
+
+    <dimen name="fragment_addtable_icon_wh">66dip</dimen>
+    
+      <!-- Edit lesson 다이얼로그 사이즈들. -->
+    <dimen name="dialog_editelsson_width">450dp</dimen>
+    <dimen name="dialog_editlesson_textsize">14sp</dimen>
+    <dimen name="dialog_editlesson_colorpick_buttons_margins">4dp</dimen>
+    <dimen name="dialog_editlesson_layout_margin_lr">3dp</dimen>
+    <dimen name="dialog_editlesson_layout_margin_tb">5dp</dimen>
+    <dimen name="dialog_editlesson_padding">3dp</dimen>
+    <dimen name="dialog_editlesson_line_height">60dip</dimen>
+    <dimen name="dialog_editlesson_colorpick_item_wh">35dip</dimen>
+    <dimen name="dialog_editlesson_colorpick_item_border_wh">41dip</dimen>
+    <dimen name="dialog_editlesson_buttons_wh">36dp</dimen>
+    <dimen name="view_timetablesetting_togglebutton_margin">5dp</dimen>
+    <!-- Edit Schedule 다이얼로그 사이즈들. -->
+	<dimen name="dialog_editschedule_line_height">60dp</dimen>
+	<dimen name="dialog_editschedule_buttons_wh">36dp</dimen>
+	
+	<dimen name="view_settings_titlebutton_wh">36dp</dimen>
+	
+	<dimen name="view_show_all_item_width">300dp</dimen>
+    <dimen name="view_show_all_item_height">450dp</dimen>
+    
+    <!-- Schedule Views 사이즈들. -->
+    <dimen name="view_schedule_height">105dp</dimen>
+    <dimen name="view_schedule_dateview_width">75dp</dimen>
+    <dimen name="view_schedule_dateview_height">75dp</dimen>
+    <dimen name="view_schedule_contentsview_height">85dp</dimen>
+    <dimen name="view_schedule_outermargin_lr">10dp</dimen>
+    <dimen name="view_schedule_outermargin_tb">5dp</dimen>
+    <dimen name="view_schedule_innermargin_lr">5dp</dimen>
+    <dimen name="view_schedule_month_day_textsize">10sp</dimen>
+    <dimen name="view_schedule_date_textsize">33sp</dimen>
+    <dimen name="view_schedule_corners">4pt</dimen>
+    <dimen name="view_schedule_contentsview_title_margin_l">20dp</dimen>
+    <dimen name="view_schedule_contentsview_title_margin_t">20dp</dimen>
+    <dimen name="view_schedule_contentsview_class_margin_l">20dp</dimen>
+    <dimen name="view_schedule_contentsview_class_margin_t">10dp</dimen>
+    <dimen name="view_schedule_contentsview_title_textsize">16sp</dimen>
+    <dimen name="view_schedule_contentsview_class_textsize">12sp</dimen>
+    <dimen name="view_schedule_contentsview_dday_textsize">8sp</dimen>
+    <dimen name="view_schedule_contentsview_dday_margin_r">3dp</dimen>
+    <dimen name="view_schedule_contentsview_dday_margin_b">3dp</dimen>
+    <dimen name="view_schedule_todayline_textsize">9sp</dimen>
+    
+	
+
+</resources>

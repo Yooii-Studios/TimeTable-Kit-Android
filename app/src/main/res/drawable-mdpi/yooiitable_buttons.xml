@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item android:drawable="@drawable/yooiitable_buttons_shape_inside_test"/>
+    <item android:drawable="@drawable/yooiitable_buttons_shape_outside_test"/>
+
+</layer-list>

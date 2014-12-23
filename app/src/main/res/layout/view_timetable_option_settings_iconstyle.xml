@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <LinearLayout
+            android:id="@+id/view_timetable_option_wrapper"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/view_timetable_settings_theme_wrapper"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/yt_setting_item_background"
+                android:orientation="horizontal" >
+
+                <ImageButton
+                    android:id="@+id/view_timetable_settings_theme"
+                    android:layout_width="@dimen/view_timetable_settings_icon_wh"
+                    android:layout_height="@dimen/view_timetable_settings_icon_wh"
+                    android:layout_gravity="left|center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/yt_icon_settings_theme" />
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:gravity="center_vertical" >
+
+                    <TextView
+                        android:id="@+id/view_timetable_settings_theme_prompt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/activity_setting_viewpager_themeprompt"
+                        android:textColor="#000000"
+                        android:textSize="@dimen/view_settings_prompt_textsize" />
+
+                    <TextView
+                        android:id="@+id/view_timetable_settings_theme_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/view_timetable_settings_theme_prompt"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:text="Theme"
+                        android:textColor="#444444" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/view_timetable_settings_day_wrapper"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/yt_setting_item_background"
+                android:orientation="horizontal" >
+
+                <ImageButton
+                    android:id="@+id/view_timetable_settings_day"
+                    android:layout_width="@dimen/view_timetable_settings_icon_wh"
+                    android:layout_height="@dimen/view_timetable_settings_icon_wh"
+                    android:layout_gravity="left|center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/yt_icon_settings_day" />
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:gravity="center_vertical" >
+
+                    <TextView
+                        android:id="@+id/view_timetable_settings_day_prompt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/activity_setting_viewpager_dayprompt"
+                        android:textColor="#000000"
+                        android:textSize="@dimen/view_settings_prompt_textsize" />
+
+                    <TextView
+                        android:id="@+id/view_timetable_settings_day_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/view_timetable_settings_day_prompt"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:text="MON - SUN"
+                        android:textColor="#444444" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/view_timetable_settings_period_wrapper"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/yt_setting_item_background"
+                android:orientation="horizontal" >
+
+                <ImageButton
+                    android:id="@+id/view_timetable_settings_period"
+                    android:layout_width="@dimen/view_timetable_settings_icon_wh"
+                    android:layout_height="@dimen/view_timetable_settings_icon_wh"
+                    android:layout_gravity="left|center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/yt_icon_settings_period" />
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:gravity="center_vertical" >
+
+                    <TextView
+                        android:id="@+id/view_timetable_settings_period_prompt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/activity_setting_viewpager_periodprompt"
+                        android:textColor="#000000"
+                        android:textSize="@dimen/view_settings_prompt_textsize" />
+
+                    <TextView
+                        android:id="@+id/view_timetable_settings_period_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/view_timetable_settings_period_prompt"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:text="9:00 / 30 min"
+                        android:textColor="#444444" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/view_timetable_settings_time_wrapper"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/yt_setting_item_background"
+                android:orientation="horizontal" >
+
+                <ImageButton
+                    android:id="@+id/view_timetable_settings_time"
+                    android:layout_width="@dimen/view_timetable_settings_icon_wh"
+                    android:layout_height="@dimen/view_timetable_settings_icon_wh"
+                    android:layout_gravity="left|center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/yt_icon_settings_time" />
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:gravity="center_vertical" >
+
+                    <TextView
+                        android:id="@+id/view_timetable_settings_time_prompt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/activity_setting_viewpager_timeprompt"
+                        android:textColor="#000000"
+                        android:textSize="@dimen/view_settings_prompt_textsize_bitsmall" />
+
+                    <TextView
+                        android:id="@+id/view_timetable_settings_time_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/view_timetable_settings_time_prompt"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:text="MON - SUN"
+                        android:textColor="#444444" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/view_timetable_settings_alarm_wrapper"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/yt_setting_item_background"
+                android:orientation="horizontal" >
+
+                <ImageButton
+                    android:id="@+id/view_timetable_settings_alarm"
+                    android:layout_width="@dimen/view_timetable_settings_icon_wh"
+                    android:layout_height="@dimen/view_timetable_settings_icon_wh"
+                    android:layout_gravity="left|center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/yt_icon_settings_alarm" />
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:gravity="center_vertical" >
+
+                    <TextView
+                        android:id="@+id/view_timetable_settings_alarm_prompt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/activity_setting_viewpager_alarmprompt"
+                        android:textColor="#000000"
+                        android:textSize="@dimen/view_settings_prompt_textsize" />
+
+                    <TextView
+                        android:id="@+id/view_timetable_settings_alarm_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/view_timetable_settings_alarm_prompt"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:text="MON - SUN"
+                        android:textColor="#444444" />
+
+                    <ImageView
+                        android:id="@+id/view_timetable_settings_alarm_lockimage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/yt_icon_lock_gray"
+                        android:visibility="invisible" />
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#333333"
+    android:orientation="vertical" >
+
+    <!--
+    탭호스트가 관리하도록 변경
+    <LinearLayout
+        android:id="@+id/view_timetable_option_buttons_wrapper"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal" >
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="5" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Timetable Option"
+                android:textSize="20sp"
+                android:textStyle="italic"
+                android:textColor="#ffffff"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dip"
+                />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/view_timetable_option_ok"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="V"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/view_timetable_option_cancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="X"
+            android:textSize="16sp" />
+    </LinearLayout>
+    -->
+
+    <ScrollView
+        android:id="@+id/view_timetable_option_theme_scroll"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" 
+        android:fadingEdge="none">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/view_timetable_option_theme_select_theme"
+                android:layout_width="fill_parent"
+                android:layout_height="70dip"
+                android:layout_margin="5dip"
+                android:background="@drawable/yooiitable_buttons" >
+
+                <TextView
+                    android:id="@+id/view_timetable_option_theme_select_theme_prompt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginTop="5dip"
+                    android:text="@string/timetable_setting_theme_select_theme_prompt"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/fragment_settings_textsize_big" />
+
+                <TextView
+                    android:id="@+id/view_timetable_option_theme_select_theme_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/view_timetable_option_theme_select_theme_prompt"
+                    android:layout_centerVertical="true"
+                    android:layout_marginBottom="5dip"
+                    android:layout_marginLeft="30dip"
+                    android:text="테마 A"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/fragment_settings_textsize_small" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/view_timetable_option_theme_select_language"
+                android:layout_width="fill_parent"
+                android:layout_height="70dip"
+                android:layout_margin="5dip"
+                android:background="@drawable/yooiitable_buttons" >
+
+                <TextView
+                    android:id="@+id/view_timetable_option_theme_select_language_prompt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginTop="5dip"
+                    android:text="Language"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/fragment_settings_textsize_big" />
+
+                <TextView
+                    android:id="@+id/view_timetable_option_theme_select_language_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/view_timetable_option_theme_select_language_prompt"
+                    android:layout_centerVertical="true"
+                    android:layout_marginBottom="5dip"
+                    android:layout_marginLeft="30dip"
+                    android:text="English"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/fragment_settings_textsize_small" />
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="70dip"
+    android:orientation="vertical" >
+    <TextView
+        android:id="@+id/item_timetable_option_listdialog_itemname"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:text="Item!"
+        android:textSize="20sp"
+        android:gravity="center_vertical"
+        android:layout_margin="10dip"
+        />
+
+</LinearLayout>

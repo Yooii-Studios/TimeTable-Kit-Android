@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_timetable_root"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffff" >
+    <ImageView 
+        android:id="@+id/fragment_timetable_background"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scaleType="centerCrop"
+        />
+
+    <com.sulga.yooiitable.customviews.SoftKeyboardDetectLinearLayout
+        android:id="@+id/fragment_timetable_softkeyboarddetect"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <!-- 높이는 wrap_content로 수정해야할라나? -->
+        <!-- 전개하여 요일을 집어넣어야한다. -->
+
+        <RelativeLayout
+            android:id="@+id/fragment_timetable_headpart"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dip"
+            android:layout_marginTop="3dip" >
+
+            <ImageView
+                android:id="@+id/fragment_timetable_pagenumber_lower"
+                android:layout_width="@dimen/fragment_timetable_timeline_background_width"
+                android:layout_height="@dimen/fragment_timetable_dayrow_height"
+                android:layout_marginLeft="@dimen/fragment_timetable_timeline_marginleft"
+                android:layout_marginRight="@dimen/fragment_timetable_timeline_marginright"
+                android:layout_marginTop="@dimen/fragment_timetable_pagenum_upper_height"
+                android:background="@drawable/yt_icon_share_data"
+                android:scaleType="center" />
+
+            <TextView
+                android:id="@+id/fragment_timetable_pagenumber_upper"
+                android:layout_width="@dimen/fragment_timetable_timeline_background_width"
+                android:layout_height="@dimen/fragment_timetable_pagenum_upper_height"
+                android:layout_above="@id/fragment_timetable_pagenumber_upper"
+                android:layout_marginLeft="@dimen/fragment_timetable_timeline_marginleft"
+                android:layout_marginRight="@dimen/fragment_timetable_timeline_marginright"
+                android:background="@drawable/yt_icon_timetable_pageinfo_upper_theme_a"
+                android:gravity="center"
+                android:text="2/3"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/fragment_timetable_pagenum_textsize" />
+
+            <FrameLayout
+                android:id="@+id/fragment_timetable_dayrow_overlap"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/fragment_timetable_dayrow_height"
+                android:layout_marginRight="@dimen/fragment_timetable_dayrow_marginright"
+                android:layout_marginTop="@dimen/fragment_timetable_pagenum_upper_height"
+                android:layout_toRightOf="@id/fragment_timetable_pagenumber_lower"
+                android:paddingLeft="@dimen/fragment_timetable_dayrow_paddingleft"
+                android:paddingRight="@dimen/fragment_timetable_dayrow_paddingright" >
+
+                <LinearLayout
+                    android:id="@+id/fragment_timetable_dayrow"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="horizontal" >
+                </LinearLayout>
+            </FrameLayout>
+        </RelativeLayout>
+
+        <!-- 너무 커졌을때 스크롤뷰로 처리하는걸 이제 어떻게 하느냐가 문제... -->
+
+        <com.sulga.yooiitable.customviews.TimetableScrollView
+            android:id="@+id/fragment_timetable_scrollview"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:fadingEdge="none"
+            android:layout_weight="1" >
+
+            <RelativeLayout
+                android:id="@+id/fragment_timetable_scrollview_child"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" >
+
+                <RelativeLayout
+                    android:id="@+id/fragment_timetable_timeline_wrapper"
+                    android:layout_width="@dimen/fragment_timetable_timeline_background_width"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/fragment_timetable_timeline_marginleft"
+                    android:layout_marginRight="@dimen/fragment_timetable_timeline_marginright"
+                    >
+                    <LinearLayout
+                        android:id="@+id/fragment_timetable_timeline"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/fragment_timetable_body_padding"
+                        android:layout_gravity="top"
+                        android:orientation="vertical" />
+                </RelativeLayout>
+
+                <com.sulga.yooiitable.customviews.InterceptTouchFrameLayout
+                    android:id="@+id/fragment_timetable_body_overrap"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" >
+
+                    <include
+                        android:layout_width="@dimen/fragment_timetable_timeline_background_width"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:layout_marginLeft="@dimen/fragment_timetable_timeline_marginleft"
+                        android:layout_marginRight="@dimen/fragment_timetable_timeline_marginright"
+                        layout="@layout/view_timetable_current_time_marker" />
+
+                    <LinearLayout
+                        android:id="@+id/fragment_timetable_cell_list"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:layout_marginLeft="@dimen/fragment_timetable_timeline_width"
+                        android:layout_marginRight="@dimen/fragment_timetable_body_marginright"
+                        android:orientation="vertical" />
+                </com.sulga.yooiitable.customviews.InterceptTouchFrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/fragment_timetable_panel_wrapper"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_below="@id/fragment_timetable_body_overrap" >
+
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent" >
+
+                        <com.sulga.yooiitable.customviews.ModeRelativeLayout
+                            android:id="@+id/fragment_timetable_menu_button_panel"
+                            android:layout_width="@dimen/fragment_timetable_panel_width"
+                            android:layout_height="@dimen/fragment_timetable_panel_height"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentLeft="true" >
+
+                            <com.sulga.yooiitable.customviews.PathButton
+                                android:id="@+id/fragment_timetable_button_add"
+                                android:layout_width="@dimen/fragment_timetable_panelbutton_wh"
+                                android:layout_height="@dimen/fragment_timetable_panelbutton_wh"
+                                android:layout_alignParentLeft="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="@dimen/fragment_timetable_panelbutton_marginleft"
+                                android:background="@drawable/yt_icon_timetable_add_row_theme_a"
+                                android:visibility="visible" />
+
+                            <com.sulga.yooiitable.customviews.PathButton
+                                android:id="@+id/fragment_timetable_button_remove"
+                                android:layout_width="@dimen/fragment_timetable_panelbutton_wh"
+                                android:layout_height="@dimen/fragment_timetable_panelbutton_wh"
+                                android:layout_alignParentLeft="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="@dimen/fragment_timetable_panelbutton_marginleft"
+                                android:background="@drawable/yt_icon_timetable_remove_row_theme_a"
+                                android:visibility="visible" />
+
+                            <com.sulga.yooiitable.customviews.PathButton
+                                android:id="@+id/fragment_timetable_button_cleartable"
+                                android:layout_width="@dimen/fragment_timetable_panelbutton_wh"
+                                android:layout_height="@dimen/fragment_timetable_panelbutton_wh"
+                                android:layout_alignParentLeft="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="@dimen/fragment_timetable_panelbutton_marginleft"
+                                android:background="@drawable/yt_icon_timetable_clear_theme_a"
+                                android:visibility="visible" />
+
+                            <com.sulga.yooiitable.customviews.PathButton
+                                android:id="@+id/fragment_timetable_button_deletetable"
+                                android:layout_width="@dimen/fragment_timetable_panelbutton_wh"
+                                android:layout_height="@dimen/fragment_timetable_panelbutton_wh"
+                                android:layout_alignParentLeft="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="@dimen/fragment_timetable_panelbutton_marginleft"
+                                android:background="@drawable/yt_icon_timetable_delete_timetable_theme_a"
+                                android:visibility="visible" />
+
+                            <RelativeLayout
+                                android:layout_width="@dimen/fragment_timetable_panelbutton_hitrect_wh"
+                                android:layout_height="@dimen/fragment_timetable_panelbutton_hitrect_wh"
+                                android:layout_alignParentBottom="true"
+                                android:clickable="true"
+                                android:visibility="visible" >
+
+                                <Button
+                                    android:id="@+id/btn_plus"
+                                    android:layout_width="@dimen/fragment_timetable_panelbutton_hitrect_wh"
+                                    android:layout_height="@dimen/fragment_timetable_panelbutton_hitrect_wh"
+                                    android:layout_centerInParent="true"
+                                    android:background="@android:color/transparent" >
+                                </Button>
+
+                                <ImageView
+                                    android:id="@+id/ico_plus_background"
+                                    android:layout_width="@dimen/fragment_timetable_panelbutton_wh"
+                                    android:layout_height="@dimen/fragment_timetable_panelbutton_wh"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginLeft="@dimen/fragment_timetable_panelbutton_wrapper_marginleft"
+                                    android:background="@drawable/yt_icon_timetable_wrapper_background_theme_a" />
+
+                                <ImageView
+                                    android:id="@+id/ico_plus"
+                                    android:layout_width="@dimen/fragment_timetable_panelbutton_wh"
+                                    android:layout_height="@dimen/fragment_timetable_panelbutton_wh"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginLeft="@dimen/fragment_timetable_panelbutton_wrapper_marginleft"
+                                    android:background="@drawable/yt_icon_timetable_wrapper_theme_a" />
+                            </RelativeLayout>
+                        </com.sulga.yooiitable.customviews.ModeRelativeLayout>
+
+                        <ImageButton
+                            android:id="@+id/fragment_timetable_title_option_button"
+                            android:layout_width="@dimen/fragment_timetable_panelbutton_wh"
+                            android:layout_height="@dimen/fragment_timetable_panelbutton_wh"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="@dimen/fragment_timetable_optionbutton_marginright"
+                            android:background="@drawable/yt_icon_timetable_option_theme_a"
+                            android:scaleType="centerInside" />
+                    </RelativeLayout>
+                </FrameLayout>
+            </RelativeLayout>
+        </com.sulga.yooiitable.customviews.TimetableScrollView>
+    </com.sulga.yooiitable.customviews.SoftKeyboardDetectLinearLayout>
+
+</FrameLayout>

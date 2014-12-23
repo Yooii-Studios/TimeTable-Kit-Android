@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" >
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <ImageButton
+                android:id="@+id/dialog_tutorial_start_button_ok"
+                android:layout_width="@dimen/dialog_editschedule_buttons_wh"
+                android:layout_height="@dimen/dialog_editschedule_buttons_wh"
+                android:layout_alignParentTop="true"
+                android:layout_alignRight="@+id/dialog_tutorial_start_image"
+                android:layout_margin="4dp"
+                android:background="@drawable/yt_icon_popup_ok" />
+
+            <ImageView
+                android:id="@+id/dialog_tutorial_start_image"
+                android:layout_width="400dp"
+                android:layout_height="600dp"
+                android:layout_below="@id/dialog_tutorial_start_button_ok"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/start_tutorial" />
+        </RelativeLayout>
+    </ScrollView>
+
+</LinearLayout>
