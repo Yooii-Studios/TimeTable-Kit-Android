@@ -42,6 +42,7 @@ dependencies {
     compile project(':libraries:holoeverywhere:addons:preferences')
     compile project(':libraries:holoeverywhere:addons:slider')
     compile project(':libraries:viewpagerindicator_library')
+    compile project(':libraries:SKAlarmSound')
 
 //    compile project(':libraries:viewpagerindicator_library')
     compile 'com.google.android.gms:play-services:4.2.42' // 4.0.+ 에서 버전업
