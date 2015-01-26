@@ -23,6 +23,8 @@ android {
         applicationId "com.sulga.yooiitable"
         minSdkVersion 10
         targetSdkVersion 19
+        versionCode 19
+        versionName "1.1.2"
     }
 
     buildTypes {
