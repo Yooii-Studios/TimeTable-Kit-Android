@@ -29,9 +29,10 @@ import com.sulga.yooiitable.theme.parts.*;
 import com.sulga.yooiitable.timetable.*;
 import com.sulga.yooiitable.timetable.fragments.dialogbuilders.*;
 import com.sulga.yooiitable.utils.*;
+import com.yooiistudios.common.ad.AdUtils;
 
 public class ScheduleFragment extends Fragment {
-	public static final int MAX_SCHEDULE_COUNT_FREE_VERSION = 12;
+	public static final int MAX_SCHEDULE_COUNT_FREE_VERSION = 5;
 	public static ScheduleFragment newInstance() {
 		ScheduleFragment scheduleFragment = new ScheduleFragment();
 
@@ -94,7 +95,11 @@ public class ScheduleFragment extends Fragment {
 				if(TimetableDataManager.getCurrentFullVersionState(getSupportActivity()) == false 
 						&& scheduleCounts >= MAX_SCHEDULE_COUNT_FREE_VERSION){
 					String message = getSupportActivity().getResources().getString(R.string.unlock_full_version);
-					ToastMaker.popupToastAtCenter(getSupportActivity(), message);
+//					ToastMaker.popupUnlockFullVersionToast(getSupportActivity(),
+//                            ToastMaker.UNLOCK_FULL_VERSION_TOAST_OVERFLOW_SCHEDULENUM,
+//                            false);
+                    AdUtils.showInHouseStoreAd(getSupportActivity(),
+                            getString(R.string.unlock_full_version_schedule_overflow));
 					return;
 				}
 				ScheduleEditDialogBuilder builder = new ScheduleEditDialogBuilder();
@@ -198,7 +203,8 @@ public class ScheduleFragment extends Fragment {
 		}*/
 		//scheduleAdapter.notifyDataSetChanged();
 		//scheduleListView.invalidate();
-
+        if(scheduleListWrapper == null)
+            return;
 		scheduleListWrapper.removeAllViews();
 		createScheduleListView(TimetableDataManager.getSchedules());
 		scheduleListWrapper.invalidate();

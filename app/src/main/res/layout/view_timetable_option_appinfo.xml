@@ -101,39 +101,20 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/view_timetable_option_appinfo_rate"
+                android:id="@+id/view_timetable_option_appinfo_recommendfriend"
                 android:layout_width="fill_parent"
                 android:layout_height="70dip"
                 android:layout_margin="5dip"
                 android:background="@drawable/yt_setting_item_background" >
 
                 <TextView
-                    android:id="@+id/view_timetable_option_appinfo_rate_prompt"
+                    android:id="@+id/view_timetable_option_appinfo_recommendfriend_prompt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="10dip"
                     android:layout_marginTop="5dip"
-                    android:text="@string/timetable_setting_info_rate"
-                    android:textColor="#000000"
-                    android:textSize="@dimen/fragment_settings_textsize_big" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/view_timetable_option_appinfo_linkfacebook"
-                android:layout_width="fill_parent"
-                android:layout_height="70dip"
-                android:layout_margin="5dip"
-                android:background="@drawable/yt_setting_item_background" >
-
-                <TextView
-                    android:id="@+id/view_timetable_option_appinfo_linkfacebook_prompt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="10dip"
-                    android:layout_marginTop="5dip"
-                    android:text="@string/timetable_setting_info_linkfacebook"
+                    android:text="@string/menu_recommend_friends"
                     android:textColor="#000000"
                     android:textSize="@dimen/fragment_settings_textsize_big" />
             </RelativeLayout>

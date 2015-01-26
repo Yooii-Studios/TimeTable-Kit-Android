@@ -29,6 +29,11 @@ import com.sulga.yooiitable.mylog.*;
 import com.sulga.yooiitable.theme.parts.*;
 import com.sulga.yooiitable.timetable.*;
 import com.sulga.yooiitable.timetable.fragments.*;
+import com.yooiistudios.common.ad.AdUtils;
+import com.yooiistudios.stevenkim.alarmsound.OnAlarmSoundClickListener;
+import com.yooiistudios.stevenkim.alarmsound.SKAlarmSound;
+import com.yooiistudios.stevenkim.alarmsound.SKAlarmSoundDialog;
+import com.yooiistudios.stevenkim.alarmsound.SKAlarmSoundManager;
 
 public class ScheduleEditDialogBuilder {
 
@@ -40,6 +45,10 @@ public class ScheduleEditDialogBuilder {
 	private EditText editScheduleName;
 	private EditText editScheduleMemo;
 	private Spinner alarmScheduleSpinner;
+    //Alarm Sound Pick
+    private LinearLayout alarmSoundPickWrapper;
+    private TextView alarmSoundPickText;
+
 	private ImageButton ok;
 	private ImageButton cancel;
 	private ImageButton delete;
@@ -58,6 +67,7 @@ public class ScheduleEditDialogBuilder {
 	private int scheduleMin = -1;
 
 	private int scheduleAlarm = Schedule.SCHEDULE_ALARM_NONE;
+    private SKAlarmSound alarmSound;
 
 	private Schedule schedule;
 	String passedScheduleKey = null;
@@ -257,18 +267,64 @@ public class ScheduleEditDialogBuilder {
 		if(schedule != null)
 			editScheduleMemo.setText(schedule.getScheduleMemo());
 
+
 		alarmScheduleSpinner = (Spinner) dialogView.findViewById(R.id.dialog_editschedule_alarmpick_spinner);
-		if(schedule != null)
-			scheduleAlarm = schedule.getScheduleAlarm();
+		if(schedule != null) {
+            scheduleAlarm = schedule.getScheduleAlarm();
+            alarmSound = schedule.getAlarmSound();
+        }
 		String[] alarmTimeNames = 
 				res.getStringArray(R.array.timetable_setting_lessonAlarms);
 
-		if(TimetableDataManager.getCurrentFullVersionState(context) == false){
-			//if not full version
-			alarmTimeNames[0] = res.getString(R.string.unlock_full_version);
-			alarmScheduleSpinner.setEnabled(false);	
-		}
-		
+        //2015.01.13 Added Alarm Sound Pick
+        alarmSoundPickWrapper = (LinearLayout) dialogView.findViewById(R.id.dialog_editschedule_alarmsoundpick_wrapper);
+        alarmSoundPickText = (TextView) dialogView.findViewById(R.id.dialog_editschedule_alarmsoundpick_text);
+        alarmSoundPickText.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                SKAlarmSoundDialog.makeSoundDialog(context, alarmSound,
+                        new OnAlarmSoundClickListener() {
+                            @Override
+                            public void onAlarmSoundSelected(SKAlarmSound alarmSound) {
+                                ScheduleEditDialogBuilder.this.alarmSound = alarmSound;
+                                alarmSoundPickText.setText(alarmSound.getSoundTitle());
+                            }
+                            @Override
+                            public void onAlarmSoundSelectCanceled() {
+
+                            }
+                            @Override
+                            public void onAlarmSoundSelectFailedDueToUsbConnection() {
+
+                            }
+                        }).show();
+            }
+        });
+        if(scheduleAlarm == Schedule.SCHEDULE_ALARM_NONE){
+            alarmSoundPickWrapper.setVisibility(View.INVISIBLE);
+        }else{
+            alarmSoundPickWrapper.setVisibility(View.VISIBLE);
+        }
+        //
+
+
+        if(TimetableDataManager.getCurrentFullVersionState(context) == false) {
+            //if not full version
+            alarmTimeNames[0] = res.getString(R.string.unlock_full_version);
+            alarmScheduleSpinner.setEnabled(false);
+            alarmScheduleSpinner.setClickable(false);
+            alarmScheduleSpinner.setFocusable(false);
+            alarmScheduleSpinner.setFocusableInTouchMode(false);
+//            alarmScheduleSpinner.requestDisallowInterceptTouchEvent(true);
+            View alarmScheduleWrapper = dialogView.findViewById(R.id.dialog_editschedule_alarmpick_wrapper);
+            alarmScheduleWrapper.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    AdUtils.showInHouseStoreAd(context);
+                    dialog.dismiss();
+                }
+            });
+        }
 		final Integer[] alarmTimes = {
 				-1, 0, 1,
 				5, 10, 20,
@@ -287,7 +343,16 @@ public class ScheduleEditDialogBuilder {
 					View view, int position, long id) {
 				// TODO Auto-generated method stub
 				scheduleAlarm = alarmTimes[position];
-				
+
+                if(scheduleAlarm == -1){
+                    alarmSoundPickWrapper.setVisibility(View.INVISIBLE);
+                }else{
+                    alarmSoundPickWrapper.setVisibility(View.VISIBLE);
+                    if(alarmSound == null)
+                       alarmSound = SKAlarmSoundManager.loadLatestAlarmSound(context);
+                    alarmSoundPickText.setText(alarmSound.getSoundTitle());
+                }
+
 				Map<String, String> alarmInfo = new HashMap<String, String>();
 				String alarmTypeStr = scheduleAlarm == -1 ? 
 						"None" : Integer.toString(scheduleAlarm);
@@ -342,6 +407,7 @@ public class ScheduleEditDialogBuilder {
 				newSchedule.setScheduleHour(scheduleHour);
 				newSchedule.setScheduleMin(scheduleMin);
 				newSchedule.setScheduleAlarm(scheduleAlarm);
+                newSchedule.setAlarmSound(alarmSound);
 
 				int pickParentLessonSpinnerPosition = pickParentLesson.getSelectedItemPosition();
 				if(pickParentLessonSpinnerPosition == 0){

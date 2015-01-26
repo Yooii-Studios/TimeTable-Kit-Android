@@ -39,8 +39,8 @@
     <string name="timetable_setting_select_startTime_title">開始時刻をご選択ください。</string>
     <string name="timetable_setting_select_timeOffset_prompt">1時限ごとの配分時間</string>
     <string name="timetable_setting_select_timeOffset_title">1時限ごとの配分時間をご選択ください。</string>
-    <string name="timetable_setting_select_lessonAlarm_prompt">授業アラーム</string>
-    <string name="timetable_setting_select_lessonAlarm_title">授業アラームをご選択ください。</string>
+    <string name="timetable_setting_select_lessonAlarm_prompt">タイムテーブル 通知</string>
+    <string name="timetable_setting_select_lessonAlarm_title">タイムテーブルの授業通知を設定。</string>
     <string name="timetable_setting_select_startday_warning_overlapdays">開始曜日と最後曜日が重なっています。</string>
     <string name="timetable_setting_select_endday_warning_overlapdays">最後曜日と開始曜日が重なっています。</string>
     <string name="timetable_setting_warning_tableinit_on_starttimechange">授業の開始時刻を変更すると、時間割が初期化されます。</string>
@@ -60,6 +60,7 @@
     <string name="timetable_setting_info_version">バージョン</string>
     <string name="tab_timetablesetting">設定する</string>
     <string name="tab_timetabletheme">テーマ</string>
+    <string name="tab_alarmandtheme">通知\\テーマ</string>
     <string name="tab_info">ストア / 情報</string>
     <string name="notice">アラーム</string>
     <string name="unlock_full_version">フルバージョンをご購入ください！</string>
@@ -116,7 +117,8 @@
     <string name="pleaseWaitWhileLoading">読み込み中...</string>
     <string name="starting_connection">接続中...</string>
     <string name="cancelled">キャンセルしました。</string>
-    <string name="unlock_full_version_pagenum_overflow">無料版では4つの時間割をご利用できます。</string>
+    <string name="unlock_full_version_pagenum_overflow">無料版では3つの時間割を\nご利用できます。</string>
+    <string name="unlock_full_version_schedule_overflow">無料版では5個のスケジュールを\n ご利用できます。</string>
     <string name="buy_full_version">フルバージョン購入して、ご利用できます。</string>
     <string name="send_feedback_subject">タイムテーブルキットのフィードバック</string>
     <string name="send_feedback_title">フィードバックをお送りください。</string>
@@ -129,7 +131,7 @@
     <string name="activity_setting_viewpager_dayprompt">曜日 </string>
     <string name="activity_setting_viewpager_periodprompt">時限</string>
     <string name="activity_setting_viewpager_timeprompt">開始時間と間隔</string>
-    <string name="activity_setting_viewpager_alarmprompt">アラーム</string>
+    <string name="activity_setting_viewpager_alarmprompt">タイムテーブル 通知</string>
     <string name="activity_setting_viewpager_themeprompt">背景テーマ</string>
     <string name="activity_setting_viewpager_languageprompt">言語 (Language)</string>
     <string name="connector_result_failed">接続に失敗しました。</string>
@@ -150,6 +152,7 @@
     <string name="dialog_editschedule_text_title">お名前</string>
     <string name="dialog_editschedule_text_memo">メモ</string>
     <string name="dialog_editschedule_text_alarm">アラーム</string>
+    <string name="dialog_editschedule_text_sound">サウンド</string>
     <string name="activity_overlap_title">重ねて表示</string>
     <string name="activity_showall_title">全てを表示</string>
     <string name="dialog_rate_title">評価する</string>
@@ -160,7 +163,7 @@
     <string name="activity_overlap_goto_showall_mode">重ねて表示する時間割を選択</string>
     <string name="dialog_share_data_send_file_num">送信時間割数</string>
     <string name="dialog_share_data_receive_file_num">受信時間割数 </string>
-    <string name="fragment_schedule_schedulenum_overflows">無料版ではスケジュールを最大12個までご利用できます。</string>
+    <string name="fragment_schedule_schedulenum_overflows">無料版ではスケジュールを最大6個までご利用できます。</string>
     <string name="activity_store_moretheme">すべてのテーマ </string>
     <string name="activity_store_noads">広告削除 </string>
     <string name="activity_store_alarm">アラーム機能</string>
@@ -174,7 +177,7 @@
     <string name="dialog_sharedata_hint">共有番号</string>
     <string name="activity_appwidget_configure_color">明るさ</string>
     <string name="activity_appwidget_configure_alpha">透明度</string>
-    <string name="activity_appwidget_configure_preview">プレビュー</string>
+    <string name="activity_appwidget_configure_preview">色相プレビュー</string>
     <string name="dialog_connector_uploadinfo_received_times_A">の他 </string>
     <string name="dialog_connector_uploadinfo_received_times_B">回受けました。</string>
     <string name="dialog_connector_uploadinfo_received_noone">まだ誰も受けませんでした</string>
@@ -188,8 +191,10 @@
     <string-array name="timetable_setting_startdays">
         <item>日曜日</item>
         <item>月曜日</item>
+        <item>火曜日</item>
     </string-array>
     <string-array name="timetable_setting_enddays">
+        <item>木曜日</item>
         <item>金曜日</item>
         <item>土曜日</item>
         <item>日曜日</item>
@@ -254,4 +259,10 @@
     <string name="Saturday">土曜日</string>
     <string name="Sunday">日曜日</string>
 
+    <!-- General -->
+    <string name="ok">確認</string>
+    <string name="cancel">キャンセル</string>
+    <string name="quit_ad_dialog_title_text">このアプリを終了しますか。</string>
+    <string name="store_buy_full_version">プロバージョンをご購入ください！</string>
+    <string name="minute_short">分</string>
 </resources>

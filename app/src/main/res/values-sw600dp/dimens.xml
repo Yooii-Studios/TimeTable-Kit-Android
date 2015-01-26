@@ -82,6 +82,7 @@
     <!-- Store Ad Dialog * 1.5 -->
     <dimen name="margin_outer">8dp</dimen>                              <!--Done-->
     <dimen name="setting_store_full_version_title_text_size">29sp</dimen>            <!--Done-->
+    <dimen name="setting_store_full_version_descript_text_size">22sp</dimen>
     <dimen name="store_ad_dialog_layout_width">448.5dp</dimen>
     <dimen name="store_ad_dialog_title_padding_top_bottom">16.5dp</dimen>
     <dimen name="store_ad_dialog_title_padding_left_right">22.5dp</dimen>
@@ -90,7 +91,7 @@
     <dimen name="store_ad_dialog_image_layout_padding">4.5dp</dimen>
     <dimen name="store_ad_dialog_image_width">444dp</dimen>
     <dimen name="store_ad_dialog_image_text_margin_top">1.5dp</dimen>
-    <dimen name="store_ad_dialog_image_text_height">93dp</dimen>
+    <dimen name="store_ad_dialog_image_text_height">46.5dp</dimen>
     <dimen name="store_ad_dialog_button_layout_height">65.5dp</dimen>
     <dimen name="store_ad_dialog_button_text_size">22.5sp</dimen>
 

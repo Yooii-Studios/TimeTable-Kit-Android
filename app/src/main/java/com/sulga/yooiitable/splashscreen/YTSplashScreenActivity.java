@@ -50,7 +50,7 @@ public class YTSplashScreenActivity extends Activity {
 			}, SPLASH_TIME_OUT);
 		}
 		
-		LanguageInitiater.setActivityLanguage(this);
+//		LanguageInitiater.setActivityLanguage(this);
 	}
 
 	private static Handler startTimetableActivityHandler = null;
@@ -66,6 +66,8 @@ public class YTSplashScreenActivity extends Activity {
 		MyLog.d(TAG, "onPause called");
 	}
 
+    @Override
+    public void onBackPressed(){}
 	
 	@Override
 	public void onDestroy(){

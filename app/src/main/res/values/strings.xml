@@ -33,21 +33,20 @@
     <string name="timetable_setting_select_endday_title">Choose the last day of the week</string>
     <string name="timetable_setting_select_columnType_prompt">Period lable</string>
     <string name="timetable_setting_select_columnType_title">Choose period lable</string>
-    <string name="timetable_setting_select_columnNum_prompt">By number</string>
+    <string name="timetable_setting_select_columnNum_prompt">How Many</string>
     <string name="timetable_setting_select_columnNum_title">Choose number of periods</string>
     <string name="timetable_setting_select_startTime_prompt">Start time</string>
     <string name="timetable_setting_select_startTime_title">Choose your start time</string>
     <string name="timetable_setting_select_timeOffset_prompt">Timeframe Lengths</string>
     <string name="timetable_setting_select_timeOffset_title">Choose the length of each time frame</string>
-    <string name="timetable_setting_select_lessonAlarm_prompt">Alarm setting</string>
-    <string name="timetable_setting_select_lessonAlarm_title">Set alarms</string>
+    <string name="timetable_setting_select_lessonAlarm_prompt">Timetable Notifications Setting</string>
+    <string name="timetable_setting_select_lessonAlarm_title">Set Timetable Notifications</string>
     <string name="timetable_setting_select_startday_warning_overlapdays">First and last days are overlapped</string>
     <string name="timetable_setting_select_endday_warning_overlapdays">Last and start days are overlapped</string>
     <string name="timetable_setting_warning_tableinit_on_starttimechange">If you change your start time, time table will be reset</string>
     <string name="timetable_setting_warning_tableinit_on_timeoffsetchange">If you change your time set, time table will be reset</string>
     <string name="timetable_setting_theme_select_theme_prompt">Theme</string>
     <string name="timetable_setting_theme_select_theme_title">Choose your theme</string>
-    <string name="timetable_setting_theme_select_language_prompt">Language</string>
     <string name="timetable_setting_info_shop">Store</string>
     <string name="timetable_setting_info_yooii_info">Timetable Kit Info</string>
     <string name="timetable_setting_info_rate">Rate Timetable Kit</string>
@@ -60,6 +59,7 @@
     <string name="timetable_setting_info_version">Version</string>
     <string name="tab_timetablesetting">Basic Settings</string>
     <string name="tab_timetabletheme">Theme</string>
+    <string name="tab_alarmandtheme">Notif\\Theme</string>
     <string name="tab_info">Store / Info</string>
     <string name="notice">Alarm!</string>
     <string name="unlock_full_version">Buy the full version!</string>
@@ -116,7 +116,8 @@
     <string name="pleaseWaitWhileLoading">Loading...</string>
     <string name="starting_connection">Connecting...</string>
     <string name="cancelled">Cancelled</string>
-    <string name="unlock_full_version_pagenum_overflow">Please buy the full version to add more timetables.</string>
+    <string name="unlock_full_version_pagenum_overflow">Add more timetables.</string>
+    <string name="unlock_full_version_schedule_overflow">Please buy the Pro Version to add more events.</string>
     <string name="buy_full_version">Buy and enjoy the full version!</string>
     <string name="send_feedback_subject">Timetable Kit feedback</string>
     <string name="send_feedback_title">Send us your feedback!</string>
@@ -129,7 +130,7 @@
     <string name="activity_setting_viewpager_dayprompt">Day</string>
     <string name="activity_setting_viewpager_periodprompt">Period</string>
     <string name="activity_setting_viewpager_timeprompt">Start time and Interval</string>
-    <string name="activity_setting_viewpager_alarmprompt">Alarm</string>
+    <string name="activity_setting_viewpager_alarmprompt">Timetable Notifications</string>
     <string name="activity_setting_viewpager_themeprompt">Theme</string>
     <string name="activity_setting_viewpager_languageprompt">Language</string>
     <string name="connector_result_failed">Failed to connect</string>
@@ -150,6 +151,7 @@
     <string name="dialog_editschedule_text_title">Title</string>
     <string name="dialog_editschedule_text_memo">Memo</string>
     <string name="dialog_editschedule_text_alarm">Alarm</string>
+    <string name="dialog_editschedule_text_sound">Sound</string>
     <string name="activity_overlap_title">Stack View</string>
     <string name="activity_showall_title">Flow View</string>
     <string name="dialog_rate_title">Rate</string>
@@ -160,7 +162,7 @@
     <string name="activity_overlap_goto_showall_mode">Select timetables for stack view</string>
     <string name="dialog_share_data_send_file_num">The number of sent timetables</string>
     <string name="dialog_share_data_receive_file_num">The number of received timetables </string>
-    <string name="fragment_schedule_schedulenum_overflows">To add more than 12 events, please buy the full version!</string>
+    <string name="fragment_schedule_schedulenum_overflows">To add more than 6 events, please buy the full version!</string>
     <string name="activity_store_moretheme">All Themes</string>
     <string name="activity_store_noads">No AD</string>
     <string name="activity_store_alarm">Alarm Function</string>
@@ -174,23 +176,23 @@
     <string name="dialog_sharedata_hint">Password</string>
     <string name="activity_appwidget_configure_color">Screen brightness</string>
     <string name="activity_appwidget_configure_alpha">Screen transparency</string>
-    <string name="activity_appwidget_configure_preview">Preview</string>
+    <string name="activity_appwidget_configure_preview">Color Preview</string>
     <string name="dialog_connector_uploadinfo_received_times_A">\u0020plus\u0020</string>
     <string name="dialog_connector_uploadinfo_received_times_B">time(s) received</string>
     <string name="dialog_connector_uploadinfo_received_noone">No one has received yet.</string>
     <string name="dialog_connector_uploadinfo_received">\u0020has received it</string>
     <string name="fragment_timetable_oneditlesson_toast">If you click \'Time\', you can adjust the class time</string>
     
-    <string name="menu_recommend_friends">Recommend it to your friends!</string>
+    <string name="menu_recommend_friends">Recommend to your friends!</string>
     <string name="recommend_to_friends_subject">[Timetable Kit] I recommend it to you!</string>
     <string name="recommend_to_friends_body">[Timetable Kit Google Play Store : Download] </string>    
     
     <!-- No need to translate -->
-    <string name="setting_language_english">English</string>
-    <string name="setting_language_simplified_chinese">简体中文</string>
-    <string name="setting_language_traditional_chinese">繁體中文</string>
-    <string name="setting_language_korean">한국어</string>
-    <string name="setting_language_japanese">日本語</string>
+    <string name="setting_language_english" translatable="false">English</string>
+    <string name="setting_language_simplified_chinese" translatable="false">简体中文</string>
+    <string name="setting_language_traditional_chinese" translatable="false">繁體中文</string>
+    <string name="setting_language_korean" translatable="false">한국어</string>
+    <string name="setting_language_japanese" translatable="false">日本語</string>
     <string name="MON">MON</string>
     <string name="TUE">TUE</string>
     <string name="WED">WED</string>
@@ -222,8 +224,10 @@
     <string-array name="timetable_setting_startdays">
         <item>Sunday</item>
         <item>Monday</item>
+        <item>Tuesday</item>
     </string-array>
     <string-array name="timetable_setting_enddays">
+        <item>Thursday</item>
         <item>Friday</item>
         <item>Saturday</item>
         <item>Sunday</item>
@@ -265,5 +269,5 @@
     <string name="cancel">Cancel</string>
     <string name="quit_ad_dialog_title_text">Do you want to quit this app?</string>
     <string name="store_buy_full_version">Buy the Pro Version!</string>
-
+    <string name="minute_short">Min</string>
 </resources>

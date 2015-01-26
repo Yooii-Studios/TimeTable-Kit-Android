@@ -64,11 +64,22 @@
             android:paddingLeft="@dimen/store_ad_dialog_title_padding_left_right"
             android:paddingRight="@dimen/store_ad_dialog_title_padding_left_right"
             android:gravity="center"
-            android:singleLine="true"
             android:text="@string/store_buy_full_version"
             android:textColor="@android:color/white"
             android:textStyle="bold"
             android:textSize="@dimen/setting_store_full_version_title_text_size"/>
+        <com.yooiistudios.common.textview.AutoFitTextView
+            android:id="@+id/store_ad_dialog_description_prompt_text_View"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/store_ad_dialog_image_text_height"
+            android:layout_marginTop="@dimen/store_ad_dialog_image_text_margin_top"
+            android:paddingLeft="@dimen/store_ad_dialog_title_padding_left_right"
+            android:paddingRight="@dimen/store_ad_dialog_title_padding_left_right"
+            android:gravity="center"
+            android:layout_below="@id/store_ad_dialog_description_text_View"
+            android:textSize="@dimen/setting_store_full_version_descript_text_size"
+            android:text="TEXTTTT"
+            android:visibility="gone"/>
     </RelativeLayout>
 
     <LinearLayout

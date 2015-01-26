@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.sulga.yooiitable.R;
+import com.sulga.yooiitable.constants.Devs;
 import com.sulga.yooiitable.mylog.MyLog;
 import com.sulga.yooiitable.timetable.TimetableActivity;
 
@@ -35,7 +36,8 @@ public class YTAlarmNotificationReceiver extends BroadcastReceiver {
 			//메인 액티비티를 실행한다.
 			mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-			context.startActivity(mainActivityIntent);	
+            mainActivityIntent.putExtra("WakeLock", true);
+//			context.startActivity(mainActivityIntent);
 
 			String lessonName = intent.getStringExtra("LessonName");
 			String lessonWhere = intent.getStringExtra("LessonWhere");
@@ -44,24 +46,25 @@ public class YTAlarmNotificationReceiver extends BroadcastReceiver {
 			String notification_stateBar = lessonName + "!";
 			String title = context.getString(R.string.app_name);
 			String notification_alarmTitle = title;
-			String notification_alarmSummary = lessonName 
-					+ " at " 
+			String notification_alarmSummary = lessonName
+					+ " at "
 					+ lessonWhere;
 			//알람 노티파이를 띄운다.
 			startNotification(context, mainActivityIntent,
-					notification_stateBar, 
-					notification_alarmTitle, 
+					notification_stateBar,
+					notification_alarmTitle,
 					notification_alarmSummary);
-			String app_name = context.getResources().getString(R.string.app_name);
-			String alarmDialogTitle = app_name;
-			String alarmDialogMessage = lessonName + "\n" + lessonWhere + "\n" + professor;
+//			String app_name = context.getResources().getString(R.string.app_name);
+//			String alarmDialogTitle = app_name;
+//			String alarmDialogMessage = lessonName + "\n" + lessonWhere + "\n" + professor;
 			//알람 다이얼로그를 띄운다.
-			displayAlarmDialog(context, alarmDialogTitle, alarmDialogMessage);
+//			displayAlarmDialog(context, alarmDialogTitle, alarmDialogMessage);
 		}else if(alarmType == YTAlarmManager.YT_ALARM_TYPE_SCHEDULE){
 			Intent mainActivityIntent = new Intent(context, TimetableActivity.class);
 			//메인 액티비티를 실행한다.
 			mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            mainActivityIntent.putExtra("WakeLock", true);
 			context.startActivity(mainActivityIntent);	
 
 			String scheduleName = intent.getStringExtra("ScheduleName");
@@ -98,14 +101,17 @@ public class YTAlarmNotificationReceiver extends BroadcastReceiver {
 		NotificationManager notifier = (NotificationManager) context
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 
+        String notifyStr = notification_stateBar;
+        notifyStr = Devs.isDevMode == true ?
+                notifyStr += ", AlarmId : " + alarmId : notifyStr;
 		Notification notify = new Notification(R.drawable.ic_launcher_f3, 
-				notification_stateBar + ", AlarmId : " + alarmId,
+				notifyStr,
 				System.currentTimeMillis()
 				);
 
-		//이 인텐트는 노티피케이션을 클릭하면 실행되는 액티비티의 인텐트.
-		mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            //이 인텐트는 노티피케이션을 클릭하면 실행되는 액티비티의 인텐트.
+        mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
 		PendingIntent pender = PendingIntent
 				.getActivity(context, 0, mainActivityIntent, 0);
@@ -133,6 +139,7 @@ public class YTAlarmNotificationReceiver extends BroadcastReceiver {
 		alarmDialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		alarmDialogIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
+        alarmDialogIntent.putExtra("AlarmType", alarmType);
 		alarmDialogIntent.putExtra("AlarmId", alarmId);
 		alarmDialogIntent.putExtra("Title", dialogTitle);
 		alarmDialogIntent.putExtra("Message", dialogMessage);

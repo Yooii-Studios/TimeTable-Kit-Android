@@ -16,6 +16,7 @@ import com.sulga.yooiitable.data.*;
 import com.sulga.yooiitable.overlapviewer.*;
 import com.sulga.yooiitable.timetable.*;
 import com.sulga.yooiitable.utils.*;
+import com.yooiistudios.common.ad.AdUtils;
 
 
 public class AddTableFragment extends Fragment {
@@ -44,8 +45,9 @@ public class AddTableFragment extends Fragment {
 				// TODO Auto-generated method stub
 				if( ( TimetableDataManager.getTimetables().size() == 4 ) &&
 						( TimetableDataManager.getCurrentFullVersionState(getSupportActivity()) == false ) ){
-					ToastMaker.popupUnlockFullVersionToast(getSupportApplication(),
-							ToastMaker.UNLOCK_FULL_VERSION_TOAST_OVERFLOW_PAGENUM);
+//					ToastMaker.popupUnlockFullVersionToast(getSupportApplication(),
+//							ToastMaker.UNLOCK_FULL_VERSION_TOAST_OVERFLOW_PAGENUM);
+                    AdUtils.showInHouseStoreAd(getSupportActivity());
 					return;
 				}
 				TimetableActivity ta = (TimetableActivity) AddTableFragment.this.getActivity();

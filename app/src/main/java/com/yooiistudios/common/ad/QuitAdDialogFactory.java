@@ -36,7 +36,7 @@ public class QuitAdDialogFactory {
         Context context = activity.getApplicationContext();
         AlertDialog.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            builder = new AlertDialog.Builder(activity, AlertDialog.THEME_HOLO_LIGHT);
+            builder = new AlertDialog.Builder(activity, AlertDialog.THEME_HOLO_DARK);
         } else {
             builder = new AlertDialog.Builder(activity);
         }

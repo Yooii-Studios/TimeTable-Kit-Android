@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sulga.yooiitable"
-    android:versionCode="18"
-    android:versionName="1.1.1" >
+    android:versionCode="19"
+    android:versionName="1.1.2" >
 
     <uses-sdk
         android:minSdkVersion="10"
@@ -29,7 +29,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher_f3"
         android:label="@string/app_name"
-        android:theme="@style/Holo.Theme.Fullscreen" >
+        android:theme="@style/Holo.Theme" >
         
         <meta-data android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"/>
@@ -53,27 +53,27 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing" >
         </activity>
+        <!--<activity-->
+            <!--android:name="com.sulga.yooiitable.timetablesetting.TimetableSettingFragment"-->
+            <!--android:launchMode="singleTop"-->
+            <!--android:parentActivityName="com.sulga.yooiitable.timetable.TimetableActivity"-->
+            <!--android:screenOrientation="portrait"-->
+            <!--android:theme="@style/Holo.Theme" >-->
+
+            <!--&lt;!&ndash; Parent activity meta-data to support 4.0 and lower &ndash;&gt;-->
+            <!--<meta-data-->
+                <!--android:name="android.support.PARENT_ACTIVITY"-->
+                <!--android:value="com.sulga.yooiitable.timetable.TimetableActivity" />-->
+
+            <!--&lt;!&ndash; android:theme="@style/YTTheme" > &ndash;&gt;-->
+
+        <!--</activity>-->
         <activity
-            android:name="com.sulga.yooiitable.timetablesetting.TimetableSettingFragment"
+            android:name=".timetableinfo.TimetableSettingInfoActivity"
             android:launchMode="singleTop"
             android:parentActivityName="com.sulga.yooiitable.timetable.TimetableActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Holo.Theme.Fullscreen" >
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.sulga.yooiitable.timetable.TimetableActivity" />
-
-            <!-- android:theme="@style/YTTheme" > -->
-
-        </activity>
-        <activity
-            android:name="com.sulga.yooiitable.timetableinfo.TimetableInfoActivity"
-            android:launchMode="singleTop"
-            android:parentActivityName="com.sulga.yooiitable.timetable.TimetableActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Holo.Theme.Fullscreen" >
+            android:theme="@style/Holo.Theme" >
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
@@ -112,7 +112,7 @@
             android:launchMode="singleTop"
             android:parentActivityName="com.sulga.yooiitable.timetable.TimetableActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Holo.Theme.Fullscreen" >
+            android:theme="@style/Holo.Theme" >
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
@@ -124,7 +124,7 @@
             android:launchMode="singleTop"
             android:parentActivityName="com.sulga.yooiitable.timetable.TimetableActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Holo.Theme.Fullscreen" >
+            android:theme="@style/Holo.Theme" >
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
@@ -134,51 +134,51 @@
         <activity
             android:name="com.sulga.yooiitable.timetableinfo.activity.CreditsActivity"
             android:launchMode="singleTop"
-            android:parentActivityName="com.sulga.yooiitable.timetablesetting.TimetableSettingActivity"
+            android:parentActivityName=".timetableinfo.TimetableSettingInfoActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Holo.Theme.Fullscreen" >
+            android:theme="@style/Holo.Theme" >
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.sulga.yooiitable.timetablesetting.TimetableSettingActivity" />
+                android:value=".timetableinfo.TimetableSettingInfoActivity" />
         </activity>
         <activity
             android:name="com.sulga.yooiitable.timetableinfo.activity.LicenseActivity"
             android:launchMode="singleTop"
-            android:parentActivityName="com.sulga.yooiitable.timetablesetting.TimetableSettingActivity"
+            android:parentActivityName=".timetableinfo.TimetableSettingInfoActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Holo.Theme.Fullscreen" >
+            android:theme="@style/Holo.Theme" >
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.sulga.yooiitable.timetablesetting.TimetableSettingActivity" />
+                android:value=".timetableinfo.TimetableSettingInfoActivity" />
         </activity>
 
         <!-- android:theme="@style/YTTheme" /> -->
         <activity
             android:name="com.sulga.yooiitable.timetableinfo.activity.YTInfoActivity"
             android:launchMode="singleTop"
-            android:parentActivityName="com.sulga.yooiitable.timetablesetting.TimetableSettingActivity"
+            android:parentActivityName=".timetableinfo.TimetableSettingInfoActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Holo.Theme.Fullscreen" >
+            android:theme="@style/Holo.Theme" >
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.sulga.yooiitable.timetablesetting.TimetableSettingActivity" />
+                android:value=".timetableinfo.TimetableSettingInfoActivity"/>
         </activity>
         <activity
             android:name="com.sulga.yooiitable.timetableinfo.activity.StoreActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:theme="@style/Holo.Theme.Fullscreen" />
+            android:theme="@style/Holo.Theme" />
         <activity
             android:name="com.sulga.yooiitable.timetableinfo.activity.NaverStoreActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:theme="@style/Holo.Theme.Fullscreen" />
+            android:theme="@style/Holo.Theme" />
         <activity
             android:name="com.google.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />

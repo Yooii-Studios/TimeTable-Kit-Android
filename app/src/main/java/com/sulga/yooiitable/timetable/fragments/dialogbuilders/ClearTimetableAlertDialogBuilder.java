@@ -14,6 +14,7 @@ import com.sulga.yooiitable.timetable.fragments.*;
 public class ClearTimetableAlertDialogBuilder {
 
 	public static Dialog createDialog(Context context,
+                                      final int timetablePageIndex,
 			final TimetableFragment parent){
 		Resources res = context.getResources();
 		String title = res.getString(R.string.dialog_cleartimetable_title);
@@ -45,7 +46,8 @@ public class ClearTimetableAlertDialogBuilder {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				
-				YTAlarmManager.cancelTimetableAlarm(parent.getSupportActivity(), parent.getTimetableDataFromManager());
+				YTAlarmManager.cancelTimetableAlarm(parent.getSupportActivity(),
+                        parent.getTimetableDataFromManager(timetablePageIndex));
 
 				parent.removeAllLessonViews();
 				parent.clearTimetableLessons();

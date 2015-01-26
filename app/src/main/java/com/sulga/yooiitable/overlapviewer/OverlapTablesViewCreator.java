@@ -232,7 +232,7 @@ public class OverlapTablesViewCreator {
 		//		timelineText.setText(Integer.toString(currentPeriod + 1));
 
 
-		int timeInMinute = tempOverlapTable.getStartTime() * 60 
+		int timeInMinute = tempOverlapTable.getStartTimeByMin()
 				+ currentPeriod * tempOverlapTable.getPeriodUnit();
 		int startHour = ( timeInMinute / 60 ) % 24 ;
 		int startMinute = timeInMinute % 60;			

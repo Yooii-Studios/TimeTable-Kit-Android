@@ -25,6 +25,7 @@ import com.sulga.yooiitable.theme.YTTimetableTheme.ThemeType;
 import com.sulga.yooiitable.timetable.*;
 import com.sulga.yooiitable.timetable.fragments.*;
 import com.sulga.yooiitable.utils.*;
+import com.yooiistudios.common.ad.AdUtils;
 
 public class ShareDataDialogBuilder {
 	public static Dialog createDialog(final Context context, 
@@ -84,8 +85,9 @@ public class ShareDataDialogBuilder {
 				// TODO Auto-generated method stub
 				if( ( TimetableDataManager.getTimetables().size() >= 4 ) &&
 						( TimetableDataManager.getCurrentFullVersionState(context) == false ) ){
-					ToastMaker.popupUnlockFullVersionToast(context,
-							ToastMaker.UNLOCK_FULL_VERSION_TOAST_OVERFLOW_PAGENUM);
+//					ToastMaker.popupUnlockFullVersionToast(context,
+//							ToastMaker.UNLOCK_FULL_VERSION_TOAST_OVERFLOW_PAGENUM);
+                    AdUtils.showInHouseStoreAd(context);
 					return;
 				}else if(TimetableDataManager.getTimetables().size() >= TimetableActivity.TIMETABLE_MAX_LIMIT){
 					String warn = context.getString(R.string.activity_timetable_max_timetable_count);

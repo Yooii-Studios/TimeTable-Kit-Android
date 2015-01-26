@@ -38,7 +38,6 @@ import com.sulga.yooiitable.theme.YTTimetableTheme.ThemeType;
 import com.sulga.yooiitable.timetable.*;
 import com.sulga.yooiitable.timetable.fragments.dialogbuilders.*;
 import com.sulga.yooiitable.timetableinfo.*;
-import com.sulga.yooiitable.timetablesetting.*;
 import com.sulga.yooiitable.utils.*;
 
 
@@ -149,10 +148,10 @@ public class TimetableFragment extends Fragment {
 	//타임테이블 테마.
 	YTTimetableTheme ytTheme;
 
-	private float cellWidth = 0;
-	private float cellHeight = 0;
+	private float cellWidth = -1;
+	private float cellHeight = -1;
 	//private float cellHeight = 0;
-	private float rowHeight = 0;	//margin까지 고려한 row의 높이.
+	private float rowHeight = -1;	//margin까지 고려한 row의 높이.
 	//private float timelineWidth = 0;
 
 	private Bitmap photoBackgroundBitmap = null;
@@ -170,34 +169,36 @@ public class TimetableFragment extends Fragment {
 	private Resources res;
 	
 	private int myPageIndex = -1;
-	//android.support.v4.app.Fragment fage;
+    private Timetable timetable;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
 		MyLog.d("adapter", "TimetableFragment OnCreateView Called");
-		int myPageIdx = this.getMyIndexInViewPager();
-		MyLog.d("LazyLoadTest", "onCreate : " + myPageIdx);
-		res = getResources();
-		//		setupActionBar();
+        if(savedInstanceState != null)
+        {
+            myPageIndex = savedInstanceState.getInt("SavedTimetableIndex");
+            MyLog.d("TimetableFragment", "onCreateView savedInstanceState not null!! page Idx : " + myPageIndex);
+        }
+		int tmpMyPageIndex = this.getMyIndexInViewPager();
+        if(tmpMyPageIndex != -1)
+            myPageIndex = tmpMyPageIndex;
+        if(myPageIndex == -1)
+            return null;
 
-		Timetable timetable = getTimetableDataFromManager();
+        timetable = getTimetableDataFromManager(myPageIndex);
+		MyLog.d("LazyLoadTest", "onCreate : " + myPageIndex);
+		res = getResources();
+
 		if(timetable == null){
 			return null;
 		}
-		MyLog.d("Timetable", timetable.toString());
+		MyLog.d("onCreateView", "Timetable Initialized..." + timetable.toString());
 		ytTheme = new YTTimetableTheme(timetable.getThemeType());
-
 		fragmentView = inflater.inflate(R.layout.fragment_timetable, container, false);
-
-		//cellHeight = res.getDimension(R.dimen.fragment_timetable_cell_height);
-
 		softKeyboardDetectLayout = (SoftKeyboardDetectLinearLayout)fragmentView
 				.findViewById(R.id.fragment_timetable_softkeyboarddetect);
-
-//		rootView = (FrameLayout) fragmentView.findViewById(R.id.fragment_timetable_root);
 		backgroundView = (ImageView) fragmentView.findViewById(R.id.fragment_timetable_background);
-		//		rootView.setBackgroundResource(ytTheme.getRootBackground());
-		MyLog.d("TimetableIndex", "index : " + getMyIndexInViewPager());
 //		if(ytTheme.getCurrentTheme() == YTTimetableTheme.ThemeType.Photo){
 //			//포토모드라면 저장되어있는 사진을 로드해서 배경이미지로.
 //			try {
@@ -228,8 +229,6 @@ public class TimetableFragment extends Fragment {
 
 		//		titleText = (TextView) fragmentView.findViewById(R.id.fragment_timetable_title_text);
 		//		titleText.setTextColor(ytTheme.getTimetableTextColor());
-
-		Activity act = this.getSupportActivity();
 
 		//int titleBackground = theme.getTitleBackground();
 
@@ -265,10 +264,10 @@ public class TimetableFragment extends Fragment {
 				MyLog.d("TimetableFragment", "optionButton Clicked");
 				// TODO Auto-generated method stub
 //				Intent act = new Intent(getSupportActivity(), TimetableSettingPagerActivity.class);
-				Intent act = new Intent(getSupportActivity(), TimetableInfoActivity.class);
+				Intent act = new Intent(getSupportActivity(), TimetableSettingInfoActivity.class);
 				act.putExtra("TimetablePageIndex", getMyIndexInViewPager());
 				getSupportActivity()
-				.startActivityForResult(act, RequestCodes.CALL_ACTIVITY_APPINFO);
+				.startActivityForResult(act, RequestCodes.CALL_ACTIVITY_EDIT_TIMETABLE_SETTING);
 
 				Map<String, String> settingClickInfo = new HashMap<String, String>();
 				settingClickInfo.put("Setting_ClickedBy", FlurryConstants.SETTING_CLICKTYPE_LION);
@@ -290,6 +289,12 @@ public class TimetableFragment extends Fragment {
 		dayRowOverlap = 
 				(FrameLayout) fragmentView.findViewById(
 						R.id.fragment_timetable_dayrow_overlap);
+        dayRowOverlap.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                startSettingActivity(false, true);
+            }
+        });
 		//dayRowDividerWrapper = (FrameLayout) fragmentView.findViewById(R.id.fragment_timetable_dayrow_overlap);
 		//timeline = (LinearLayout) fragmentView.findViewById(R.id	.fragment_timetable_timeline);
 		//		dayRow.setBackgroundDrawable(
@@ -423,32 +428,14 @@ public class TimetableFragment extends Fragment {
 		testPanel.addMenuButtons(modeButton_delete_timetable);
 
 		createTimetable();
-		//cellHeight를 이용해야 되어서 onGlobalLayoutListener으로 넣음.
-		//markCurrentTime();
-
-		//timelineWidth = res.getDimension(R.dimen.fragment_timetable_timeline_width);
-		//		View tmp = grid.findViewWithTag(new CellTag(0,3));
 
 		ViewTreeObserver vto = grid.getViewTreeObserver();
 		vto.addOnGlobalLayoutListener(onGridGlobalLayoutListener);
 
 		prepareLessonViewDrag();
 		initLessonViewAnimation();
-		//		titleText.setVisibility(View.GONE);
 
 		return fragmentView;
-
-		/*final View activityRootView = fragmentView.findViewById(R.id.activity_timatable_root);
-		activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-		  @Override
-		  public void onGlobalLayout() {
-		    if (getResources().getConfiguration().keyboardHidden == Configuration.KEYBOARDHIDDEN_NO) { // Check if keyboard is not hidden
-		       MyLog.d("keyboard","NOT HIDDEN");
-		    }else if(getResources().getConfiguration().keyboardHidden == Configuration.KEYBOARDHIDDEN_YES){
-		    	Log.e("keyboard", "HIDDEN");
-		    }
-		  }
-		});*/
 	}
 		
 	public void onPageSelected(){
@@ -489,13 +476,13 @@ public class TimetableFragment extends Fragment {
 		return animSet;
 	}
 	
-	private OnGlobalLayoutListener onGridGlobalLayoutListener = 
+	private OnGlobalLayoutListener onGridGlobalLayoutListener =
 			new OnGlobalLayoutListener() {
 		@Override
 		public void onGlobalLayout() {
 			int myPageIdx = getMyIndexInViewPager();
-			MyLog.d("LazyLoadTest", "onGolobalLayout : " + myPageIdx);
-			initGridOnGlobalLayout();	
+			MyLog.d("TimetableFragment", "onGolobalLayout called, page idx : " + myPageIdx);
+			initGridOnGlobalLayout();
 		}
 	};
 
@@ -507,7 +494,6 @@ public class TimetableFragment extends Fragment {
 		//		initialized = true;
 		MyLog.d("initOnGlobalLayout", this.toString() + ", Called");
 		//adds lesson views and init datas needed for adding lesson views.
-		Timetable timetable = getTimetableDataFromManager();
 		float bodyPadding = res.getDimension(R.dimen.fragment_timetable_body_padding);
 		View tmpCell = grid.findViewWithTag(new CellTag(0,0));
 		View tmpCellParent = (View) tmpCell.getParent();
@@ -515,7 +501,7 @@ public class TimetableFragment extends Fragment {
 		cellHeight = tmpCell.getHeight();
 		if(timetable.getPeriodNum() != 1)
 			rowHeight = tmpCellParent.getHeight() - bodyPadding;
-		else 
+		else
 			rowHeight = tmpCellParent.getHeight() - bodyPadding * 2;
 		clearAndAddLessonViews(View.VISIBLE);
 
@@ -551,8 +537,6 @@ public class TimetableFragment extends Fragment {
 				(FrameLayout.LayoutParams)currentTimeMarker.getLayoutParams();
 		currentTimeMarkerParams.gravity = Gravity.TOP|Gravity.LEFT;
 		Calendar currentCal = Calendar.getInstance();
-
-		Timetable timetable = getTimetableDataFromManager();
 
 		float curTimeByPeriod = timetable.getPeriodByFloatFromTime(
 				currentCal.get(Calendar.HOUR_OF_DAY), currentCal.get(Calendar.MINUTE));
@@ -625,7 +609,7 @@ public class TimetableFragment extends Fragment {
 	private void showShareDataDialog(ConnectorState cs){
 		ShareDataDialogBuilder.createDialog(getSupportActivity(), 
 				cs,
-				getTimetableDataFromManager(), this)
+				timetable, this)
 		.show();
 	}
 
@@ -734,7 +718,6 @@ public class TimetableFragment extends Fragment {
 			final EditText input = new EditText(getSupportActivity());
 			input.setSelectAllOnFocus(true);
 			input.setSingleLine();
-			Timetable timetable = getTimetableDataFromManager();
 			if(timetable.getTitle() != null){
 				editTextInitial = timetable.getTitle();
 			}
@@ -755,7 +738,6 @@ public class TimetableFragment extends Fragment {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					// TODO Auto-generated method stub
-					Timetable timetable = getTimetableDataFromManager();
 
 					String title = input.getText().toString();
 					timetable.setTitle(title);
@@ -931,7 +913,6 @@ public class TimetableFragment extends Fragment {
 	}
 
 	private float getDroppedItemStartPeriodByFloat(int y){
-		Timetable timetable = getTimetableDataFromManager();
 
 		int centerY = y - itemForDrag.getHeight() / 2;
 		Lesson l = (Lesson) itemForDrag.getTag();
@@ -1019,14 +1000,27 @@ public class TimetableFragment extends Fragment {
 
 	@Override
 	public void onSaveInstanceState (Bundle outState){
+        MyLog.d("onSaveInstanceState", "my idx now : " + getMyIndexInViewPager() + ", me : " + this);
+        outState.putInt("SavedTimetableIndex", getMyIndexInViewPager());
 		super.onSaveInstanceState(outState);
 	}
+
 	@Override
 	public void onActivityCreated (Bundle savedInstanceState){
-		MyLog.d("TimetableFragment", "onActivityCreated" + ", " + this.toString());
 		super.onActivityCreated(savedInstanceState);
-		Timetable timetable = getTimetableDataFromManager();
-		if(ytTheme.getCurrentTheme() == YTTimetableTheme.ThemeType.Photo){
+        if(savedInstanceState != null) {
+            myPageIndex = savedInstanceState.getInt("SavedTimetableIndex");
+            MyLog.d("TimetableFragment", "onActivityCreated, savedInstance not null, saved timetable idx : " + myPageIndex );
+        }
+        int tmpMyPageIndex = this.getMyIndexInViewPager();
+        if(tmpMyPageIndex != -1)
+            myPageIndex = tmpMyPageIndex;
+        timetable = getTimetableDataFromManager(myPageIndex);
+        if(myPageIndex == -1)
+            return;
+
+        MyLog.d("TimetableFragment", "onActivityCreated" + ", index : " + myPageIndex + ", timetable : " + timetable);
+        if(ytTheme.getCurrentTheme() == YTTimetableTheme.ThemeType.Photo){
 			//포토모드라면 저장되어있는 사진을 로드해서 배경이미지로.
 			((TimetableActivity)getSupportActivity())
 			.loadBitmapFromTimetableId(timetable.getId(), backgroundView);
@@ -1037,7 +1031,8 @@ public class TimetableFragment extends Fragment {
 	@Override
 	public void onResume(){
 		super.onResume();
-		if(lessonViewAdded == false)
+        MyLog.d("onResume", "index now : " + myPageIndex);
+		if(lessonViewAdded == false && myPageIndex != -1)
 			prepareLessonViewDrag();
 	}
 
@@ -1059,16 +1054,16 @@ public class TimetableFragment extends Fragment {
 	@Override
 	public void onDestroy(){
 		recycleBitmap(backgroundView);
-		wm.removeView(lessonViewDragImage);
+        if(wm != null)
+		    wm.removeView(lessonViewDragImage);
 		lessonViewAdded = false;
 		//		YTAppWidgetProvider_2x4.onTimetableDataChanged(getSupportActivity());
 		//		YTAppWidgetProvider_4x4.onTimetableDataChanged(getSupportActivity());
 		MyLog.d("TimetableFragment", "onDestroy" + ", " + this.toString());
 		
 		super.onDestroy();
-		
 	}
-	
+
 	private static void recycleBitmap(ImageView iv) {
 		Drawable d;
 		if(iv != null){
@@ -1089,16 +1084,14 @@ public class TimetableFragment extends Fragment {
 		MyLog.d("TimetableFragment", "onDetach" + ", " + this.toString());
 	}
 	
-	public Timetable getTimetableDataFromManager(){
-		int myPageIdx = getMyIndexInViewPager();
-		if(myPageIdx == -1){
+	public Timetable getTimetableDataFromManager(int pageIndex){
+		if(pageIndex == -1){
 			Log.e("TimetableFragment", "ALERT : PAGE INEDX -1");
 		}
-		return TimetableDataManager.getInstance().getTimetableAtPage(myPageIdx);
+		return TimetableDataManager.getInstance().getTimetableAtPage(pageIndex);
 	}
 
 	private int getMyIndexInViewPager(){
-		
 		TimetableActivity parent = (TimetableActivity) getSupportActivity();
 		if(parent == null){
 			MyLog.d("getMyIndexInViewPager", "parent null");
@@ -1115,7 +1108,7 @@ public class TimetableFragment extends Fragment {
 			// TODO Auto-generated method stub
 			//Toast.makeText(getSupportActivity(), "PathButton : " + v.getTag() , Toast.LENGTH_SHORT).show();
 			//			Timetable currentTable = timetable;
-			Timetable currentTable = getTimetableDataFromManager();
+			Timetable currentTable = timetable;
 			if(currentTable.isTimetableOverflow24Hours(
 					currentTable.getPeriodNum() + 1
 					, currentTable.getPeriodUnit())
@@ -1147,7 +1140,6 @@ public class TimetableFragment extends Fragment {
 			// TODO Auto-generated method stub
 
 			MyLog.d("onClick", "minus");
-			Timetable timetable = getTimetableDataFromManager();
 			if(timetable.getPeriodNum() <= 1){
 				String warn = res.getString(R.string.fragment_timetable_warning_leaveoneperiod);
 				Toast.makeText(getSupportActivity(), warn, Toast.LENGTH_LONG).show();
@@ -1193,7 +1185,7 @@ public class TimetableFragment extends Fragment {
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 			MyLog.d("onClick", "clear Table");
-			ClearTimetableAlertDialogBuilder.createDialog(getSupportActivity(), TimetableFragment.this).show();
+			ClearTimetableAlertDialogBuilder.createDialog(getSupportActivity(), myPageIndex, TimetableFragment.this).show();
 		}
 	};
 
@@ -1202,7 +1194,7 @@ public class TimetableFragment extends Fragment {
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 			MyLog.d("onClick", "delete Table");
-			Timetable cur = getTimetableDataFromManager();
+			Timetable cur = timetable;
 			Timetable main = TimetableDataManager.getMainTimetable();
 			if(cur == main){
 				String warn = res.getString(R.string.fragment_timetable_warning_deleteMainTable);
@@ -1225,7 +1217,6 @@ public class TimetableFragment extends Fragment {
 	};
 
 	public void clearTimetableLessons(){
-		Timetable timetable = getTimetableDataFromManager();
 		for(Lesson l : timetable.getLessonList()){
 			timetable.onRemoveLesson(l);
 		}
@@ -1234,12 +1225,9 @@ public class TimetableFragment extends Fragment {
 	}	
 
 	private void createTimetableHead(){
-
-		//Resources res = getResources();
-		Timetable timetable = getTimetableDataFromManager();
-
 		Calendar cal = Calendar.getInstance();
 		int today = cal.get(Calendar.DAY_OF_WEEK);
+        cal.setFirstDayOfWeek(Calendar.SUNDAY);
 
 		cal.set(Calendar.HOUR_OF_DAY, 0); // ! clear would not reset the hour of day !
 		cal.clear(Calendar.MINUTE);
@@ -1250,14 +1238,16 @@ public class TimetableFragment extends Fragment {
 		//first day는 sunday로 치고 있는듯.
 		cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
 		if(cal.getFirstDayOfWeek() == Calendar.SUNDAY){
-			if(timetable.getStartDay() == Calendar.MONDAY){
-				if(today == Calendar.SUNDAY){
-					cal.add(Calendar.WEEK_OF_YEAR, -1);
-				}
-				cal.add(Calendar.DAY_OF_WEEK, 1);
-			}else if(timetable.getStartDay() == Calendar.SUNDAY){
-
-			}
+            if(timetable.getStartDay() == Calendar.MONDAY){
+                if(today == Calendar.SUNDAY){
+                    cal.add(Calendar.WEEK_OF_YEAR, -1);
+                }
+                cal.add(Calendar.DAY_OF_WEEK, 1);
+            }else if(timetable.getStartDay() == Calendar.TUESDAY){
+                MyLog.d("DayRow", "Timetable Start Day is Tuesday");
+                cal.add(Calendar.DAY_OF_WEEK, 2);
+                MyLog.d("DayRow", "Calendar day : " + cal.get(Calendar.DAY_OF_WEEK));
+            }
 		}else if(cal.getFirstDayOfWeek() == Calendar.MONDAY){
 			if(timetable.getStartDay() == Calendar.SUNDAY){
 				cal.add(Calendar.DAY_OF_WEEK, -1);
@@ -1413,7 +1403,6 @@ public class TimetableFragment extends Fragment {
 
 
 	private void createTimetableBody(){
-		Timetable timetable = getTimetableDataFromManager();
 		//MyLog.d("cellWidth", "Body, cellWidth : " + cellWidth);
 		for(int i = 0 ; i < timetable.getPeriodNum() ; i++){
 			//정사각형으로 만들기 위해서, addTimeLine은 viewtreeobsetver내에서.
@@ -1426,9 +1415,16 @@ public class TimetableFragment extends Fragment {
 		timeline.addView(createTimelineCell(period));
 	}
 
-	private void refreshTimeMarker(){
+    public void refreshTimetable()
+    {
+        dismissOverlapMarker(true);
+        refreshTimeline();
+        refreshTimecells();
+        refreshTimeMarker();
+    }
+
+    private void refreshTimeMarker(){
 		Calendar currentCal = Calendar.getInstance();
-		Timetable timetable = getTimetableDataFromManager();
 
 		float curTimeByPeriod = timetable.getPeriodByFloatFromTime(
 				currentCal.get(Calendar.HOUR_OF_DAY), currentCal.get(Calendar.MINUTE));
@@ -1448,7 +1444,6 @@ public class TimetableFragment extends Fragment {
 
 		MyLog.d("createTimeLine", "refreshTimeLine() called");
 		MyLog.d("initOnGlobalLayout", "refreshTimeLine() called");
-		Timetable timetable = getTimetableDataFromManager();
 		timeline.removeAllViews();
 		for(int i = 1; i <= timetable.getPeriodNum() ; i++){
 			addTimeLine(i);
@@ -1456,7 +1451,6 @@ public class TimetableFragment extends Fragment {
 	}
 
 	public void refreshTimecells(){
-		Timetable timetable = getTimetableDataFromManager();
 		grid.removeAllViews();
 		for(int i = 0; i < timetable.getPeriodNum() ; i++){
 			addTimetableRow(i);
@@ -1486,8 +1480,7 @@ public class TimetableFragment extends Fragment {
 	 * @param period
 	 * period starts from 0
 	 */
-	private void addTimetableRow(int period){		
-		Timetable timetable = getTimetableDataFromManager();
+	private void addTimetableRow(int period){
 		//Resources res = getResources();
 		int cellMargin = Math.round(res.getDimension(R.dimen.fragment_timetable_cell_margin));
 		int bodyPadding = Math.round(res.getDimension(R.dimen.fragment_timetable_body_padding));
@@ -1517,10 +1510,10 @@ public class TimetableFragment extends Fragment {
 			View cell = null;
 			if(timetable.getPeriodUnit() == 30
 					|| timetable.getPeriodUnit() == 45){
-				cell = View.inflate(this.getSupportActivity(), 
+				cell = View.inflate(this.getSupportActivity(),
 						R.layout.view_timetable_timecell_half_square, null);
 			}else{
-				cell = View.inflate(this.getSupportActivity(), 
+				cell = View.inflate(this.getSupportActivity(),
 						R.layout.view_timetable_timecell, null);
 			}
 		
@@ -1591,11 +1584,10 @@ public class TimetableFragment extends Fragment {
 	 */
 	private View createTimelineCell(int period){
 		//Resources res = getResources();
-		Timetable timetable = getTimetableDataFromManager();
 		//2-2.타임라인용 셀(=교시 표시용 셀)을 만든다.
 		TextView timelineCell = (TextView) 
-				View.inflate(getSupportActivity(), 
-						R.layout.view_timetable_timeline_cell, 
+				View.inflate(getSupportActivity(),
+						R.layout.view_timetable_timeline_cell,
 						null);
 		LinearLayout.LayoutParams timelineCellParams = 
 				new LinearLayout.LayoutParams(
@@ -1768,10 +1760,9 @@ public class TimetableFragment extends Fragment {
 			timelineCell.setText(ch+"");
 			timelineCell.setGravity(Gravity.CENTER);
 		}else if(timetable.getColumnType() == Timetable.ColumnTypes.BY_TIME){
-			int timeInMinute = timetable.getStartTime() * 60 + ( period - 1 ) * timetable.getPeriodUnit();
+			int timeInMinute = timetable.getStartTimeByMin() + ( period - 1 ) * timetable.getPeriodUnit();
 			//int timeInMinute_end = timeInMinute + timetable.getPeriodUnit();
 			int startHour = ( timeInMinute / 60 ) % 24 ;
-
 			int startMinute = timeInMinute % 60;
 			//int endHour = ( timeInMinute_end / 60 ) % 24;
 			//int endMinute = timeInMinute_end % 60;
@@ -1805,7 +1796,6 @@ public class TimetableFragment extends Fragment {
 	private void createTimetableTail(){}
 
 	private void clearAndAddLessonViews(int lessonViewVisibility){
-		Timetable timetable = getTimetableDataFromManager();
 		MyLog.d("clearTimetableLessons", "timetable size : " + timetable.getLessonList().size() + ", timetable : " + timetable);
 		//1.현재 화면에 나온 레슨뷰를 모두 삭제후
 		for(int i = 0 ; i < gridOverlapLayout.getChildCount() ; i++){
@@ -1827,7 +1817,6 @@ public class TimetableFragment extends Fragment {
 	}
 
 	private void clearLessonViews(){
-		Timetable timetable = getTimetableDataFromManager();
 		MyLog.d("clearTimetableLessons", "timetable size : " + timetable.getLessonList().size() + ", timetable : " + timetable);
 		//1.현재 화면에 나온 레슨뷰를 모두 삭제후
 		for(int i = 0 ; i < gridOverlapLayout.getChildCount() ; i++){
@@ -1840,7 +1829,7 @@ public class TimetableFragment extends Fragment {
 		}
 	}
 	public void createTimetable(){
-		//gridOverlapLayout.removeViews(4, gridOverlapLayout.getChildCount() - 4);
+		MyLog.d("TimetableFragment", "CreateTimetable called!");
 		dayRow.removeAllViews();
 		grid.removeAllViews();
 
@@ -1854,7 +1843,6 @@ public class TimetableFragment extends Fragment {
 		@Override
 		public boolean onLongClick(View v) {
 			// TODO Auto-generated method stub
-			Timetable timetable = getTimetableDataFromManager();
 			MyLog.d("TouchSystemCheck", "touched : " + "overlapOnLongClickListener");
 			if(isEditLessonLengthMode == true){
 				//만약 edit lesson length버튼을 터치해 수업뷰 길이 조정하는 상태면 롱클릭을 받지 않는다.
@@ -1875,7 +1863,7 @@ public class TimetableFragment extends Fragment {
 			if(isSelectPeriodMode == false){
 				isSelectPeriodMode = true;
 				int longClickedDay = getDayIndexFromTouchedPosition(touchedDownPositionX);
-				int longClickedPeriod = getPeriodFromTouchedPosition(touchedDownPositionY);
+				int longClickedPeriod = (int)getPeriodFromTouchedPosition(touchedDownPositionY);
 				MyLog.d("TouchSystemCheck", "selectPeriodMode set to true" +
 						", long clicked day : " + longClickedDay + 
 						", longClickedPeriod : " + longClickedPeriod);
@@ -2074,9 +2062,8 @@ public class TimetableFragment extends Fragment {
 		dismissOverlapMarker(false);
 
 		//2-1. 오버랩뷰 롱클릭이 발생하였다. 터치다운된 포지션 기준으로 롱클릭된 날과 교시를 가져온다.
-		Timetable timetable = getTimetableDataFromManager();
 		int startDay = getDayIndexFromTouchedPosition(touchedDownPositionX);
-		int startPeriod = getPeriodFromTouchedPosition(touchedDownPositionY);
+		float startPeriod = (float)((int)getPeriodFromTouchedPosition(touchedDownPositionY));
 
 
 		int btnWidth = (int)cellWidth / 3 * 2;
@@ -2093,15 +2080,27 @@ public class TimetableFragment extends Fragment {
 			if(y >= btnHeight){
 				y -= btnHeight;
 			}
-		}		
-		int endDay = getDayIndexFromTouchedPosition(x);
-		int endPeriod = getPeriodFromTouchedPosition(y) + 1;
-
-
-		if(touchedDownPositionY >= y){
-			startPeriod = getPeriodFromTouchedPosition(y);
-			endPeriod = getPeriodFromTouchedPosition(touchedDownPositionY) + 1;
 		}
+        int endDay = getDayIndexFromTouchedPosition(x);
+        float endPeriod;
+        if(isMarkButtonEditLengthTouched) {
+            endPeriod = getPeriodByFloatFromTouchedPosition(y);
+            MyLog.d("TouchedDownPos > y", "startP : " + startPeriod + ", endP : " + endPeriod + ", getPeriodByFloatFromTouchedPosition(y) : " + getPeriodByFloatFromTouchedPosition(y));
+            if (startPeriod >= endPeriod) {
+                endPeriod = startPeriod + .5f;
+                startPeriod = Math.round(getPeriodByFloatFromTouchedPosition(y) * 2f) / 2f;
+                MyLog.d("TouchedDownPos > y", "AFTER / startP : " + startPeriod + ", endP : " + endPeriod);
+            } else {
+                endPeriod = Math.round(endPeriod * 2f) / 2f + 1f;
+            }
+        }
+        else{
+            endPeriod = getPeriodFromTouchedPosition(y) + 1f;
+            if(touchedDownPositionY >= y){
+                startPeriod = getPeriodFromTouchedPosition(y);
+                endPeriod = (float)getPeriodFromTouchedPosition(touchedDownPositionY) + 1f;
+            }
+        }
 
 		if(startDay < 0){
 			MyLog.d("overlapOnTouch", "startDay < 0");
@@ -2115,7 +2114,7 @@ public class TimetableFragment extends Fragment {
 
 		//startDay와 endDay의 정렬!
 		if(startPeriod - endPeriod >= 0){
-			int tmp = startPeriod;
+			float tmp = startPeriod;
 			startPeriod = endPeriod;
 			endPeriod = tmp;
 		}
@@ -2131,6 +2130,10 @@ public class TimetableFragment extends Fragment {
 		if(endDay >= timetable.getDayNum()){
 			endDay = timetable.getDayNum() - 1;
 		}
+        if(endPeriod >= timetable.getPeriodNum())
+        {
+            endPeriod = timetable.getPeriodNum();
+        }
 
 		MyLog.d("overlapOnTouch", 
 				"startDay : " + startDay + ", endDay : " + endDay + 
@@ -2157,10 +2160,9 @@ public class TimetableFragment extends Fragment {
 
 	private boolean handleSelectPeriodModeOnTouchUp(MotionEvent event){
 		MyLog.d("LessonEditLength", "overlap touched up!");
-		Timetable timetable = getTimetableDataFromManager();
 		//2-1. 오버랩뷰 롱클릭이 발생하였다. 터치다운된 포지션 기준으로 롱클릭된 날과 교시를 가져온다.
 		int startDayIndex = getDayIndexFromTouchedPosition(touchedDownPositionX);
-		int startPeriod = getPeriodFromTouchedPosition(touchedDownPositionY);
+		float startPeriod = getPeriodFromTouchedPosition(touchedDownPositionY);
 
 		int btnWidth = (int)cellWidth / 3 * 2;
 		int btnHeight = btnWidth;
@@ -2178,13 +2180,26 @@ public class TimetableFragment extends Fragment {
 			}
 
 		}
-		int endDayIndex = getDayIndexFromTouchedPosition(x);
-		int endPeriod = getPeriodFromTouchedPosition(y) + 1;
-
-		if(touchedDownPositionY >= y){
-			startPeriod = getPeriodFromTouchedPosition(y);
-			endPeriod = getPeriodFromTouchedPosition(touchedDownPositionY) + 1;
-		}
+        int endDayIndex = getDayIndexFromTouchedPosition(x);
+        float endPeriod;
+        if(isMarkButtonEditLengthTouched) {
+            endPeriod = getPeriodByFloatFromTouchedPosition(y);
+            MyLog.d("TouchedDownPos > y", "startP : " + startPeriod + ", endP : " + endPeriod + ", getPeriodByFloatFromTouchedPosition(y) : " + getPeriodByFloatFromTouchedPosition(y));
+            if (startPeriod >= endPeriod) {
+                endPeriod = startPeriod + .5f;
+                startPeriod = Math.round(getPeriodByFloatFromTouchedPosition(y) * 2f) / 2f;
+                MyLog.d("TouchedDownPos > y", "AFTER / startP : " + startPeriod + ", endP : " + endPeriod);
+            } else {
+                endPeriod = Math.round(endPeriod * 2f) / 2f + 1f;
+            }
+        }
+        else{
+            endPeriod = getPeriodFromTouchedPosition(y) + 1f;
+            if(touchedDownPositionY >= y){
+                startPeriod = getPeriodFromTouchedPosition(y);
+                endPeriod = (float)getPeriodFromTouchedPosition(touchedDownPositionY) + 1f;
+            }
+        }
 
 		if(startDayIndex < 0){
 			isSelectPeriodMode = false;
@@ -2194,13 +2209,13 @@ public class TimetableFragment extends Fragment {
 			tableScroll.requestDisallowInterceptTouchEvent(false);
 			//Timeline부분을 누르면 세팅 액티비티가 실행되어야 하는데 gridOverlapLayout이 죄다 가져가버려서
 			//dayIndex가 -1이면 timeline 클릭된걸로 알고 세팅 액티비티를 실행하도록 한다.
-			startSettingActivity();
+			startSettingActivity(true, false);
 			return false;
 		}
 
 		//startDay와 endDay의 정렬!
 		if(startPeriod - endPeriod >= 0){
-			int tmp = startPeriod;
+			float tmp = startPeriod;
 			startPeriod = endPeriod;
 			endPeriod = tmp;
 		}
@@ -2266,13 +2281,12 @@ public class TimetableFragment extends Fragment {
 	}
 
 	private boolean handleEditLessonLengthModeOnTouchMove(MotionEvent event){
-		Timetable timetable = getTimetableDataFromManager();
 		//2-1. 오버랩뷰 롱클릭이 발생하였다. 터치다운된 포지션 기준으로 롱클릭된 날과 교시를 가져온다.
 		//		int startDay = getDayIndexFromTouchedPosition(touchedDownPositionX);
 		float f_startPeriod = lessonToEditLength.getLessonStartPeriodByFloat();
 		//		int endDay = getDayIndexFromTouchedPosition(event.getX());
 		float f_endPeriod = getPeriodByFloatFromTouchedPosition(event.getY());
-		int i_endPeriod = Math.round(f_endPeriod);
+		float rounded_endPeriod = Math.round(f_endPeriod * 2f) / 2f;
 		//		if(startDay < 0){
 		//			selectPeriodMode = false;
 		//			touchedDownPositionX = -1;
@@ -2284,13 +2298,13 @@ public class TimetableFragment extends Fragment {
 		//startDay와 endDay의 정렬!
 		MyLog.d("LessonEditLength", "before/ start p : " + f_startPeriod 
 				+ ", end p : " + f_endPeriod);
-		if(f_startPeriod - (float)i_endPeriod >= 0){
-			i_endPeriod = (int) (f_startPeriod + 1.0);
+		if(f_startPeriod - rounded_endPeriod >= 0){
+            rounded_endPeriod = (int) (f_startPeriod + 0.5);
 		}
-		if((float)i_endPeriod - f_startPeriod < 1.0){
-			i_endPeriod += 1;
+		if(rounded_endPeriod - f_startPeriod < 0.5){
+            rounded_endPeriod += 0.5;
 		}
-		f_endPeriod = (float)i_endPeriod;
+		f_endPeriod = rounded_endPeriod;
 
 		for(int i = 0; i < timetable.getLessonList().size() ; i++){
 			Lesson tmpLesson = timetable.getLessonList().get(i);
@@ -2418,8 +2432,6 @@ public class TimetableFragment extends Fragment {
 	}
 
 	private boolean handleDragLessonModeOnTouchUp(MotionEvent ev){
-		Timetable timetable = getTimetableDataFromManager();
-
 		int xInGridOverlap = (int) ev.getX();   //스크롤뷰 내부에서 x,y좌 표. 스크롤바는 관련없고 '보이는 그대로' 값이다.
 		int yInGridOverlap = (int) ev.getY();	//스크롤바 관련 없음.
 		//int yInWindow = (int) yInScrollView + getScrollViewTop();
@@ -2494,10 +2506,8 @@ public class TimetableFragment extends Fragment {
 	}
 
 	private void handleEmptyCellOnClick(MotionEvent event){
-		Timetable timetable = getTimetableDataFromManager();
-
 		int day = getDayIndexFromTouchedPosition(event.getX());
-		int startPeriod = getPeriodFromTouchedPosition(event.getY());
+		int startPeriod = (int)getPeriodFromTouchedPosition(event.getY());
 		int endPeriod = startPeriod + 1;
 		//	MyLog.d("handleEmptyCellOnClick", "day : " + day);
 		if(day == -1){
@@ -2534,18 +2544,17 @@ public class TimetableFragment extends Fragment {
 		showLessonEditButtons(lessonView, tmp);
 	}
 	
-	private void startSettingActivity(){
-		Intent intent = new Intent(getSupportActivity(), TimetableSettingFragment.class);
-		intent.putExtra("ShowTimeSettingDialog", true);
+	private void startSettingActivity(boolean showTimeSettingDialog, boolean showDaySettingDialog){
+//		Intent intent = new Intent(getSupportActivity(), TimetableSettingFragment.class);
+        Intent intent = new Intent(getSupportActivity(), TimetableSettingInfoActivity.class);
+		intent.putExtra("ShowTimeSettingDialog", showTimeSettingDialog);
+        intent.putExtra("ShowDaySettingDialog", showDaySettingDialog);
 		intent.putExtra("TimetablePageIndex", getMyIndexInViewPager());
 		getSupportActivity().startActivityForResult(intent, RequestCodes.CALL_ACTIVITY_EDIT_TIMETABLE_SETTING);
 	}
 
 
 	private int getDayIndexFromTouchedPosition(float x){
-		//int day;
-		//Resources res = getResources();
-		Timetable timetable = getTimetableDataFromManager();
 		//만약 타임라인부분이 터치됬으면 return -1
 		float timelineOffset = res.getDimension(R.dimen.fragment_timetable_timeline_width);
 		if(x < timelineOffset){
@@ -2583,11 +2592,10 @@ public class TimetableFragment extends Fragment {
 		//		}
 	}
 
-	private int getPeriodFromTouchedPosition(float y){
+	private float getPeriodFromTouchedPosition(float y){
 		MyLog.d("getPeriodFromTouchedPosition", "y : " + y + 
 				", cellHeight : " + cellHeight + ", rowHeight : " + rowHeight);
-		Timetable timetable = getTimetableDataFromManager();
-		int res = ( (int) (y / rowHeight) ) >= timetable.getPeriodNum() ? 
+		float res = ( (int)(y / rowHeight)) >= timetable.getPeriodNum() ?
 				timetable.getPeriodNum() - 1 : ( (int) ( y / rowHeight ));
 		if(res < 0){
 			return 0;
@@ -2596,7 +2604,6 @@ public class TimetableFragment extends Fragment {
 	}
 
 	private float getPeriodByFloatFromTouchedPosition(float y){
-		Timetable timetable = getTimetableDataFromManager();
 		float res = ( y / rowHeight ) >= timetable.getPeriodNum() 
 				? timetable.getPeriodNum() : (  y / rowHeight );
 		if(res < 0){
@@ -2608,7 +2615,7 @@ public class TimetableFragment extends Fragment {
 
 	protected boolean checkSelectedRangeAvaliable(
 			int startDay,	int endDay, 
-			int startPeriod, int endPeriod) {
+			float startPeriod, float endPeriod) {
 
 		for(int i = startDay ; i <= endDay ; i++){
 			if(checkSelectedRangeAvaliableVertical(
@@ -2623,7 +2630,6 @@ public class TimetableFragment extends Fragment {
 	private boolean checkSelectedRangeAvaliableVertical(int day, float startPeriod, float endPeriod){
 		MyLog.d("checkSelectedRangeVertical", 
 				"day : " + day + ", startPeriod : " + startPeriod + ", endPeriod : " + endPeriod);
-		Timetable timetable = getTimetableDataFromManager();
 		for(int i = 0; i < timetable.getLessonList().size() ; i++){
 			Lesson tmp = timetable.getLessonList().get(i);
 
@@ -2687,15 +2693,14 @@ public class TimetableFragment extends Fragment {
 	 * @return
 	 */
 	private boolean markSelectedCells(int startDayIndex, int endDayIndex, 
-			int startPeriod, int endPeriod){
+			float startPeriod, float endPeriod){
 		//Resources res = getResources();
-		Timetable timetable = getTimetableDataFromManager();
 
 		markSelectedRangeLayout.setVisibility(View.VISIBLE);
 		markSelectedRangeLayout.bringToFront();
 
-		int startP = startPeriod;
-		int endP = endPeriod;
+		float startP = startPeriod;
+		float endP = endPeriod;
 		int startD = startDayIndex;
 		int endD = endDayIndex;
 
@@ -2803,7 +2808,6 @@ public class TimetableFragment extends Fragment {
 			int endDayIndex,
 			float startPeriod, 
 			float endPeriod){
-		Timetable timetable = getTimetableDataFromManager();
 		if(markButtonOK == null || markButtonCancel == null){
 			return false;
 		}
@@ -3038,13 +3042,14 @@ public class TimetableFragment extends Fragment {
 
 			Bundle b = new Bundle();
 
-			Timetable timetable = getTimetableDataFromManager();
+
 			int startDay = timetable.getGregorianCalendarDayFromDayIndex(startDayIndex);
 			int endDay = timetable.getGregorianCalendarDayFromDayIndex(endDayIndex);
 			b.putInt("StartDay", startDay);
 			b.putInt("EndDay", endDay);
 			b.putFloat("StartPeriod", startPeriod);
 			b.putFloat("EndPeriod", endPeriod);
+            b.putInt("TimetablePageIndex", myPageIndex);
 			builder.createDialog(null, b, "Add").show();
 
 			//			dialog.setArguments(b);
@@ -3086,7 +3091,6 @@ public class TimetableFragment extends Fragment {
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-			Timetable timetable = getTimetableDataFromManager();
 			for(int i = startDay ; i <= endDay ; i++){
 				//				Lesson pastedLesson = pasteLesson(i, startPeriod, endPeriod);
 				Lesson pastedLesson = pasteLesson(i, startPeriod);
@@ -3102,7 +3106,6 @@ public class TimetableFragment extends Fragment {
 		}
 
 		private Lesson pasteLesson(int day, float _startPeriod){
-			Timetable timetable = getTimetableDataFromManager();
 			Lesson lessonToPaste = lessonCopied.clone();
 
 			float _endPeriod = _startPeriod + lessonToPaste.getPeriodLengthByFloat();
@@ -3159,7 +3162,6 @@ public class TimetableFragment extends Fragment {
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-			Timetable timetable = getTimetableDataFromManager();
 			Lesson lesson = (Lesson) lessonView.getTag();
 			
 			String s = getString(R.string.fragment_timetable_oneditlesson_toast);
@@ -3171,7 +3173,9 @@ public class TimetableFragment extends Fragment {
 			LessonEditDialogBuilder builder =
 					new LessonEditDialogBuilder(
 							TimetableFragment.this.getActivity(), TimetableFragment.this);
-			builder.createDialog(lesson, null, "Edit").show();
+            Bundle bundle = new Bundle();
+            bundle.putInt("TimetablePageIndex", myPageIndex);
+			builder.createDialog(lesson, bundle, "Edit").show();
 
 			//			dialog.show(getFragmentManager(), "Edit");
 			//			Bundle b = new Bundle();
@@ -3203,7 +3207,6 @@ public class TimetableFragment extends Fragment {
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-			Timetable timetable = getTimetableDataFromManager();
 			Lesson tmpLesson = (Lesson) lessonView.getTag();
 			timetable.onRemoveLesson(tmpLesson);
 			timetable.getLessonList().remove(tmpLesson);			
@@ -3237,7 +3240,6 @@ public class TimetableFragment extends Fragment {
 
 	private boolean isLessonEditButtonsShowing = false;
 	private void showLessonEditButtons(View attatchedView, Lesson attatchedLesson){
-		Timetable timetable = getTimetableDataFromManager();
 		isLessonEditButtonsShowing = true;
 
 		lessonEditOK.setVisibility(View.VISIBLE);
@@ -3390,7 +3392,6 @@ public class TimetableFragment extends Fragment {
 	 * @return wh[2]
 	 */
 	private int[] getLessonViewWHFromLesson(Lesson lesson){
-		Timetable timetable = getTimetableDataFromManager();
 		//int[] wh = new int[2];
 		int startDay = timetable.getDayIndexFromGregorianCalendarDay(lesson.getLessonInfo().getDay());
 		float startPeriod = lesson.getLessonStartPeriodByFloat();
@@ -3399,7 +3400,6 @@ public class TimetableFragment extends Fragment {
 	}
 
 	private int[] getGridOverlapViewWH(int startDay, int endDay, float startPeriod, float endPeriod){
-		Timetable timetable = getTimetableDataFromManager();
 		int[] wh = new int[2];
 		//
 		//		View lt_cell = grid.findViewWithTag(new CellTag(startDay, startPeriod));
@@ -3478,7 +3478,6 @@ public class TimetableFragment extends Fragment {
 	 * @return lt[2]
 	 */
 	private int[] getLessonViewTLMarginFromLesson(Lesson lesson){
-		Timetable timetable = getTimetableDataFromManager();
 		//int[] tl = new int[2];
 		int startDay = timetable.getDayIndexFromGregorianCalendarDay(lesson.getLessonInfo().getDay());
 		float startPeriod = lesson.getLessonStartPeriodByFloat();
@@ -3586,7 +3585,7 @@ public class TimetableFragment extends Fragment {
 				//				touchedDownX = event.getX();
 				//				touchedDownY = event.getY();
 				//				lessonViewDefaultHeight = lessonView.getHeight();
-				if(markSelectedRangeLayout.getVisibility() == View.INVISIBLE || 
+				if(markSelectedRangeLayout.getVisibility() == View.INVISIBLE ||
 				markSelectedRangeLayout.getVisibility() == View.GONE){
 					dismissOverlapMarker(true);
 					isSelectPeriodMode = false;
@@ -3618,7 +3617,6 @@ public class TimetableFragment extends Fragment {
 
 
 	public void onActivityResult(int requestCode, int resultCode){
-		Timetable timetable = getTimetableDataFromManager();
 		//this.onActivityResult(requestCode, resultCode, data)
 		if(requestCode == TimetableFragment.FRAG_TIMETABLE_DIALOG_EDIT_LESSON ||
 				requestCode == TimetableFragment.FRAG_TIMETABLE_DIALOG_ADD_LESSON){
@@ -3687,7 +3685,6 @@ public class TimetableFragment extends Fragment {
 	}
 
 	public View createLessonViewFromLesson(Lesson lesson){
-		Timetable timetable = getTimetableDataFromManager();
 		View lessonView= View.inflate(getSupportActivity(), R.layout.view_timetable_lessonview, null);
 		//grid.setclip
 		TextView textSubject = (

@@ -39,8 +39,8 @@
     <string name="timetable_setting_select_startTime_title">选择您的开始时间</string>
     <string name="timetable_setting_select_timeOffset_prompt">时段长度</string>
     <string name="timetable_setting_select_timeOffset_title">选择时段长度</string>
-    <string name="timetable_setting_select_lessonAlarm_prompt">闹钟设定</string>
-    <string name="timetable_setting_select_lessonAlarm_title">添加闹钟</string>
+    <string name="timetable_setting_select_lessonAlarm_prompt">时间表通知</string>
+    <string name="timetable_setting_select_lessonAlarm_title">时间表通知设定</string>
     <string name="timetable_setting_select_startday_warning_overlapdays">第一天和最后一天重叠</string>
     <string name="timetable_setting_select_endday_warning_overlapdays">结束和起始日期重叠</string>
     <string name="timetable_setting_warning_tableinit_on_starttimechange">若更改起始时间，时间表将会重置</string>
@@ -60,6 +60,7 @@
     <string name="timetable_setting_info_version">软件版本</string>
     <string name="tab_timetablesetting">细节设置</string>
     <string name="tab_timetabletheme">主题背景</string>
+    <string name="tab_alarmandtheme">通知\\主题背景</string>
     <string name="tab_info">商店 / 信息</string>
     <string name="notice">闹钟!</string>
     <string name="unlock_full_version">购买完整版!</string>
@@ -116,7 +117,8 @@
     <string name="pleaseWaitWhileLoading">载入中…</string>
     <string name="starting_connection">连接中。。。</string>
     <string name="cancelled">取消了。</string>
-    <string name="unlock_full_version_pagenum_overflow">请升级至专业版以解锁更多时间表。</string>
+    <string name="unlock_full_version_pagenum_overflow">请升级至专业版\n 解锁更多时间表</string>
+    <string name="unlock_full_version_schedule_overflow">请升级至专业版\n 解锁更多时间设置</string>
     <string name="buy_full_version">请升级至专业版解锁全部功能！</string>
     <string name="send_feedback_subject">Timetable Kit Feedback</string>
     <string name="send_feedback_title">请发给我们意见！</string>
@@ -129,7 +131,7 @@
     <string name="activity_setting_viewpager_dayprompt">星期</string>
     <string name="activity_setting_viewpager_periodprompt">时段</string>
     <string name="activity_setting_viewpager_timeprompt">开始时间和时间间隔</string>
-    <string name="activity_setting_viewpager_alarmprompt">闹钟</string>
+    <string name="activity_setting_viewpager_alarmprompt">时间表通知</string>
     <string name="activity_setting_viewpager_themeprompt">主题背景</string>
     <string name="activity_setting_viewpager_languageprompt">语言 (Language)</string>
     <string name="connector_result_failed">连接失败</string>
@@ -150,6 +152,7 @@
     <string name="dialog_editschedule_text_title">标题</string>
     <string name="dialog_editschedule_text_memo">备忘录</string>
     <string name="dialog_editschedule_text_alarm">提醒</string>
+    <string name="dialog_editschedule_text_sound">声音</string>
     <string name="activity_overlap_title">堆栈时间表</string>
     <string name="activity_showall_title">时间表流视图</string>
     <string name="dialog_rate_title">评论</string>
@@ -160,7 +163,7 @@
     <string name="activity_overlap_goto_showall_mode">选择时间表</string>
     <string name="dialog_share_data_send_file_num">已发送的时间表个数</string>
     <string name="dialog_share_data_receive_file_num">已下载的时间表个数</string>
-    <string name="fragment_schedule_schedulenum_overflows">购买完整版，你可以添加12个以上日程表。</string>
+    <string name="fragment_schedule_schedulenum_overflows">购买完整版，你可以添加6个以上日程表。</string>
     <string name="activity_store_moretheme">所有主题背景</string>
     <string name="activity_store_noads">移除广告</string>
     <string name="activity_store_alarm">闹钟功能</string>
@@ -174,7 +177,7 @@
     <string name="dialog_sharedata_hint">共有密码</string>
     <string name="activity_appwidget_configure_color">屏幕光亮</string>
     <string name="activity_appwidget_configure_alpha">屏幕透明度</string>
-    <string name="activity_appwidget_configure_preview">预览</string>
+    <string name="activity_appwidget_configure_preview">颜色预览</string>
     <string name="dialog_connector_uploadinfo_received_times_A">\u0020以及另外</string>
     <string name="dialog_connector_uploadinfo_received_times_B">次下载</string>
     <string name="dialog_connector_uploadinfo_received_noone">未能接收</string>
@@ -189,8 +192,10 @@
     <string-array name="timetable_setting_startdays">
         <item>星期日</item>
         <item>星期一</item>
+        <item>星期二</item>
     </string-array>
     <string-array name="timetable_setting_enddays">
+        <item>星期四</item>
         <item>星期五</item>
         <item>星期六</item>
         <item>星期日</item>
@@ -213,7 +218,7 @@
         <item>90分钟</item>
     </string-array>
     <string-array name="timetable_setting_lessonAlarms">
-        <item>关闭闹钟</item>
+        <item>禁用闹钟</item>
         <item>准时</item>
         <item>1分钟前</item>
         <item>5分钟前</item>
@@ -255,4 +260,10 @@
     <string name="Saturday">星期六</string>
     <string name="Sunday">星期日</string>
 
+    <!-- General -->
+    <string name="ok">确认</string>
+    <string name="cancel">取消</string>
+    <string name="quit_ad_dialog_title_text">确定退出吗？</string>
+    <string name="store_buy_full_version">购买完整版!</string>
+    <string name="minute_short">分钟</string>
 </resources>

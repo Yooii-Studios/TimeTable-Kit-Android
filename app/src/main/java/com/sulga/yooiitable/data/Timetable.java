@@ -19,7 +19,9 @@ public class Timetable implements Parcelable, Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final int INTERNAL_VERSION_ID = 1;
+//	private static final int INTERNAL_VERSION_ID = 1;
+    //Start Minute Added!
+    private static final int INTERNAL_VERSION_ID = 2;
 //	private static final long serialVersionUID = 6740432258038563321L;
 	//private static final long serialVersionUID = -2716683761884537753L;
 	//private static final long serialVersionUID = -3139495191579339656L;
@@ -61,6 +63,7 @@ public class Timetable implements Parcelable, Serializable{
 	private int endDay;
 	private ColumnTypes columnType;
 	private int startTime;
+    private int startMin;
 	private int periodNum;		//교시 수
 	private int periodUnit;		//1교시당 배분 시간
 	//private boolean islessonAlarmExists;
@@ -84,12 +87,12 @@ public class Timetable implements Parcelable, Serializable{
 	}
 
 	public Timetable(int startDay, int endDay, 
-			ColumnTypes columnType, int startTime, int periodNum, int periodUnit, int lessonAlarmTime){
+			ColumnTypes columnType, int startHour, int periodNum, int periodUnit, int lessonAlarmTime){
 		//this.setDayNum(dayNum);
 		this.startDay = startDay;
 		this.endDay = endDay;
 		this.columnType = columnType;
-		this.startTime = startTime;
+		this.startTime = startHour;
 		this.setPeriodNum(periodNum);
 		this.setPeriodUnit(periodUnit);
 		//this.islessonAlarmExists = lessonAlarm;
@@ -102,7 +105,28 @@ public class Timetable implements Parcelable, Serializable{
 		//timetableOption = new TimetableOption();
 	}
 
-	public Timetable(int startDay, int endDay, int periodNum){
+    public Timetable(int startDay, int endDay,
+                     ColumnTypes columnType, int startHour, int startMin, int periodNum, int periodUnit, int lessonAlarmTime){
+        //this.setDayNum(dayNum);
+        this.startDay = startDay;
+        this.endDay = endDay;
+        this.columnType = columnType;
+        this.startTime = startHour;
+        this.startMin = startMin;
+        this.setPeriodNum(periodNum);
+        this.setPeriodUnit(periodUnit);
+        //this.islessonAlarmExists = lessonAlarm;
+        this.lessonAlarmTime = lessonAlarmTime;
+        setLessonList(new ArrayList<Lesson>());
+//		theme = new YTTimetableTheme();
+        themeType = DEFAULT_THEME_TYPE;
+        id = System.currentTimeMillis() + startDay + endDay + periodNum;
+        MyLog.d("Timetable", "id : " + id);
+        //timetableOption = new TimetableOption();
+    }
+
+
+    public Timetable(int startDay, int endDay, int periodNum){
 		this.startDay = startDay;
 		this.endDay = endDay;
 		this.columnType = DEFAULT_COLUMN_TYPE;
@@ -128,6 +152,7 @@ public class Timetable implements Parcelable, Serializable{
 		this.endDay = endDay;
 		this.columnType = DEFAULT_COLUMN_TYPE;
 		this.startTime = DEFAULT_START_TIME;
+        this.startMin = 0;
 		this.setPeriodNum(periodNum);
 		this.setPeriodUnit(periodUnit);
 		//this.islessonAlarmExists = DEFAULT_LESSON_ALARM;
@@ -151,6 +176,7 @@ public class Timetable implements Parcelable, Serializable{
 			columnType = null;
 		}
 		startTime = source.readInt();
+        startMin = source.readInt();
 		periodNum = source.readInt();
 		periodUnit = source.readInt();
 		//islessonAlarmExists = (source.readInt() == 1) ? true : false;
@@ -174,7 +200,7 @@ public class Timetable implements Parcelable, Serializable{
 	public int getStartHourOfPeriod(float _startPeriod){
 		//하루를 시간이 아닌 분으로 치환한후에 계산하는게 훨 나은듯...
 
-		int periodStartHour = (int) (( startTime * 60 + ( periodUnit * ( _startPeriod ) ) ) 
+		int periodStartHour = (int) (( startTime * 60 + startMin + ( periodUnit * ( _startPeriod ) ) )
 				/ 60);
 		return periodStartHour % 24;
 	}
@@ -184,7 +210,7 @@ public class Timetable implements Parcelable, Serializable{
 	 * @return
 	 */
 	public int getStartMinOfPeriod(float _startPeriod){
-		int periodStartMin = (int) (( startTime * 60 + ( periodUnit * ( _startPeriod ) ) ) 
+		int periodStartMin = (int) (( startTime * 60 + startMin + ( periodUnit * ( _startPeriod ) ) )
 				% 60);
 		return periodStartMin;
 	}
@@ -195,7 +221,7 @@ public class Timetable implements Parcelable, Serializable{
 	 * @return
 	 */
 	public int getEndHourOfPeriod(float _endPeriod){
-		int periodEndHour = (int) (( startTime * 60 + ( periodUnit * _endPeriod ) ) 
+		int periodEndHour = (int) (( startTime * 60 + startMin + ( periodUnit * _endPeriod ) )
 				/ 60);
 		return periodEndHour % 24;
 	}
@@ -205,15 +231,14 @@ public class Timetable implements Parcelable, Serializable{
 	 * @return
 	 */
 	public int getEndMinOfPeriod(float _endPeriod){
-		int periodEndMin = (int) (( startTime * 60 + ( periodUnit * _endPeriod ) ) 
+		int periodEndMin = (int) (( startTime * 60 + startMin + ( periodUnit * _endPeriod ) )
 				% 60);
 		return periodEndMin;
 	}
 	
 	public float getPeriodByFloatFromTime(int hour, int min){
-		int timetableStartByMin = getStartTime() * 60;
+		int timetableStartByMin = getStartTimeByMin();
 		int inputTimeByMin = hour * 60 + min;
-		
 
 		if(inputTimeByMin < timetableStartByMin){
 			inputTimeByMin += 60 * 24;
@@ -260,15 +285,6 @@ public class Timetable implements Parcelable, Serializable{
 		return true;
 	}
 
-	public int getTimetableEndHour(){
-		int hourOffset = ( periodUnit * periodNum ) % 60;
-		return ( startTime + hourOffset ) % 24;
-	}
-
-	public int getTimetableEndMin(){
-		return ( periodUnit * periodNum ) % 60;
-	}
-
 	@Override
 	public int describeContents() {
 		// TODO Auto-generated method stub
@@ -288,6 +304,7 @@ public class Timetable implements Parcelable, Serializable{
 		dest.writeInt(endDay);
 		dest.writeString((columnType == null) ? "" : columnType.name());
 		dest.writeInt(startTime);
+        dest.writeInt(startMin);
 		dest.writeInt(periodNum);
 		dest.writeInt(periodUnit);
 		//		if(islessonAlarmExists == true)
@@ -327,14 +344,21 @@ public class Timetable implements Parcelable, Serializable{
 		this.columnType = columnType;
 	}
 
+    @Deprecated
 	public int getStartTime() {
 		return startTime;
 	}
+    public int getStartMin(){
+        return startMin;
+    }
 
-	public void setStartTime(int startTime) {
-		this.startTime = startTime;
+    public int getStartTimeByMin()
+    {return startTime * 60 + startMin;}
+
+	public void setStartHour(int startHour) {
+		this.startTime = startHour;
 	}
-
+    public void setStartMin(int startMin){this.startMin = startMin;}
 	/*public boolean getIsLessonAlarmExists() {
 		return islessonAlarmExists;
 	}
@@ -546,6 +570,22 @@ public class Timetable implements Parcelable, Serializable{
 	        	id = in.readLong();
 	        	bmpForShare = (byte[]) in.readObject();
 	        	break;
+            case 2:
+                MyLog.d("Timetable", "Successfully loaded case 2 data");
+                themeType = (ThemeType) in.readObject();
+                title = (String) in.readObject();
+                startDay = in.readInt();
+                endDay = in.readInt();
+                columnType = (ColumnTypes) in.readObject();
+                startTime = in.readInt();
+                startMin = in.readInt();
+                periodNum = in.readInt();
+                periodUnit = in.readInt();
+                lessonAlarmTime = in.readInt();
+                lessonList = (ArrayList<Lesson>) in.readObject();
+                id = in.readLong();
+                bmpForShare = (byte[]) in.readObject();
+                break;
 	        	//if new version/ params modified, make new cases.
 	    }
 	}
@@ -559,6 +599,7 @@ public class Timetable implements Parcelable, Serializable{
 	    out.writeInt(endDay);
 	    out.writeObject(columnType);
 	    out.writeInt(startTime);
+        out.writeInt(startMin);
 	    out.writeInt(periodNum);
 	    out.writeInt(periodUnit);
 	    out.writeInt(lessonAlarmTime);

@@ -53,7 +53,7 @@ public class AdUtils {
                     showInHouseStoreAd(context);
                 } else {
                     prefs.edit().putInt(EACH_AD_COUNT, ++eachAdCount).apply();
-                    showInterstitialAd(context);
+//                    showInterstitialAd(context);
                 }
             }
             if (launchCount < 55) {
@@ -105,7 +105,7 @@ public class AdUtils {
         interstitialAdView.loadAd(fullAdRequest);
     }
 
-    private static void showInHouseStoreAd(final Context context) {
+    public static void showInHouseStoreAd(final Context context) {
         final Dialog dialog = new Dialog(context);
 
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -127,6 +127,66 @@ public class AdUtils {
                 context.startActivity(new Intent(context, StoreActivity.class));
             }
         });
+
+        ImageView storeImageView = (ImageView) dialog.findViewById(R.id.store_ad_dialog_image_view);
+        storeImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                context.startActivity(new Intent(context, StoreActivity.class));
+            }
+        });
+
+        TextView storeButtonView = (TextView) dialog.findViewById(R.id.store_ad_dialog_ok_button);
+        storeButtonView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                context.startActivity(new Intent(context, StoreActivity.class));
+            }
+        });
+
+        TextView cancelButtonView = (TextView) dialog.findViewById(R.id.store_ad_dialog_cancel_button);
+        cancelButtonView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        // 기타 필요한 설정
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        dialog.show();
+    }
+
+    public static void showInHouseStoreAd(final Context context, String extraString) {
+        final Dialog dialog = new Dialog(context);
+
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.store_ad_dialog_layout);
+
+        Window window = dialog.getWindow();
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        // 다이얼로그 중앙 정렬용 코드였지만 위의 FEATURE_NO_TITLE 설정으로 인해 필요 없게 됨
+//        window.setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+//        window.setGravity(Gravity.CENTER);
+
+        TextView titleTextView =
+                (TextView) dialog.findViewById(R.id.store_ad_dialog_title_text_view);
+        titleTextView.setText(context.getString(R.string.app_name) + " PRO");
+        titleTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                context.startActivity(new Intent(context, StoreActivity.class));
+            }
+        });
+
+        TextView promptTextView =
+                (TextView) dialog.findViewById(R.id.store_ad_dialog_description_prompt_text_View);
+        promptTextView.setVisibility(View.VISIBLE);
+        promptTextView.setText(extraString);
 
         ImageView storeImageView = (ImageView) dialog.findViewById(R.id.store_ad_dialog_image_view);
         storeImageView.setOnClickListener(new View.OnClickListener() {

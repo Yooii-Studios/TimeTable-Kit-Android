@@ -12,8 +12,9 @@ import com.sulga.yooiitable.mylog.*;
 import com.sulga.yooiitable.timetablesetting.utils.*;
 import com.sulga.yooiitable.utils.*;
 
+@Deprecated
 public class SettingTimeDialogCreator {
-
+/*
 	private static int startTime = -1;
 	private static int timeOffset = -1;
 	private static StartTimeSpinnerOnItemSelected startOnSelected;
@@ -268,7 +269,7 @@ public class SettingTimeDialogCreator {
 			// TODO Auto-generated method stub
 		}
 	}
-
+*/
 	
 }
 

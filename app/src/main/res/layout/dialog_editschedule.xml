@@ -319,7 +319,8 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:layout_weight="7" >
+            android:layout_weight="7"
+            android:id="@+id/dialog_editschedule_alarmpick_wrapper">
 
             <Spinner
                 android:id="@+id/dialog_editschedule_alarmpick_spinner"
@@ -334,6 +335,54 @@
                 android:gravity="center"
                 android:padding="@dimen/dialog_editschedule_padding"
                 android:prompt="@string/dialog_editschedule_spinner_pickalarm_prompt" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dialog_editschedule_alarmsoundpick_wrapper"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/dialog_editschedule_line_height"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="2" >
+
+            <TextView
+                android:id="@+id/dialog_editschedule_textview_alarmsound"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/dialog_editschedule_layout_margin_tb"
+                android:layout_marginLeft="@dimen/dialog_editschedule_layout_margin_lr"
+                android:layout_marginRight="@dimen/dialog_editschedule_layout_margin_lr"
+                android:layout_marginTop="@dimen/dialog_editschedule_layout_margin_tb"
+                android:background="@drawable/yt_settingsdialog_background"
+                android:gravity="center"
+                android:padding="@dimen/dialog_editschedule_padding"
+                android:text="@string/dialog_editschedule_text_sound"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/dialog_editschedule_textsize" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="7" >
+
+            <TextView
+                android:id="@+id/dialog_editschedule_alarmsoundpick_text"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/dialog_editschedule_layout_margin_tb"
+                android:layout_marginLeft="@dimen/dialog_editschedule_layout_margin_lr"
+                android:layout_marginRight="@dimen/dialog_editschedule_layout_margin_lr"
+                android:layout_marginTop="@dimen/dialog_editschedule_layout_margin_tb"
+                android:background="@drawable/yt_settingsdialog_background"
+                android:gravity="center"
+                android:padding="@dimen/dialog_editschedule_padding" />
         </LinearLayout>
     </LinearLayout>
 

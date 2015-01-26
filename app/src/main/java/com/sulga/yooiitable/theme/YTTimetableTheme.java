@@ -28,7 +28,8 @@ public class YTTimetableTheme {
 		"#1e6d74",
 		"#ff7373",
 		"#269926",
-		"#6187cf"
+		"#6187cf",
+        "#ffffff"
 		//		"#7ABA7A",
 		//		"#B76EB8",
 		//		"#3D72A4",

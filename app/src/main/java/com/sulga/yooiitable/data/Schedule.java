@@ -9,13 +9,14 @@ import com.sulga.yooiitable.alarm.*;
 import com.sulga.yooiitable.data.Timetable.*;
 import com.sulga.yooiitable.mylog.*;
 import com.sulga.yooiitable.theme.YTTimetableTheme.*;
+import com.yooiistudios.stevenkim.alarmsound.*;
 
-public class Schedule implements Parcelable, TimeInfo, Serializable{
+public class Schedule implements TimeInfo, Serializable{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final int INTERNAL_VERSION_ID = 1;
+	private static final int INTERNAL_VERSION_ID = 2;
 
 	public static final int PARENT_LESSON_NONE = -1;
 	public static final int SCHEDULE_ALARM_NONE = -1;
@@ -41,6 +42,9 @@ public class Schedule implements Parcelable, TimeInfo, Serializable{
 	
 	//알람 id는 알람매니저가 알람 등록을 시작할때 자동 배정, 지속적 increment...오버플로우는 고려안함.
 	private int alarmId = YTAlarmManager.YT_ALARM_NOT_REGISTERED;
+
+    //Alarm Sound 추가
+    private SKAlarmSound alarmSound;
 	
 	public Schedule(){
 		setLastUpdated(Calendar.getInstance().getTimeInMillis());
@@ -56,7 +60,7 @@ public class Schedule implements Parcelable, TimeInfo, Serializable{
 		this.setScheduleDay(scheduleDay);
 		this.setScheduleHour(scheduleHour);
 		this.setScheduleMin(scheduleMin);
-		
+
 		setLastUpdated(Calendar.getInstance().getTimeInMillis());
 	}
 	
@@ -74,71 +78,70 @@ public class Schedule implements Parcelable, TimeInfo, Serializable{
 		this.setScheduleMin(scheduleMin);
 		
 		setLastUpdated(Calendar.getInstance().getTimeInMillis());
-
 	}
 
-	public Schedule(Parcel source) {
-		// TODO Auto-generated constructor stub
-		this.scheduleName = source.readString();
-		this.scheduleMemo = source.readString();
-		//parentLessonIndex = source.readInt();
-		parentLesson = source.readParcelable(Lesson.class.getClassLoader());
-		this.scheduleYear = source.readInt();
-		this.scheduleMonth = source.readInt();
-		this.scheduleDay = source.readInt();
-		this.scheduleHour = source.readInt();
-		this.scheduleMin = source.readInt();
-		//this.scheduleTimeInMillis = source.readLong();
-		
-		//lastUpdated = Calendar.getInstance().getTimeInMillis();
-	}
-	@Override
-	public int describeContents() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	@Override
-	public void writeToParcel(Parcel dest, int flag) {
-		// TODO Auto-generated method stub
-		dest.writeString(scheduleName);
-		dest.writeString(scheduleMemo);
-		//dest.writeInt(parentLessonIndex);
-		dest.writeParcelable(parentLesson, flag);
-		dest.writeInt(scheduleYear);
-		dest.writeInt(scheduleMonth);
-		dest.writeInt(scheduleDay);
-		dest.writeInt(scheduleHour);
-		dest.writeInt(scheduleMin);
-		//dest.writeLong(scheduleTimeInMillis);
-	}
-	
-	public static final Parcelable.Creator<Schedule> CREATOR = new Parcelable.Creator<Schedule>(){
-
-		@Override
-		public Schedule createFromParcel(Parcel source) {
-			// TODO Auto-generated method stub
-			return new Schedule(source);
-		}
-
-		@Override
-		public Schedule[] newArray(int size) {
-			// TODO Auto-generated method stub
-			return new Schedule[size];
-		}
-	};
-	
-	public static long getScheduleTimeInMillis(Schedule s){
-		int year = s.getScheduleYear();
-		int month = s.getScheduleMonth();
-		int day = s.getDay();
-		int hour = s.getScheduleHour();
-		int min = s.getScheduleMin();
-		
-		Calendar c = Calendar.getInstance();
-		c.set(year, month, day, hour, min);
-		MyLog.d("ScheduleTimeInMillis", c.getTimeInMillis()+"");
-		return c.getTimeInMillis();
-	}
+//	public Schedule(Parcel source) {
+//		// TODO Auto-generated constructor stub
+//		this.scheduleName = source.readString();
+//		this.scheduleMemo = source.readString();
+//		//parentLessonIndex = source.readInt();
+//		parentLesson = source.readParcelable(Lesson.class.getClassLoader());
+//		this.scheduleYear = source.readInt();
+//		this.scheduleMonth = source.readInt();
+//		this.scheduleDay = source.readInt();
+//		this.scheduleHour = source.readInt();
+//		this.scheduleMin = source.readInt();
+//		//this.scheduleTimeInMillis = source.readLong();
+//
+//		//lastUpdated = Calendar.getInstance().getTimeInMillis();
+//	}
+//	@Override
+//	public int describeContents() {
+//		// TODO Auto-generated method stub
+//		return 0;
+//	}
+//	@Override
+//	public void writeToParcel(Parcel dest, int flag) {
+//		// TODO Auto-generated method stub
+//		dest.writeString(scheduleName);
+//		dest.writeString(scheduleMemo);
+//		//dest.writeInt(parentLessonIndex);
+//		dest.writeParcelable(parentLesson, flag);
+//		dest.writeInt(scheduleYear);
+//		dest.writeInt(scheduleMonth);
+//		dest.writeInt(scheduleDay);
+//		dest.writeInt(scheduleHour);
+//		dest.writeInt(scheduleMin);
+//		//dest.writeLong(scheduleTimeInMillis);
+//	}
+//
+//	public static final Parcelable.Creator<Schedule> CREATOR = new Parcelable.Creator<Schedule>(){
+//
+//		@Override
+//		public Schedule createFromParcel(Parcel source) {
+//			// TODO Auto-generated method stub
+//			return new Schedule(source);
+//		}
+//
+//		@Override
+//		public Schedule[] newArray(int size) {
+//			// TODO Auto-generated method stub
+//			return new Schedule[size];
+//		}
+//	};
+//
+//	public static long getScheduleTimeInMillis(Schedule s){
+//		int year = s.getScheduleYear();
+//		int month = s.getScheduleMonth();
+//		int day = s.getDay();
+//		int hour = s.getScheduleHour();
+//		int min = s.getScheduleMin();
+//
+//		Calendar c = Calendar.getInstance();
+//		c.set(year, month, day, hour, min);
+//		MyLog.d("ScheduleTimeInMillis", c.getTimeInMillis()+"");
+//		return c.getTimeInMillis();
+//	}
 	
 	/*public void setScheduleTimeInMillis(){
 		scheduleTimeInMillis = Schedule.getScheduleTimeInMillis(this);
@@ -255,8 +258,9 @@ public class Schedule implements Parcelable, TimeInfo, Serializable{
 	public void setScheduleAlarm(int scheduleAlarm) {
 		this.scheduleAlarm = scheduleAlarm;
 	}
-	
-	
+	public SKAlarmSound getAlarmSound(){return alarmSound;}
+	public void setAlarmSound(SKAlarmSound as){this.alarmSound = as;}
+
 	private void readObject (java.io.ObjectInputStream in) 
 			throws java.io.IOException, ClassNotFoundException{
 	    int version = in.readInt();
@@ -275,8 +279,24 @@ public class Schedule implements Parcelable, TimeInfo, Serializable{
 	        	scheduleAlarm = in.readInt();
 	        	alarmId = in.readInt();
 	        	break;
+            case 2 :
+                scheduleName = (String) in.readObject();
+                scheduleMemo = (String) in.readObject();
+                googleCalendarEventKey = (String) in.readObject();
+                parentLesson = (Lesson) in.readObject();
+                scheduleYear = in.readInt();
+                scheduleMonth = in.readInt();
+                scheduleDay = in.readInt();
+                scheduleHour = in.readInt();
+                scheduleMin = in.readInt();
+                lastUpdatedTimeInMillis = in.readLong();
+                scheduleAlarm = in.readInt();
+                alarmId = in.readInt();
+                alarmSound = (SKAlarmSound)in.readObject();
+                break;
 	        	//if new version/ params modified, make new cases.
-	    }
+
+        }
 	}
 	private void writeObject(java.io.ObjectOutputStream out) 
 			throws java.io.IOException, ClassNotFoundException{
@@ -294,6 +314,6 @@ public class Schedule implements Parcelable, TimeInfo, Serializable{
 	    out.writeLong(lastUpdatedTimeInMillis);
 	    out.writeInt(scheduleAlarm);
 	    out.writeInt(alarmId);
+        out.writeObject(alarmSound);
 	}
-
 }

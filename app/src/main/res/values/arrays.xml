@@ -19,7 +19,7 @@
         <item>@string/Saturday</item>
         <item>@string/Sunday</item>
     </string-array>
-    <string-array name="timetable_setting_startTimes">
+    <string-array name="timetable_setting_startTimes" translatable="false">
         <item>00:00</item>
         <item>01:00</item>
         <item>02:00</item>

@@ -130,7 +130,7 @@ public class Lesson implements Parcelable, TimeInfo, Cloneable, Serializable{
 	 * @return lesson start period by float.
 	 */
 	public float getLessonStartPeriodByFloat(){
-		int timetableStartByMin = parentTimetable.getStartTime() * 60;
+		int timetableStartByMin = parentTimetable.getStartTimeByMin();
 		int lessonStartByMin = periodInfo.getStartHour() * 60 + periodInfo.getStartMin();
 
 		if(lessonStartByMin < timetableStartByMin){
@@ -152,7 +152,7 @@ public class Lesson implements Parcelable, TimeInfo, Cloneable, Serializable{
 	 * @return Actual lesson end period by float. counts from 0.
 	 */
 	public float getLessonEndPeriodByFloat(){
-		int timetableStartByMin = parentTimetable.getStartTime() * 60;
+		int timetableStartByMin = parentTimetable.getStartTimeByMin();
 		int lessonEndByMin = periodInfo.getEndHour() * 60 + periodInfo.getEndMin();
 		//수업 끝나는 시간이 시간표 시작시간보다 값이 작다는건 새벽 1시, 2시 등등이 되었다는 뜻. 계산을 위해 24시간을 더해두자.
 		if(lessonEndByMin <= timetableStartByMin){
@@ -173,7 +173,7 @@ public class Lesson implements Parcelable, TimeInfo, Cloneable, Serializable{
 	 * @return
 	 */
 	public boolean shouldAlarmNextDay(){
-		int timetableStartByMin = parentTimetable.getStartTime() * 60;
+		int timetableStartByMin = parentTimetable.getStartTimeByMin();
 		int lessonStartByMin = periodInfo.getStartHour() * 60 + periodInfo.getStartMin();
 		//수업 끝나는 시간이 시간표 시작시간보다 값이 작다는건 새벽 1시, 2시 등등이 되었다는 뜻. 계산을 위해 24시간을 더해두자.
 		if(lessonStartByMin <= timetableStartByMin){
@@ -183,7 +183,7 @@ public class Lesson implements Parcelable, TimeInfo, Cloneable, Serializable{
 	}
 	
 	public static float getLessonStartPeriodByFloat(Timetable parentTimetable, PeriodInfo periodInfo){
-		int timetableStartByMin = parentTimetable.getStartTime() * 60;
+		int timetableStartByMin = parentTimetable.getStartTimeByMin();
 		int lessonStartByMin = periodInfo.getStartHour() * 60 + periodInfo.getStartMin();
 
 		if(lessonStartByMin < timetableStartByMin){
@@ -198,7 +198,7 @@ public class Lesson implements Parcelable, TimeInfo, Cloneable, Serializable{
 	}
 
 	public static float getLessonEndPeriodByFloat(Timetable parentTimetable, PeriodInfo periodInfo){
-		int timetableStartByMin = parentTimetable.getStartTime() * 60;
+		int timetableStartByMin = parentTimetable.getStartTimeByMin();
 		int lessonEndByMin = periodInfo.getEndHour() * 60 + periodInfo.getEndMin();
 		//수업 끝나는 시간이 시간표 시작시간보다 값이 작다는건 새벽 1시, 2시 등등이 되었다는 뜻. 계산을 위해 24시간을 더해두자.
 		if(lessonEndByMin <= timetableStartByMin){

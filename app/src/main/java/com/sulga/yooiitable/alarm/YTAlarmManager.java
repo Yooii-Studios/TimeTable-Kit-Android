@@ -10,6 +10,8 @@ import com.sulga.yooiitable.data.Lesson;
 import com.sulga.yooiitable.data.Schedule;
 import com.sulga.yooiitable.data.Timetable;
 import com.sulga.yooiitable.mylog.MyLog;
+import com.yooiistudios.stevenkim.alarmsound.SKAlarmSoundManager;
+import com.yooiistudios.stevenkim.alarmsound.SKAlarmSoundPlayer;
 
 import java.util.ArrayList;
 import java.util.Calendar;

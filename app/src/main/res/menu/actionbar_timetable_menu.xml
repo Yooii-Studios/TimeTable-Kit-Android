@@ -21,22 +21,14 @@
                 android:id="@+id/menu_item_settings"
                 android:showAsAction="ifRoom"
                 android:title="@string/menu_settings"/>
-            <item
-                android:id="@+id/menu_item_language"
-                android:showAsAction="ifRoom"
-                android:title="@string/activity_setting_viewpager_languageprompt"/>
-            <item
-                android:id="@+id/menu_item_send_feedback"
-                android:showAsAction="ifRoom"
-                android:title="@string/menu_send_feedback"/>
-            <item
-                android:id="@+id/menu_item_help"
-                android:showAsAction="ifRoom"
-                android:title="@string/menu_help"/>
             <item 
-                android:id="@+id/menu_item_recommend"
+                android:id="@+id/menu_item_rate"
                 android:showAsAction="ifRoom"
-                android:title="@string/menu_recommend_friends"/>
+                android:title="@string/timetable_setting_info_rate"/>
+            <item
+                android:id="@+id/menu_item_likeinfacebook"
+                android:showAsAction="ifRoom"
+                android:title="@string/timetable_setting_info_linkfacebook"/>
         </menu>
     </item>
 

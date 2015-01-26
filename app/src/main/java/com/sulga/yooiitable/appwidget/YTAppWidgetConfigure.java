@@ -173,14 +173,13 @@ public class YTAppWidgetConfigure extends Activity {
 		checkImage.bringToFront();
 		
 		String[] colors = YTTimetableTheme.LESSON_COLORS_THEME_A.clone();
-		String[] _colors = new String[colors.length + 2];
-		_colors[0] = "#000000";
-		_colors[1] = "#ffffff";
+		String[] _colors = new String[colors.length + 1];
+		_colors[colors.length] = "#000000";
 		for(int i = 0 ; i < colors.length ; i++){
-			_colors[i + 2] = colors[i];
+			_colors[i] = colors[i];
 		}
 
-		int columnNum = YTTimetableTheme.LESSON_COLORS_THEME_A.length;
+		int columnNum = YTTimetableTheme.LESSON_COLORS_THEME_A.length + 1;
 		LayoutInflater inflater = this.getLayoutInflater();
 		for(int i = 0; i < columnNum ; i++){
 			FrameLayout ll = (FrameLayout) inflater.inflate(R.layout.view_appwidget_configure_colorpick, colorPickWrapper, false);
@@ -225,6 +224,12 @@ public class YTAppWidgetConfigure extends Activity {
 				textColor = Color.WHITE;
 			}
 			colorPreviewText.setTextColor(textColor);
+            ImageView check = (ImageView) findViewById(R.id.activity_appwidget_configure_pick_color_checkimage);
+            if(color == Color.WHITE){
+                check.setImageResource(R.drawable.ic_action_done_black);
+            }else{
+                check.setImageResource(R.drawable.ic_action_done);
+            }
 			setCheckImageTo(v);
 		}
 	};

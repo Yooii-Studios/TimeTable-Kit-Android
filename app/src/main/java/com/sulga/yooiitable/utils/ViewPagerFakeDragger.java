@@ -21,8 +21,9 @@ public class ViewPagerFakeDragger {
 			final ViewPager pager,
 			float f,
 			int delayMillis){
-		float density = context.getResources().getDisplayMetrics().density;
-		final int mFlingDistance = (int) (f * density);
+//		float density = context.getResources().getDisplayMetrics().density;
+//		final int mFlingDistance = (int) (f * density);
+        final int mFlingDistance = (int)f;
 		final int loopCount = 30;	//10번 루프돌며 스와이프.
 
 		pager.setPageTransformer(reverseDrawingOrder, pageTransformer);

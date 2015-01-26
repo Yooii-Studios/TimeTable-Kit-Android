@@ -33,8 +33,8 @@
     <string name="timetable_setting_select_startTime_title">시작 시간을 선택하세요.</string>
     <string name="timetable_setting_select_timeOffset_prompt">1교시당 배분 시간</string>
     <string name="timetable_setting_select_timeOffset_title">1교시당 배분 시간을 선택하세요.</string>
-    <string name="timetable_setting_select_lessonAlarm_prompt">수업 알람</string>
-    <string name="timetable_setting_select_lessonAlarm_title">수업 알람을 선택하세요.</string>
+    <string name="timetable_setting_select_lessonAlarm_prompt">시간표 알림</string>
+    <string name="timetable_setting_select_lessonAlarm_title">시간표 수업 알림을 선택하세요.</string>
     <string name="timetable_setting_select_startday_warning_overlapdays">시작 요일과 끝 요일이 겹칩니다.</string>
     <string name="timetable_setting_select_endday_warning_overlapdays">끝 요일과 시작 요일이 겹칩니다.</string>
     <string name="timetable_setting_warning_tableinit_on_starttimechange">수업 시작 시간을 바꾸면 시간표가 초기화됩니다.</string>
@@ -51,9 +51,10 @@
     <string name="timetable_setting_info_restore_purchases">구매내역 복구</string>
     <string name="timetable_setting_info_license">라이센스</string>
     <string name="timetable_setting_info_version">버전</string>
-    <string name="tab_timetablesetting">세부설정</string>
+    <string name="tab_timetablesetting">설정</string>
     <string name="tab_timetabletheme">테마</string>
     <string name="tab_info">상점\\정보</string>
+    <string name="tab_alarmandtheme">알림\\테마</string>
     <string name="notice">알람!</string>
     <string name="unlock_full_version">풀버전을 구매해 주세요!</string>
     <string name="buy_full_version_explain">시간표와 이벤트 개수 증가, 광고 제거, 모든 테마와 알람을 사용하실 수 있습니다.</string>
@@ -61,7 +62,7 @@
     <string name="edit_your_timetable_title">타이틀을 설정하세요!</string>
     <string name="drawer_add_timetable">시간표 추가</string>
     <string name="menu_store">상점</string>
-    <string name="menu_settings">세부설정</string>
+    <string name="menu_settings">설정</string>
     <string name="menu_send_feedback">피드백 보내기</string>
     <string name="menu_help">도움말</string>
     <string name="activity_show_all_goto_overlap_mode">겹쳐보기 화면으로</string>
@@ -106,7 +107,8 @@
     <string name="pleaseWaitWhileLoading">로딩 중입니다...</string>
     <string name="starting_connection">연결 중...</string>
     <string name="cancelled">취소되었습니다.</string>
-    <string name="unlock_full_version_pagenum_overflow">무료 버전에서는 시간표 개수가 4개까지 지원됩니다.</string>
+    <string name="unlock_full_version_pagenum_overflow">무료 버전에서는 시간표 개수가\n3개까지 지원됩니다.</string>
+    <string name="unlock_full_version_schedule_overflow">무료 버전에서는 스케줄 개수가\n5개까지 지원됩니다.</string>
     <string name="buy_full_version">풀버전을 구매해 주세요.</string>
     <string name="send_feedback_subject">타임테이블 키트 피드백</string>
     <string name="send_feedback_title">피드백을 보내주세요!</string>
@@ -119,7 +121,7 @@
     <string name="activity_setting_viewpager_dayprompt">요일</string>
     <string name="activity_setting_viewpager_periodprompt">교시</string>
     <string name="activity_setting_viewpager_timeprompt">시작 시간과 간격</string>
-    <string name="activity_setting_viewpager_alarmprompt">알람</string>
+    <string name="activity_setting_viewpager_alarmprompt">시간표 알림</string>
     <string name="activity_setting_viewpager_themeprompt">테마</string>
     <string name="activity_setting_viewpager_languageprompt">언어(Language)</string>
     <string name="connector_result_failed">연결에 실패했습니다.</string>
@@ -140,6 +142,7 @@
     <string name="dialog_editschedule_text_title">이름</string>
     <string name="dialog_editschedule_text_memo">메모</string>
     <string name="dialog_editschedule_text_alarm">알람</string>
+    <string name="dialog_editschedule_text_sound">사운드</string>
     <string name="activity_overlap_title">겹쳐보기</string>
     <string name="activity_showall_title">전체보기</string>
     <string name="dialog_settings_daypick_title">요일 설정</string>
@@ -154,7 +157,7 @@
     <string name="dialog_share_data_receive_file_num">받은 시간표 개수</string>
     <string name="activity_overlap_goto_showall_mode">겹쳐 볼 시간표 선택하기</string>
     <string name="dialog_sharedata_hint">공유번호</string>
-    <string name="fragment_schedule_schedulenum_overflows">무료 버전에서 스케줄은 최대 12개까지 지원됩니다.</string>
+    <string name="fragment_schedule_schedulenum_overflows">무료 버전에서 스케줄은 최대 6개까지 지원됩니다.</string>
     <string name="activity_store_moretheme">모든 테마</string>
     <string name="activity_store_noads">광고 제거</string>
     <string name="activity_store_alarm">알람 기능</string>
@@ -174,19 +177,22 @@
     <string name="dialog_editlesson_warn_lessonUnder30Min">수업 시간은 최소 30분 이상이어야 합니다.</string>
     <string name="activity_appwidget_configure_color">밝기</string>
     <string name="activity_appwidget_configure_alpha">투명도</string>
-    <string name="activity_appwidget_configure_preview">미리보기</string>
+    <string name="activity_appwidget_configure_preview">색상 미리보기</string>
     <string name="dialog_connector_uploadinfo_received_noone">아직 아무도 수신하지 않았습니다</string>
     <string name="dialog_connector_uploadinfo_received">\u0020받아감</string>    
     <string name="menu_recommend_friends">친구에게 추천하기</string>
     <string name="recommend_to_friends_subject">[타임테이블 키트] 이 앱을 강추 합니다!</string>
     <string name="recommend_to_friends_body">[타임테이블 키트 구글 플레이스토어: 다운로드]</string>  
     <string name="fragment_timetable_oneditlesson_toast">시간을 클릭하시면 수업시간의 분 단위 설정이 가능합니다.</string>
+
     <!--  -->
     <string-array name="timetable_setting_startdays">
         <item>일요일</item>
         <item>월요일</item>
+        <item>화요일</item>
     </string-array>
     <string-array name="timetable_setting_enddays">
+        <item>목요일</item>
         <item>금요일</item>
         <item>토요일</item>
         <item>일요일</item>
@@ -209,7 +215,7 @@
         <item>90분</item>
     </string-array>
     <string-array name="timetable_setting_lessonAlarms">
-        <item>알람 없음</item>
+        <item>알림 안사용함</item>
         <item>정각</item>
         <item>1분 전</item>
         <item>5분 전</item>
@@ -250,5 +256,12 @@
     <string name="Friday">금요일</string>
     <string name="Saturday">토요일</string>
     <string name="Sunday">일요일</string>
+
+    <!-- General -->
+    <string name="ok">확인</string>
+    <string name="cancel">취소</string>
+    <string name="quit_ad_dialog_title_text">이 앱을 종료하시겠습니까?</string>
+    <string name="store_buy_full_version">프로 버전을 구매해 주세요!</string>
+    <string name="minute_short">분</string>
 
 </resources>

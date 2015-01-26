@@ -14,7 +14,7 @@
             android:orientation="vertical" >
 
             <LinearLayout
-                android:id="@+id/view_timetable_settings_day_wrapper"
+                android:id="@+id/view_timetable_settings_theme_wrapper"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
@@ -22,12 +22,12 @@
                 android:orientation="horizontal" >
 
                 <ImageButton
-                    android:id="@+id/view_timetable_settings_day"
+                    android:id="@+id/view_timetable_settings_theme"
                     android:layout_width="@dimen/view_timetable_settings_icon_wh"
                     android:layout_height="@dimen/view_timetable_settings_icon_wh"
                     android:layout_gravity="left|center_vertical"
                     android:layout_margin="5dp"
-                    android:background="@drawable/yt_icon_settings_day" />
+                    android:background="@drawable/yt_icon_settings_theme" />
 
                 <RelativeLayout
                     android:layout_width="fill_parent"
@@ -35,28 +35,28 @@
                     android:gravity="center_vertical" >
 
                     <TextView
-                        android:id="@+id/view_timetable_settings_day_prompt"
+                        android:id="@+id/view_timetable_settings_theme_prompt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="@string/activity_setting_viewpager_dayprompt"
+                        android:text="@string/activity_setting_viewpager_themeprompt"
                         android:textColor="#000000"
                         android:textSize="@dimen/view_settings_prompt_textsize" />
 
                     <TextView
-                        android:id="@+id/view_timetable_settings_day_text"
+                        android:id="@+id/view_timetable_settings_theme_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/view_timetable_settings_day_prompt"
+                        android:layout_below="@id/view_timetable_settings_theme_prompt"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="10dp"
-                        android:text="MON - SUN"
+                        android:text="Theme"
                         android:textColor="#444444" />
                 </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/view_timetable_settings_period_wrapper"
+                android:id="@+id/view_timetable_settings_alarm_wrapper"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
@@ -64,41 +64,49 @@
                 android:orientation="horizontal" >
 
                 <ImageButton
-                    android:id="@+id/view_timetable_settings_period"
+                    android:id="@+id/view_timetable_settings_alarm"
                     android:layout_width="@dimen/view_timetable_settings_icon_wh"
                     android:layout_height="@dimen/view_timetable_settings_icon_wh"
                     android:layout_gravity="left|center_vertical"
                     android:layout_margin="5dp"
-                    android:background="@drawable/yt_icon_settings_period" />
+                    android:background="@drawable/yt_icon_settings_alarm" />
 
                 <RelativeLayout
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:gravity="center_vertical" >
 
-                    <TextView
-                        android:id="@+id/view_timetable_settings_period_prompt"
+                    <com.yooiistudios.common.textview.AutoFitTextView
+                        android:id="@+id/view_timetable_settings_alarm_prompt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="@string/activity_setting_viewpager_periodprompt"
+                        android:text="@string/activity_setting_viewpager_alarmprompt"
                         android:textColor="#000000"
                         android:textSize="@dimen/view_settings_prompt_textsize" />
 
                     <TextView
-                        android:id="@+id/view_timetable_settings_period_text"
+                        android:id="@+id/view_timetable_settings_alarm_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/view_timetable_settings_period_prompt"
+                        android:layout_below="@id/view_timetable_settings_alarm_prompt"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="10dp"
-                        android:text="9:00 / 30 min"
+                        android:text="MON - SUN"
                         android:textColor="#444444" />
+
+                    <!--<ImageView-->
+                        <!--android:id="@+id/view_timetable_settings_alarm_lockimage"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_alignParentRight="true"-->
+                        <!--android:src="@drawable/yt_icon_lock_gray"-->
+                        <!--android:visibility="invisible" />-->
                 </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/view_timetable_settings_starttime_wrapper"
+                android:id="@+id/view_timetable_settings_language_wrapper"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
@@ -106,12 +114,12 @@
                 android:orientation="horizontal" >
 
                 <ImageButton
-                    android:id="@+id/view_timetable_settings_starttime"
+                    android:id="@+id/view_timetable_settings_language"
                     android:layout_width="@dimen/view_timetable_settings_icon_wh"
                     android:layout_height="@dimen/view_timetable_settings_icon_wh"
                     android:layout_gravity="left|center_vertical"
                     android:layout_margin="5dp"
-                    android:background="@drawable/yt_icon_settings_time" />
+                    android:background="@drawable/yt_icon_settings_language" />
 
                 <RelativeLayout
                     android:layout_width="fill_parent"
@@ -119,68 +127,25 @@
                     android:gravity="center_vertical" >
 
                     <TextView
-                        android:id="@+id/view_timetable_settings_starttime_prompt"
+                        android:id="@+id/view_timetable_settings_language_prompt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="@string/timetable_setting_select_startTime_prompt"
+                        android:text="@string/activity_setting_viewpager_languageprompt"
                         android:textColor="#000000"
-                        android:textSize="@dimen/view_settings_prompt_textsize_bitsmall" />
+                        android:textSize="@dimen/view_settings_prompt_textsize" />
 
                     <TextView
-                        android:id="@+id/view_timetable_settings_starttime_text"
+                        android:id="@+id/view_timetable_settings_language_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/view_timetable_settings_starttime_prompt"
+                        android:layout_below="@id/view_timetable_settings_language_prompt"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="10dp"
                         android:text="MON - SUN"
                         android:textColor="#444444" />
                 </RelativeLayout>
             </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/view_timetable_settings_timeinterval_wrapper"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:background="@drawable/yt_setting_item_background"
-                android:orientation="horizontal" >
-
-                <ImageButton
-                    android:id="@+id/view_timetable_settings_timeinterval"
-                    android:layout_width="@dimen/view_timetable_settings_icon_wh"
-                    android:layout_height="@dimen/view_timetable_settings_icon_wh"
-                    android:layout_gravity="left|center_vertical"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/yt_icon_settings_time" />
-
-                <RelativeLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:gravity="center_vertical" >
-
-                    <TextView
-                        android:id="@+id/view_timetable_settings_timeinterval_prompt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="@string/timetable_setting_select_timeoffset"
-                        android:textColor="#000000"
-                        android:textSize="@dimen/view_settings_prompt_textsize_bitsmall" />
-
-                    <TextView
-                        android:id="@+id/view_timetable_settings_timeinterval_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/view_timetable_settings_timeinterval_prompt"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
-                        android:text="MON - SUN"
-                        android:textColor="#444444" />
-                </RelativeLayout>
-            </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 

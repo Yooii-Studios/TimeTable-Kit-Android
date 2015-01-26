@@ -112,7 +112,8 @@ public class LessonEditDialogBuilder{
 		wlp.gravity = Gravity.TOP;
 		window.setAttributes(wlp);
 
-		timetable = parent.getTimetableDataFromManager();
+        int pageIndex = args.getInt("TimetablePageIndex");
+		timetable = parent.getTimetableDataFromManager(pageIndex);
 		if(lessonToEdit != null){
 			this.lessonToEdit = lessonToEdit;
 			startDay = lessonToEdit.getDay();

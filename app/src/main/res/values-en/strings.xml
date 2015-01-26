@@ -16,11 +16,11 @@
     <string name="fragment_timetable_warning_tableLengthLowerThanLesson_D">periods.</string>
     <string name="fragment_timetable_warning_deleteMainTable">You should have at least one timetable.</string>
     <string name="fragment_timetable_warning_lessonAlreadyExists">Time conflict: class overlap</string>
-    <string name="dialog_deletetimetable_title">Are you sure to delete the timetable?</string>
+    <string name="dialog_deletetimetable_title">Are you sure to delete this timetable?</string>
     <string name="fragment_schedule_title">Scheduler</string>
-    <string name="fragment_schedule_add_schedule">Add event</string>
+    <string name="fragment_schedule_add_schedule">Add Event</string>
     <string name="fragment_schedule_sync">Sync Google Calendar</string>
-    <string name="activity_schedule_edit_title">Edit event</string>
+    <string name="activity_schedule_edit_title">Edit Event</string>
     <string name="activity_schedule_edit_lessonPick_spinner_prompt">Choose your class related event</string>
     <string name="activity_schedule_edit_alarm_spinner_prompt">Alarm Time</string>
     <string name="activity_schedule_edit_date_title">Date</string>
@@ -31,23 +31,22 @@
     <string name="timetable_setting_select_startday_title">Choose the first day of the week</string>
     <string name="timetable_setting_select_endday_prompt">The last day of the week</string>
     <string name="timetable_setting_select_endday_title">Choose the last day of the week</string>
-    <string name="timetable_setting_select_columnType_prompt">Period lable</string>
-    <string name="timetable_setting_select_columnType_title">Choose period lable</string>
-    <string name="timetable_setting_select_columnNum_prompt">By number</string>
+    <string name="timetable_setting_select_columnType_prompt">Period Label</string>
+    <string name="timetable_setting_select_columnType_title">Choose period label</string>
+    <string name="timetable_setting_select_columnNum_prompt">How Many</string>
     <string name="timetable_setting_select_columnNum_title">Choose number of periods</string>
-    <string name="timetable_setting_select_startTime_prompt">Start time</string>
+    <string name="timetable_setting_select_startTime_prompt">Start Time</string>
     <string name="timetable_setting_select_startTime_title">Choose your start time</string>
     <string name="timetable_setting_select_timeOffset_prompt">Timeframe Lengths</string>
-    <string name="timetable_setting_select_timeOffset_title">Choose the length of each time frame</string>
-    <string name="timetable_setting_select_lessonAlarm_prompt">Alarm setting</string>
-    <string name="timetable_setting_select_lessonAlarm_title">Set alarms</string>
+    <string name="timetable_setting_select_timeOffset_title">Choose the length of each timeframe</string>
+    <string name="timetable_setting_select_lessonAlarm_prompt">Timetable Notifications</string>
+    <string name="timetable_setting_select_lessonAlarm_title">Set Timetable Notifications</string>
     <string name="timetable_setting_select_startday_warning_overlapdays">First and last days are overlapped</string>
     <string name="timetable_setting_select_endday_warning_overlapdays">Last and start days are overlapped</string>
     <string name="timetable_setting_warning_tableinit_on_starttimechange">If you change your start time, time table will be reset</string>
     <string name="timetable_setting_warning_tableinit_on_timeoffsetchange">If you change your time set, time table will be reset</string>
     <string name="timetable_setting_theme_select_theme_prompt">Theme</string>
     <string name="timetable_setting_theme_select_theme_title">Choose your theme</string>
-    <string name="timetable_setting_theme_select_language_prompt">Language</string>
     <string name="timetable_setting_info_shop">Store</string>
     <string name="timetable_setting_info_yooii_info">Timetable Kit Info</string>
     <string name="timetable_setting_info_rate">Rate Timetable Kit</string>
@@ -60,18 +59,19 @@
     <string name="timetable_setting_info_version">Version</string>
     <string name="tab_timetablesetting">Basic Settings</string>
     <string name="tab_timetabletheme">Theme</string>
+    <string name="tab_alarmandtheme">Notif\\Theme</string>
     <string name="tab_info">Store / Info</string>
     <string name="notice">Alarm!</string>
-    <string name="unlock_full_version">Buy the full version!</string>
+    <string name="unlock_full_version">Buy and enjoy the Pro Version!</string>
     <string name="buy_full_version_explain">Upgrade to unlock all features + No Ad</string>
     <string name="app_name">Timetable Kit</string>
     <string name="edit_your_timetable_title">Timetable Main Title</string>
-    <string name="drawer_add_timetable">Add timetable</string>
+    <string name="drawer_add_timetable">Add Timetable</string>
     <string name="menu_store">Store</string>
     <string name="menu_settings">Settings</string>
     <string name="menu_send_feedback">Send Feedback</string>
     <string name="menu_help">Help</string>
-    <string name="activity_show_all_goto_overlap_mode">Stack view mode</string>
+    <string name="activity_show_all_goto_overlap_mode">Stack View Mode</string>
     <string name="activity_show_all_select_least_one_table">Select at least one timetable to stack.</string>
     <string name="activity_overlap_error_null">No timetables to stack up!</string>
     <string name="activity_store_already_unlocked_full">Already purchased full version. </string>
@@ -83,7 +83,7 @@
     <string name="fragment_timetable_share_upload_succeed">Sent successfully!</string>
     <string name="fragment_timetable_share_download_succeed">Received successfully!</string>
     <string name="dialog_cleartimetable_title">Do you want to delete all classes?</string>
-    <string name="dialog_deleteschedule_title">Do you want to delete the event?</string>
+    <string name="dialog_deleteschedule_title">Do you want to delete this event?</string>
     <string name="dialog_sharetimetable_title">Share your timetable!</string>
     <string name="fragment_to_addtable_title">Additional functions</string>
     <string name="dialog_editschedule_text_class">Class</string>
@@ -92,8 +92,8 @@
     <string name="dialog_settings_daypick_title">Day setting</string>
     <string name="dialog_settings_periodpick_title">Period setting</string>
     <string name="dialog_settings_timepick_title">Start time and Interval</string>
-    <string name="dialog_sharedata_now_uploading_message">Sending timetable...</string>
-    <string name="dialog_sharedata_now_downloading_message">Receiving timetable...</string>
+    <string name="dialog_sharedata_now_uploading_message">Sending Timetable...</string>
+    <string name="dialog_sharedata_now_downloading_message">Receiving Timetable...</string>
     <string name="title_gc_sync">Upload your schedule</string>
     <string name="gc_sync_btn">Sync</string>
     <string name="warning_gc_sync_must_have_google_account">Register your gmail account to sync Google Calender.</string>
@@ -116,8 +116,9 @@
     <string name="pleaseWaitWhileLoading">Loading...</string>
     <string name="starting_connection">Connecting...</string>
     <string name="cancelled">Cancelled</string>
-    <string name="unlock_full_version_pagenum_overflow">Please buy the full version to add more timetables.</string>
-    <string name="buy_full_version">Buy and enjoy the full version!</string>
+    <string name="unlock_full_version_pagenum_overflow">Add more timetables.</string>
+    <string name="unlock_full_version_schedule_overflow">Add more events.</string>
+    <string name="buy_full_version">Buy and enjoy the Pro Version!</string>
     <string name="send_feedback_subject">Timetable Kit feedback</string>
     <string name="send_feedback_title">Send us your feedback!</string>
     <string name="dialog_share_data_upload_limited_A">Maximum number of timetable to send per day is </string>
@@ -128,8 +129,8 @@
     <string name="dialog_sharedata_download_title">Receive</string>
     <string name="activity_setting_viewpager_dayprompt">Day</string>
     <string name="activity_setting_viewpager_periodprompt">Period</string>
-    <string name="activity_setting_viewpager_timeprompt">Start time and Interval</string>
-    <string name="activity_setting_viewpager_alarmprompt">Alarm</string>
+    <string name="activity_setting_viewpager_timeprompt">Start Time and Interval</string>
+    <string name="activity_setting_viewpager_alarmprompt">Timetable Notification</string>
     <string name="activity_setting_viewpager_themeprompt">Theme</string>
     <string name="activity_setting_viewpager_languageprompt">Language</string>
     <string name="connector_result_failed">Failed to connect</string>
@@ -140,16 +141,17 @@
     <string name="dialog_share_data_dataremovedafter24hours">Your timetable will be deleted from the server after 24 hours. </string>
     <string name="terms_of_service">Terms of Service</string>
     <string name="drawer_overlap_timetables">Stack View</string>
-    <string name="drawer_show_all_timetables">Flow view</string>
+    <string name="drawer_show_all_timetables">Flow View</string>
     <string name="dialog_share_data_upload">Send</string>
     <string name="dialog_share_data_download">Receive</string>
     <string name="activity_store_common_error">Failed to connect</string>
-    <string name="already_full_version">Already purchased!</string>
-    <string name="already_full_version_explain">Thank you for purchasing the full version.</string>
+    <string name="already_full_version">Already purchased pro version.</string>
+    <string name="already_full_version_explain">Thank you for unlocking the pro version!</string>
     <string name="dialog_editschedule_text_date">Date</string>
     <string name="dialog_editschedule_text_title">Title</string>
     <string name="dialog_editschedule_text_memo">Memo</string>
     <string name="dialog_editschedule_text_alarm">Alarm</string>
+    <string name="dialog_editschedule_text_sound">Sound</string>
     <string name="activity_overlap_title">Stack View</string>
     <string name="activity_showall_title">Flow View</string>
     <string name="dialog_rate_title">Rate</string>
@@ -160,7 +162,7 @@
     <string name="activity_overlap_goto_showall_mode">Select timetables for stack view</string>
     <string name="dialog_share_data_send_file_num">The number of sent timetables</string>
     <string name="dialog_share_data_receive_file_num">The number of received timetables </string>
-    <string name="fragment_schedule_schedulenum_overflows">To add more than 12 events, please buy the full version!</string>
+    <string name="fragment_schedule_schedulenum_overflows">To add more than 6 events, please buy the full version!</string>
     <string name="activity_store_moretheme">All Themes</string>
     <string name="activity_store_noads">No AD</string>
     <string name="activity_store_alarm">Alarm Function</string>
@@ -174,31 +176,33 @@
     <string name="dialog_sharedata_hint">Password</string>
     <string name="activity_appwidget_configure_color">Screen brightness</string>
     <string name="activity_appwidget_configure_alpha">Screen transparency</string>
-    <string name="activity_appwidget_configure_preview">Preview</string>
+    <string name="activity_appwidget_configure_preview">Color Preview</string>
     <string name="dialog_connector_uploadinfo_received_times_A">\u0020plus\u0020</string>
     <string name="dialog_connector_uploadinfo_received_times_B">time(s) received</string>
     <string name="dialog_connector_uploadinfo_received_noone">No one has received yet.</string>
 	<string name="dialog_connector_uploadinfo_received">\u0020has received it</string>
 	<string name="fragment_timetable_oneditlesson_toast">If you click \'Time\', you can adjust the class time</string>
 	
-	<string name="menu_recommend_friends">Recommend it to your friends!</string>
-    <string name="recommend_to_friends_subject">[Timetable Kit] I recommend it to you!</string>
+	<string name="menu_recommend_friends">Recommend to your friends!</string>
+    <string name="recommend_to_friends_subject">[Timetable Kit] Check out this awesome free app I found!</string>
     <string name="recommend_to_friends_body">[Timetable Kit Google Play Store : Download]</string>    
     
     
     <string-array name="timetable_setting_startdays">
         <item>Sunday</item>
         <item>Monday</item>
+        <item>Tuesday</item>
     </string-array>
     <string-array name="timetable_setting_enddays">
+        <item>Thursday</item>
         <item>Friday</item>
         <item>Saturday</item>
         <item>Sunday</item>
     </string-array>
     <string-array name="timetable_setting_columnTypes">
-        <item>Period</item>
-        <item>By alphabet</item>
-        <item>By time frame</item>
+        <item>By Number</item>
+        <item>By Alphabet</item>
+        <item>By Time</item>
     </string-array>
     <string-array name="timetable_setting_columnNums">
         <item>6</item>
@@ -255,4 +259,10 @@
     <string name="Saturday">Saturday</string>
     <string name="Sunday">Sunday</string>
 
+    <!-- General -->
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="quit_ad_dialog_title_text">Are you sure you want to quit?</string>
+    <string name="store_buy_full_version">Buy the Pro Version!</string>
+    <string name="minute_short">Min</string>
 </resources>
