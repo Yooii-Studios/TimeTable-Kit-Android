@@ -23,8 +23,6 @@ public class YTSplashScreenActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash_screen);
 
-//		getSupportActionBar().hide();
-
 		if(startTimetableActivityHandler == null){
 			startTimetableActivityHandler = new Handler();
 			startTimetableActivityHandler.postDelayed(new Runnable() {
