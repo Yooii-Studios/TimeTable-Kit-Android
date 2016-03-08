@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.os.Build;
 
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
@@ -35,11 +34,7 @@ public class QuitAdDialogFactory {
     public static AlertDialog makeDialog(final Activity activity, final AdView adView) {
         Context context = activity.getApplicationContext();
         AlertDialog.Builder builder;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            builder = new AlertDialog.Builder(activity, AlertDialog.THEME_HOLO_DARK);
-        } else {
-            builder = new AlertDialog.Builder(activity);
-        }
+        builder = new AlertDialog.Builder(activity);
         builder.setTitle(R.string.quit_ad_dialog_title_text);
         builder.setPositiveButton(context.getString(R.string.ok), new DialogInterface.OnClickListener() {
             @Override
