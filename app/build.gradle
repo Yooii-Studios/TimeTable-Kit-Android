@@ -4,7 +4,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.3.1'
+        classpath 'com.android.tools.build:gradle:1.5.0'
     }
 }
 
@@ -26,6 +26,7 @@ android {
         targetSdkVersion 23
         versionCode 19
         versionName "1.1.2"
+        generatedDensities = []
     }
 
     buildTypes {
@@ -33,6 +34,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
+    }
+
+    aaptOptions {
+        additionalParameters "--no-version-vectors"
     }
 }
 
@@ -42,6 +47,7 @@ dependencies {
 
     compile 'com.android.support:support-v4:23.2.0'
     compile 'com.android.support:appcompat-v7:23.2.0'
+    compile 'com.android.support:design:23.2.0'
 //    compile project(':libraries:holoeverywhere:library')
 //    compile project(':libraries:holoeverywhere:addons:preferences')
 //    compile project(':libraries:holoeverywhere:addons:slider')
