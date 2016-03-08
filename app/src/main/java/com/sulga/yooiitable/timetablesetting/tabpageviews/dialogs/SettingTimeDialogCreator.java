@@ -1,16 +1,5 @@
 package com.sulga.yooiitable.timetablesetting.tabpageviews.dialogs;
 
-import org.holoeverywhere.app.*;
-import org.holoeverywhere.widget.*;
-
-import android.content.*;
-import android.content.res.*;
-import android.view.*;
-
-import com.sulga.yooiitable.R;
-import com.sulga.yooiitable.mylog.*;
-import com.sulga.yooiitable.timetablesetting.utils.*;
-import com.sulga.yooiitable.utils.*;
 
 @Deprecated
 public class SettingTimeDialogCreator {

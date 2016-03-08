@@ -1,5 +1,6 @@
 package com.sulga.yooiitable.timetableinfo.activity;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,7 +17,6 @@ import com.sulga.yooiitable.constants.NaverInApp;
 import com.sulga.yooiitable.data.TimetableDataManager;
 import com.sulga.yooiitable.mylog.MyLog;
 
-import org.holoeverywhere.app.ProgressDialog;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -307,7 +307,6 @@ public class NaverStoreActivity extends NIAPActivity {
 	}
 
 	/**
-	 * @param message : 호출 메소드 설명
 	 * @param result : 결제 관련 처리 결과
 	 * 결제 중 발생한 오류에 대한 결과 Toast 출력
 	 */

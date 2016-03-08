@@ -12,12 +12,11 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.sulga.yooiitable.R;
-
-import org.holoeverywhere.widget.Button;
 
 import java.util.ArrayList;
 
@@ -134,7 +133,7 @@ public class ModeRelativeLayout extends RelativeLayout{
 					Log.i(TAG, "mode pressed");
 					//startSubButtonSelectedAnimation(menuButtons.indexOf(btn));
 					//isOpened = false;
-					btn.getmOnModeBtnClickedListener().onClick(btn);
+					btn.getOnModeBtnClickedListener().onClick(btn);
 					return true;
 				}
 			}

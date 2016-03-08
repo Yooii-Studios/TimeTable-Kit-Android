@@ -1,10 +1,5 @@
 package com.sulga.yooiitable.timetablesetting;
 
-import org.holoeverywhere.LayoutInflater;
-import org.holoeverywhere.widget.FrameLayout;
-import org.holoeverywhere.widget.LinearLayout;
-import org.holoeverywhere.widget.TextView;
-
 import android.content.*;
 import android.view.*;
 import android.widget.*;

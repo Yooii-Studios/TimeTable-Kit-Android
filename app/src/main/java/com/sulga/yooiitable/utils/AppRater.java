@@ -1,18 +1,6 @@
 package com.sulga.yooiitable.utils;
 
-import org.holoeverywhere.app.*;
-import org.holoeverywhere.preference.PreferenceManager;
-import org.holoeverywhere.preference.SharedPreferences;
-import org.holoeverywhere.widget.*;
-
-import android.content.*;
-import android.content.res.*;
-import android.net.*;
-import android.view.*;
-
-import com.sulga.yooiitable.R;
-import com.sulga.yooiitable.mylog.*;
-
+/*
 public class AppRater {
 	
 	private final static int LAUNCHES_UNTIL_PROMPT = 10;
@@ -85,3 +73,4 @@ public class AppRater {
 		dialog.show();
 	}
 }
+*/

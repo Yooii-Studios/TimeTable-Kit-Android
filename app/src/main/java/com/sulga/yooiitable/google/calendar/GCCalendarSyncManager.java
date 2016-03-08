@@ -1,34 +1,46 @@
 package com.sulga.yooiitable.google.calendar;
 
-import java.io.*;
-import java.util.*;
-import java.util.Calendar;
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.res.Resources;
+import android.support.v4.app.Fragment;
+import android.widget.Toast;
 
-import org.holoeverywhere.app.*;
-
-import android.content.res.*;
-import android.widget.*;
-
-import com.google.api.client.extensions.android.http.*;
-import com.google.api.client.googleapis.extensions.android.gms.auth.*;
-import com.google.api.client.http.*;
-import com.google.api.client.json.*;
-import com.google.api.client.json.jackson2.*;
-import com.google.api.client.util.*;
-import com.google.api.services.calendar.*;
-import com.google.api.services.calendar.model.*;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.util.DateTime;
+import com.google.api.services.calendar.CalendarScopes;
+import com.google.api.services.calendar.model.CalendarList;
+import com.google.api.services.calendar.model.CalendarListEntry;
+import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.EventDateTime;
+import com.google.api.services.calendar.model.Events;
 import com.sulga.yooiitable.R;
-import com.sulga.yooiitable.data.*;
-import com.sulga.yooiitable.mylog.*;
-import com.sulga.yooiitable.timetable.*;
-import com.sulga.yooiitable.timetable.fragments.*;
+import com.sulga.yooiitable.data.Schedule;
+import com.sulga.yooiitable.data.TimetableDataManager;
+import com.sulga.yooiitable.mylog.MyLog;
+import com.sulga.yooiitable.timetable.TimetableActivity;
+import com.sulga.yooiitable.timetable.fragments.ScheduleFragment;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.TimeZone;
 
 public class GCCalendarSyncManager extends GCBasicAsyncTask{
 	private static final String TAG = "GCCalendarSyncManager";
 
 	private com.google.api.services.calendar.Calendar calendarService;
 	public GCCalendarSyncManager(
-			Activity activity, 
+			Activity activity,
 			com.google.api.services.calendar.Calendar calendar, 
 			ProgressDialog progressDialog
 			) {
@@ -119,7 +131,7 @@ public class GCCalendarSyncManager extends GCBasicAsyncTask{
 		ArrayList<Schedule> schedulesToRemove = new ArrayList<Schedule>();
 		//inside for, if hashmap schedule removed and putted again the index is messed up.
 		//so modify schedules(=remove and add schedules) after for is ended.
-		ArrayList<Schedule> schedulesToModify = new ArrayList<Schedule>();
+		ArrayList<Schedule> schedulesToModify = new ArrayList<>();
 		Collection<String> keys = scheduleMap.keySet();
 
 		for(String key : keys){
@@ -230,7 +242,7 @@ public class GCCalendarSyncManager extends GCBasicAsyncTask{
 				TimetableDataManager.getSchedules();
 		Collection<String> keys = scheduleMap.keySet();
 		ArrayList<String> eventIDsToDelete = TimetableDataManager.getEventIDsToDeleteInGoogleCalendar();
-		ArrayList<Schedule> schedulesToAdd = new ArrayList<Schedule>();
+		ArrayList<Schedule> schedulesToAdd = new ArrayList<>();
 		scheduleOverflows = false;
 		for(int i = 0 ; i < eventList.size() ; i++){
 			Event e = eventList.get(i);
@@ -269,8 +281,9 @@ public class GCCalendarSyncManager extends GCBasicAsyncTask{
 				}
 
 			}
-			if(evDeleted == true)
+			if(evDeleted) {
 				continue;
+			}
 
 			Schedule s = setScheduleFromEvent(new Schedule(), e);
 			MyLog.d(TAG, "schedule : "
@@ -282,7 +295,7 @@ public class GCCalendarSyncManager extends GCBasicAsyncTask{
 
 
 		for(int i = 0; i < schedulesToAdd.size() ; i++){
-			if(TimetableDataManager.getCurrentFullVersionState(activity) == false){
+			if(!TimetableDataManager.getCurrentFullVersionState(activity)){
 				int scheduleCount = TimetableDataManager.getCurrentScheduleSize();
 				if(scheduleCount >= ScheduleFragment.MAX_SCHEDULE_COUNT_FREE_VERSION){
 					scheduleOverflows = true;
@@ -311,9 +324,9 @@ public class GCCalendarSyncManager extends GCBasicAsyncTask{
 					break;
 				}
 			}
-			if(idExistsInGC == true){
+			if(idExistsInGC) {
 				continue;
-			}else{
+			} else {
 				//구글 캘린더에 이벤트 ID가 존재하지 않는다면 이제 더 필요없으니 삭제.
 				eventIDsToDelete.remove(id);
 			}
@@ -481,7 +494,7 @@ public class GCCalendarSyncManager extends GCBasicAsyncTask{
 
 	@Override
 	protected void onPostExecute(Boolean isDone) {
-		if(isDone == false){
+		if(!isDone){
 			String warn = activity.getResources().getString(R.string.sync_failed);
 			Toast.makeText(activity, warn, Toast.LENGTH_LONG).show();
 			if(progressDialog != null){
@@ -495,16 +508,16 @@ public class GCCalendarSyncManager extends GCBasicAsyncTask{
 		}
 		TimetableDataManager.writeDatasToExternalStorage();
 		if(activity instanceof TimetableActivity){
-			//ScheduleFramgnet refresh!
-			TimetableActivity tmp = (TimetableActivity)activity;
-			if(scheduleOverflows == true){
+			//ScheduleFragment refresh!
+			TimetableActivity tmp = (TimetableActivity) activity;
+			if(scheduleOverflows){
 				String warn = activity.getString(R.string.fragment_schedule_schedulenum_overflows);
 				Toast.makeText(activity, warn, Toast.LENGTH_SHORT)
 				.show();
 				scheduleOverflows = false;
 			}
 			int tmpCurItem = tmp.getViewPager().getCurrentItem();
-			android.support.v4.app.Fragment tmpFrag = tmp.getPagerAdapter().getItem(tmpCurItem);
+			Fragment tmpFrag = tmp.getPagerAdapter().getItem(tmpCurItem);
 			if(tmpFrag instanceof ScheduleFragment){
 				//만약 현재 스케쥴페이지면
 				((ScheduleFragment) tmpFrag).refresh();

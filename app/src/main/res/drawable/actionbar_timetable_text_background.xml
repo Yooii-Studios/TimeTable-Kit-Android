@@ -4,5 +4,5 @@
    android:drawable="@color/android_holo_blue" /> <!-- pressed -->
   <item android:state_focused="true"
    android:drawable="@color/android_holo_blue"/> <!-- focused -->
-  <item android:drawable="@color/transparent" /> <!-- default -->
+  <item android:drawable="@android:color/transparent" /> <!-- default -->
 </selector>

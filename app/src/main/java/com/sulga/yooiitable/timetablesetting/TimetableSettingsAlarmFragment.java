@@ -2,17 +2,18 @@ package com.sulga.yooiitable.timetablesetting;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
 import com.sulga.yooiitable.R;
 import com.sulga.yooiitable.alarm.YTAlarmManager;
 import com.sulga.yooiitable.constants.FlurryConstants;
-import com.sulga.yooiitable.data.Lesson;
 import com.sulga.yooiitable.data.Timetable;
 import com.sulga.yooiitable.data.TimetableDataManager;
 import com.sulga.yooiitable.language.YTLanguage;
@@ -22,10 +23,6 @@ import com.sulga.yooiitable.timetable.SettingLanguageDialogCreator;
 import com.sulga.yooiitable.timetableinfo.TimetableSettingInfoActivity;
 import com.sulga.yooiitable.timetablesetting.utils.TimetableSettingStringManager;
 import com.yooiistudios.common.ad.AdUtils;
-
-import org.holoeverywhere.LayoutInflater;
-import org.holoeverywhere.app.Fragment;
-import org.holoeverywhere.widget.Toast;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -124,8 +121,8 @@ public class TimetableSettingsAlarmFragment extends Fragment {
                 getIntegerItemIndexOfArray(tt_lessonAlarmTime, alarmTimes);
         settingsAlarmText.setText(alarmTimeStrings[def_alarmIdx]);
 
-        YTLanguageType currentLanguageType = YTLanguage.getCurrentLanguageType(getSupportActivity());
-        String languageStr = YTLanguageType.toTranselatedString(currentLanguageType.getIndex(), getSupportActivity());
+        YTLanguageType currentLanguageType = YTLanguage.getCurrentLanguageType(getActivity());
+        String languageStr = YTLanguageType.toTranselatedString(currentLanguageType.getIndex(), getActivity());
         pickLanguageText.setText(languageStr);
     }
 
@@ -157,7 +154,7 @@ public class TimetableSettingsAlarmFragment extends Fragment {
                                         if(clickedTheme == locked){
 //                                            String message = getActivity().getResources().getString(R.string.unlock_full_version);
 //                                            ToastMaker.popupToastAtCenter(getActivity(), message);
-                                            AdUtils.showInHouseStoreAd(getSupportActivity());
+                                            AdUtils.showInHouseStoreAd(getActivity());
                                             return;
                                         }
                                     }
@@ -207,7 +204,7 @@ public class TimetableSettingsAlarmFragment extends Fragment {
                     //if not full version
 //                    String warning = getActivity().getResources().getString(R.string.unlock_full_version);
 //                    ToastMaker.popupToastAtCenter(getActivity(), warning);
-//                    AdUtils.showInHouseStoreAd(getSupportActivity());
+//                    AdUtils.showInHouseStoreAd(getActivity());
 //                    return;
 //                }
                 SelectOptionDialogCreator.showListDialog(
@@ -271,7 +268,7 @@ public class TimetableSettingsAlarmFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 SettingLanguageDialogCreator.showSettingsLanguageListDialog(
-                        getSupportActivity(),
+                        getActivity(),
                         langTitle,
                         new SelectOptionDialogCreator.OnSelectOptionDialogItemSelectedListener() {
 
@@ -279,7 +276,7 @@ public class TimetableSettingsAlarmFragment extends Fragment {
                             public void onClick(int clickedItemPosition) {
                                 // TODO Auto-generated method stub
                                 onLanguageChanged(clickedItemPosition);
-                                ((TimetableSettingInfoActivity)getSupportActivity()).onLanguageChanged();
+                                ((TimetableSettingInfoActivity)getActivity()).onLanguageChanged();
                             }
                         });
             }
@@ -288,9 +285,9 @@ public class TimetableSettingsAlarmFragment extends Fragment {
     }
 
     public void onLanguageChanged(int position){
-        YTLanguage.setLanguageType(YTLanguageType.valueOf(position), getSupportActivity());
+        YTLanguage.setLanguageType(YTLanguageType.valueOf(position), getActivity());
         // update locale
-        YTLanguageType currentLanguageType = YTLanguage.getCurrentLanguageType(getSupportActivity());
+        YTLanguageType currentLanguageType = YTLanguage.getCurrentLanguageType(getActivity());
         Locale locale = new Locale(currentLanguageType.getCode(), currentLanguageType.getRegion());
         Locale.setDefault(locale);
         Configuration config = new Configuration();

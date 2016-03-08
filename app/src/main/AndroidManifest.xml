@@ -18,11 +18,10 @@
     <uses-permission android:name="android.permission.READ_PROFILE"/>
 
     <application
-        android:name="org.holoeverywhere.app.Application"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher_f3"
         android:label="@string/app_name"
-        android:theme="@style/Holo.Theme" >
+        android:theme="@style/Theme.AppCompat" >
         
         <meta-data android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"/>
@@ -32,7 +31,7 @@
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:theme="@style/Holo.Theme.Fullscreen" >
+            android:theme="@style/Theme.AppCompat.NoActionBar.FullScreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -66,17 +65,13 @@
             android:launchMode="singleTop"
             android:parentActivityName="com.sulga.yooiitable.timetable.TimetableActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Holo.Theme" >
+            android:theme="@style/Theme.AppCompat" >
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.sulga.yooiitable.timetable.TimetableActivity" />
-
-            <!-- android:theme="@style/YTTheme" > -->
-
         </activity>
-        
 
         <receiver android:name="com.sulga.yooiitable.alarm.YTAlarmNotificationReceiver" >
             <intent-filter>
@@ -98,14 +93,14 @@
         <activity
             android:name="com.sulga.yooiitable.alarm.YTAlarmDialogPopUpActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Holo.Theme.Dialog" >
+            android:theme="@style/Theme.AppCompat.Dialog" >
         </activity>
         <activity
             android:name="com.sulga.yooiitable.showalltables.ShowAllTimetablesActivity"
             android:launchMode="singleTop"
             android:parentActivityName="com.sulga.yooiitable.timetable.TimetableActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Holo.Theme" >
+            android:theme="@style/Theme.AppCompat" >
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
@@ -117,7 +112,7 @@
             android:launchMode="singleTop"
             android:parentActivityName="com.sulga.yooiitable.timetable.TimetableActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Holo.Theme" >
+            android:theme="@style/Theme.AppCompat" >
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
@@ -129,7 +124,7 @@
             android:launchMode="singleTop"
             android:parentActivityName=".timetableinfo.TimetableSettingInfoActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Holo.Theme" >
+            android:theme="@style/Theme.AppCompat" >
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
@@ -141,7 +136,7 @@
             android:launchMode="singleTop"
             android:parentActivityName=".timetableinfo.TimetableSettingInfoActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Holo.Theme" >
+            android:theme="@style/Theme.AppCompat" >
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
@@ -155,7 +150,7 @@
             android:launchMode="singleTop"
             android:parentActivityName=".timetableinfo.TimetableSettingInfoActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Holo.Theme" >
+            android:theme="@style/Theme.AppCompat" >
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
@@ -166,12 +161,12 @@
             android:name="com.sulga.yooiitable.timetableinfo.activity.StoreActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:theme="@style/Holo.Theme" />
+            android:theme="@style/Theme.AppCompat" />
         <activity
             android:name="com.sulga.yooiitable.timetableinfo.activity.NaverStoreActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:theme="@style/Holo.Theme" />
+            android:theme="@style/Theme.AppCompat" />
         <activity android:name="com.sulga.yooiitable.appwidget.YTAppWidgetConfigure" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />

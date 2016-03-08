@@ -1,26 +1,19 @@
 package com.sulga.yooiitable.alarm;
 
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PowerManager;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
-import android.view.WindowManager;
+import android.view.Window;
 
-import com.actionbarsherlock.view.Window;
 import com.sulga.yooiitable.R;
 import com.sulga.yooiitable.data.Schedule;
 import com.sulga.yooiitable.data.TimetableDataManager;
 import com.sulga.yooiitable.mylog.MyLog;
-import com.yooiistudios.stevenkim.alarmsound.SKAlarmSound;
 import com.yooiistudios.stevenkim.alarmsound.SKAlarmSoundPlayer;
-
-import org.holoeverywhere.app.Activity;
-import org.holoeverywhere.app.AlertDialog;
-import org.holoeverywhere.app.Dialog;
-import org.holoeverywhere.app.Fragment;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,7 +21,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 
-public class YTAlarmDialogPopUpActivity extends Activity {
+public class YTAlarmDialogPopUpActivity extends AppCompatActivity {
     private AlertDialog alertDialog;
     private int m_alarmId;
     private int m_alarmType;

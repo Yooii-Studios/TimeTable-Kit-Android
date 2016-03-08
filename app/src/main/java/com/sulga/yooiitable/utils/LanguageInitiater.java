@@ -1,12 +1,12 @@
 package com.sulga.yooiitable.utils;
 
-import java.util.*;
+import android.app.Activity;
+import android.content.res.Configuration;
 
-import org.holoeverywhere.app.*;
+import com.sulga.yooiitable.language.YTLanguage;
+import com.sulga.yooiitable.language.YTLanguageType;
 
-import android.content.res.*;
-
-import com.sulga.yooiitable.language.*;
+import java.util.Locale;
 
 public class LanguageInitiater {
 

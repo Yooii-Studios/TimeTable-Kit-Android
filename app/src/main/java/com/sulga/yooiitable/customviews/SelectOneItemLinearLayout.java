@@ -1,9 +1,5 @@
 package com.sulga.yooiitable.customviews;
 
-import org.holoeverywhere.LayoutInflater;
-import org.holoeverywhere.widget.LinearLayout;
-import org.holoeverywhere.widget.ToggleButton;
-
 import android.content.*;
 import android.util.*;
 import android.view.*;
@@ -16,18 +12,15 @@ public class SelectOneItemLinearLayout extends LinearLayout {
 	private OnOneItemSelectedListener onSelectItemListener;
 	public SelectOneItemLinearLayout(Context context) {
 		super(context);
-		// TODO Auto-generated constructor stub
 	}
 
 	public SelectOneItemLinearLayout(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		// TODO Auto-generated constructor stub
 	}
 
 	public SelectOneItemLinearLayout(Context context, AttributeSet attrs,
 			int defStyle) {
 		super(context, attrs, defStyle);
-		// TODO Auto-generated constructor stub
 	}
 
 	private int toggleButtonLayoutID;

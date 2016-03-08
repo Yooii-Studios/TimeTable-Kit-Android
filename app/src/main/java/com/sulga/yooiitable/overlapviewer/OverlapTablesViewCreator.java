@@ -1,21 +1,32 @@
 package com.sulga.yooiitable.overlapviewer;
 
-import java.util.*;
-
-import org.holoeverywhere.widget.FrameLayout;
-import org.holoeverywhere.widget.TextView;
-
-import android.content.*;
-import android.graphics.drawable.*;
-import android.util.*;
-import android.view.*;
-import android.view.animation.*;
-import android.widget.*;
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.AnimationSet;
+import android.view.animation.TranslateAnimation;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.sulga.yooiitable.R;
-import com.sulga.yooiitable.data.*;
+import com.sulga.yooiitable.data.Lesson;
+import com.sulga.yooiitable.data.Timetable;
 import com.sulga.yooiitable.data.Timetable.ColumnTypes;
-import com.sulga.yooiitable.mylog.*;
+import com.sulga.yooiitable.mylog.MyLog;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class OverlapTablesViewCreator {
 

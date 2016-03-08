@@ -1,21 +1,23 @@
 package com.sulga.yooiitable.timetableinfo;
 
-import org.holoeverywhere.app.*;
-import org.holoeverywhere.app.Fragment;
-import org.holoeverywhere.widget.*;
-
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.*;
+import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.*;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 
-import com.actionbarsherlock.app.*;
-import com.actionbarsherlock.view.MenuItem;
 import com.sulga.yooiitable.R;
 import com.sulga.yooiitable.constants.RequestCodes;
 import com.sulga.yooiitable.data.Timetable;
@@ -31,7 +33,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
 
-public class TimetableSettingInfoActivity extends Activity {
+public class TimetableSettingInfoActivity extends AppCompatActivity {
 	private static String TAG = "TimetableSettingInfoActivity";
 	private TimetableAppInfoFragment infoFrag;
     private TimetableSettingFragment settingFrag;

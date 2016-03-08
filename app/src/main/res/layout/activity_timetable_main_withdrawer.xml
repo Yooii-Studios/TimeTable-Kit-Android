@@ -23,7 +23,7 @@
             android:layout_gravity="center"
             ads:adSize="BANNER"
             ads:adUnitId="a152c7a2654e695"
-            android:background="@color/transparent" />
+            android:background="@android:color/transparent" />
 
         <com.sulga.yooiitable.customviews.ParentViewPager
             android:id="@+id/activity_timetable_main_pager"

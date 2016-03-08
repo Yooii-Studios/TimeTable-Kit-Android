@@ -1,32 +1,47 @@
 package com.sulga.yooiitable.timetable.fragments.dialogbuilders;
 
-import java.text.*;
-import java.util.*;
-
-import org.holoeverywhere.LayoutInflater;
-import org.holoeverywhere.app.*;
-import org.holoeverywhere.widget.EditText;
-import org.holoeverywhere.widget.TimePicker;
-import org.holoeverywhere.widget.Toast;
-import org.holoeverywhere.widget.ToggleButton;
-
-import android.content.*;
-import android.content.res.*;
-import android.graphics.*;
-import android.os.*;
-import android.util.*;
-import android.view.*;
-import android.widget.*;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.sulga.yooiitable.R;
-import com.sulga.yooiitable.constants.*;
-import com.sulga.yooiitable.customviews.*;
-import com.sulga.yooiitable.data.*;
-import com.sulga.yooiitable.mylog.*;
-import com.sulga.yooiitable.theme.*;
-import com.sulga.yooiitable.theme.parts.*;
-import com.sulga.yooiitable.timetable.fragments.*;
+import com.sulga.yooiitable.constants.FixedSizes;
+import com.sulga.yooiitable.customviews.SelectOneItemLinearLayout;
+import com.sulga.yooiitable.data.Lesson;
+import com.sulga.yooiitable.data.PeriodInfo;
+import com.sulga.yooiitable.data.Timetable;
+import com.sulga.yooiitable.mylog.MyLog;
+import com.sulga.yooiitable.theme.YTTimetableTheme;
+import com.sulga.yooiitable.theme.parts.YTRoundRectThemePart;
+import com.sulga.yooiitable.theme.parts.YTShapeRoundRectThemePart;
+import com.sulga.yooiitable.timetable.fragments.TimetableFragment;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Random;
 
 public class LessonEditDialogBuilder{
 
@@ -102,7 +117,7 @@ public class LessonEditDialogBuilder{
 		dialog.getWindow().setLayout(
 				(int)res.getDimension(R.dimen.dialog_editelsson_width), 
 				android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
-		dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+		dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 		dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
 		float topOffset = res.getDimension(R.dimen.dialog_top_offset);
@@ -336,7 +351,7 @@ public class LessonEditDialogBuilder{
 	}
 
 	private void addColorPickButton(SelectOneItemLinearLayout parent, String color){
-		LayoutInflater inflater = this.parent.getSupportActivity().getLayoutInflater();
+		LayoutInflater inflater = this.parent.getActivity().getLayoutInflater();
 
 		ToggleButton tb = (ToggleButton) 
 				inflater.inflate(

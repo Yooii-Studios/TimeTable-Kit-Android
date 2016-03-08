@@ -1,12 +1,11 @@
 package com.sulga.yooiitable.utils;
 
-import org.holoeverywhere.widget.*;
+import android.content.Context;
+import android.os.Handler;
+import android.support.v4.view.ViewPager;
 
-import android.content.*;
-import android.os.*;
-
-import com.sulga.yooiitable.customviews.*;
-import com.sulga.yooiitable.mylog.*;
+import com.sulga.yooiitable.customviews.ParentViewPager;
+import com.sulga.yooiitable.mylog.MyLog;
 
 
 public class ViewPagerFakeDragger {

@@ -1,32 +1,38 @@
 package com.sulga.yooiitable.timetablesetting.tabpageviews.dialogs;
 
-import org.holoeverywhere.app.*;
-import org.holoeverywhere.widget.*;
-
-import android.content.*;
-import android.content.res.*;
-import android.view.*;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.res.Resources;
+import android.support.v7.app.AlertDialog;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.sulga.yooiitable.R;
-import com.sulga.yooiitable.data.*;
+import com.sulga.yooiitable.data.Lesson;
+import com.sulga.yooiitable.data.Timetable;
 import com.sulga.yooiitable.data.Timetable.ColumnTypes;
-import com.sulga.yooiitable.mylog.*;
+import com.sulga.yooiitable.mylog.MyLog;
 
 public class SettingPeriodDialogCreator {
 
 	private static ColumnTypes columnType;
 	private static int columnNum;
 	
-	public static Dialog createDialog(final Context context, 
-			final Timetable timetable, final int maxPeriodNum,
-			final String[] columnTypeNames,
-			final ColumnTypes[] columnTypes,
-			final int defColumnTypeIdx,
+	public static Dialog createDialog(final Context context,
+									  final Timetable timetable, final int maxPeriodNum,
+									  final String[] columnTypeNames,
+									  final ColumnTypes[] columnTypes,
+									  final int defColumnTypeIdx,
 //			final String[] columnNumNames,
 //			final int[] columnNums,
 //			final int defColumnNumIdx,
-			int defColumnNum,
-			final OnSettingColumnEndListener onSettingsEndListener){
+									  int defColumnNum,
+									  final OnSettingColumnEndListener onSettingsEndListener){
 //		MyLog.d("OnItemSelected", "startDaySpinner, startDay : " + startDay + ", endDay : " + endDay);
 		columnType = columnTypes[defColumnTypeIdx];
 		columnNum = defColumnNum;
@@ -42,9 +48,9 @@ public class SettingPeriodDialogCreator {
 		.setView(dialogView)
 		.create();
 
-		final Spinner columnTypeSpinner = 
+		final Spinner columnTypeSpinner =
 				(Spinner) dialogView.findViewById(R.id.dialog_settings_period_periodtype_spinner);
-		ArrayAdapter columnTypeAdapter = new ArrayAdapter<String>(context, 
+		ArrayAdapter columnTypeAdapter = new ArrayAdapter<String>(context,
 				R.layout.simple_spinner_dropdown_item, 
 				columnTypeNames);
 		columnTypeSpinner.setAdapter(columnTypeAdapter);
@@ -155,7 +161,7 @@ public class SettingPeriodDialogCreator {
 //		});
 		
 		
-		final EditText columnNumEditText = 
+		final EditText columnNumEditText =
 				(EditText) dialogView.findViewById(R.id.dialog_settings_period_periodnum_edittext);
 		columnNumEditText.setText(Integer.toString(defColumnNum));
 		columnNumEditText.setHint(
@@ -189,7 +195,7 @@ public class SettingPeriodDialogCreator {
 				}
 				if(inputPeriodNum < minPeriodNum ||
 						inputPeriodNum > maxPeriodNum){
-					Toast.makeText(context, "Input must be between " 
+					Toast.makeText(context, "Input must be between "
 						+ minPeriodNum
 						+ " - " 
 						+ maxPeriodNum,

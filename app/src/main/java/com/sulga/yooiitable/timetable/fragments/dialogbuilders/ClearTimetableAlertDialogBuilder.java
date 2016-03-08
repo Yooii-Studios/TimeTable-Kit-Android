@@ -1,21 +1,22 @@
 package com.sulga.yooiitable.timetable.fragments.dialogbuilders;
 
-import org.holoeverywhere.app.*;
-import org.holoeverywhere.widget.*;
 
-import android.content.*;
-import android.content.res.*;
-import android.view.*;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.res.Resources;
+import android.support.v7.app.AlertDialog;
+import android.view.View;
+import android.widget.Button;
 
 import com.sulga.yooiitable.R;
-import com.sulga.yooiitable.alarm.*;
-import com.sulga.yooiitable.timetable.fragments.*;
+import com.sulga.yooiitable.alarm.YTAlarmManager;
+import com.sulga.yooiitable.timetable.fragments.TimetableFragment;
 
 public class ClearTimetableAlertDialogBuilder {
 
 	public static Dialog createDialog(Context context,
-                                      final int timetablePageIndex,
-			final TimetableFragment parent){
+									  final int timetablePageIndex,
+									  final TimetableFragment parent){
 		Resources res = context.getResources();
 		String title = res.getString(R.string.dialog_cleartimetable_title);
 		
@@ -46,7 +47,7 @@ public class ClearTimetableAlertDialogBuilder {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				
-				YTAlarmManager.cancelTimetableAlarm(parent.getSupportActivity(),
+				YTAlarmManager.cancelTimetableAlarm(parent.getActivity(),
                         parent.getTimetableDataFromManager(timetablePageIndex));
 
 				parent.removeAllLessonViews();

@@ -1,28 +1,29 @@
 package com.sulga.yooiitable.showalltables;
 
-import java.util.*;
-
-import org.holoeverywhere.app.*;
-import org.holoeverywhere.widget.Button;
-import org.holoeverywhere.widget.CheckBox;
-import org.holoeverywhere.widget.TextView;
-
-import android.content.*;
-import android.os.*;
-import android.view.*;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.*;
-import com.actionbarsherlock.view.MenuItem;
-import com.flurry.android.*;
+import com.flurry.android.FlurryAgent;
 import com.sulga.yooiitable.R;
-import com.sulga.yooiitable.constants.*;
-import com.sulga.yooiitable.customviews.*;
-import com.sulga.yooiitable.data.*;
-import com.sulga.yooiitable.overlapviewer.*;
-import com.sulga.yooiitable.utils.*;
+import com.sulga.yooiitable.constants.FlurryConstants;
+import com.sulga.yooiitable.customviews.SnappingHorizontalScrollView;
+import com.sulga.yooiitable.customviews.TransformLinearLayout;
+import com.sulga.yooiitable.data.Timetable;
+import com.sulga.yooiitable.data.TimetableDataManager;
+import com.sulga.yooiitable.overlapviewer.OverlapTablesViewerActivity;
+import com.sulga.yooiitable.utils.FixTileModeBug;
 
-public class ShowAllTimetablesActivity extends Activity {
+import java.util.ArrayList;
+
+public class ShowAllTimetablesActivity extends AppCompatActivity {
 
 	//LinearLayout root;
 	//ArrayList<Bitmap> timetableImages;
@@ -313,7 +314,7 @@ public class ShowAllTimetablesActivity extends Activity {
 	private void showPreViewsCheckBox(){
 		for(int i = 0; i < timetablePreViewHolder.size(); i++){
 			View v = timetablePreViewHolder.get(i);
-			CheckBox cb = (CheckBox) 
+			CheckBox cb = (CheckBox)
 					v.findViewById(R.id.view_showalltables_item_checkbox);
 //			cb.setVisibility(View.VISIBLE);
 			cb.setChecked(true);

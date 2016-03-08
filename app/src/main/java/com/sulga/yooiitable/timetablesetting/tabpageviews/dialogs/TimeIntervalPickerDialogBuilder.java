@@ -1,16 +1,14 @@
 package com.sulga.yooiitable.timetablesetting.tabpageviews.dialogs;
 
+import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.widget.Button;
+import android.widget.NumberPicker;
 
 import com.sulga.yooiitable.R;
 
-import org.holoeverywhere.app.AlertDialog;
-import org.holoeverywhere.app.Dialog;
-import org.holoeverywhere.widget.Button;
-import org.holoeverywhere.widget.NumberPicker;
 
 /**
  * Created by fldldi0212 on 15. 1. 14..

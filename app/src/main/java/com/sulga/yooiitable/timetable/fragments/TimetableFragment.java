@@ -1,44 +1,91 @@
 package com.sulga.yooiitable.timetable.fragments;
 
-import java.text.*;
-import java.util.*;
-
-import org.holoeverywhere.LayoutInflater;
-import org.holoeverywhere.app.*;
-import org.holoeverywhere.widget.Button;
-import org.holoeverywhere.widget.EditText;
-import org.holoeverywhere.widget.FrameLayout;
-import org.holoeverywhere.widget.LinearLayout;
-import org.holoeverywhere.widget.TextView;
-import org.holoeverywhere.widget.Toast;
-
-import android.content.*;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
-import android.content.res.*;
-import android.graphics.*;
-import android.graphics.drawable.*;
-import android.os.*;
-import android.util.*;
-import android.view.*;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.PixelFormat;
+import android.graphics.Rect;
+import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Vibrator;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewConfiguration;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
-import android.view.animation.*;
+import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
-import android.widget.*;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.flurry.android.*;
+import com.flurry.android.FlurryAgent;
 import com.sulga.yooiitable.R;
-import com.sulga.yooiitable.alarm.*;
-import com.sulga.yooiitable.constants.*;
-import com.sulga.yooiitable.customviews.*;
-import com.sulga.yooiitable.data.*;
-import com.sulga.yooiitable.mylog.*;
-import com.sulga.yooiitable.sharetable.*;
-import com.sulga.yooiitable.theme.*;
+import com.sulga.yooiitable.alarm.YTAlarmManager;
+import com.sulga.yooiitable.constants.FlurryConstants;
+import com.sulga.yooiitable.constants.RequestCodes;
+import com.sulga.yooiitable.customviews.InterceptTouchFrameLayout;
+import com.sulga.yooiitable.customviews.ModeRelativeLayout;
+import com.sulga.yooiitable.customviews.PathButton;
+import com.sulga.yooiitable.customviews.SoftKeyboardDetectLinearLayout;
+import com.sulga.yooiitable.customviews.TimetableScrollView;
+import com.sulga.yooiitable.data.Lesson;
+import com.sulga.yooiitable.data.PeriodInfo;
+import com.sulga.yooiitable.data.Schedule;
+import com.sulga.yooiitable.data.Timetable;
+import com.sulga.yooiitable.data.TimetableDataManager;
+import com.sulga.yooiitable.mylog.MyLog;
+import com.sulga.yooiitable.sharetable.ConnectorState;
+import com.sulga.yooiitable.sharetable.TimetableNetworkManager;
+import com.sulga.yooiitable.theme.YTTimetableTheme;
 import com.sulga.yooiitable.theme.YTTimetableTheme.ThemeType;
-import com.sulga.yooiitable.timetable.*;
-import com.sulga.yooiitable.timetable.fragments.dialogbuilders.*;
-import com.sulga.yooiitable.timetableinfo.*;
-import com.sulga.yooiitable.utils.*;
+import com.sulga.yooiitable.timetable.TimetableActivity;
+import com.sulga.yooiitable.timetable.fragments.dialogbuilders.ClearTimetableAlertDialogBuilder;
+import com.sulga.yooiitable.timetable.fragments.dialogbuilders.DeleteTimetableAlertDialogBuilder;
+import com.sulga.yooiitable.timetable.fragments.dialogbuilders.LessonEditDialogBuilder;
+import com.sulga.yooiitable.timetable.fragments.dialogbuilders.ShareDataDialogBuilder;
+import com.sulga.yooiitable.timetable.fragments.dialogbuilders.StartConnectorTutorialDialogBuilder;
+import com.sulga.yooiitable.timetableinfo.TimetableSettingInfoActivity;
+import com.sulga.yooiitable.utils.DeviceUuidFactory;
+import com.sulga.yooiitable.utils.SerializeBitmapUtils;
+import com.sulga.yooiitable.utils.UserNameFactory;
+import com.sulga.yooiitable.utils.YTBitmapLoader;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 
 public class TimetableFragment extends Fragment {
@@ -207,9 +254,9 @@ public class TimetableFragment extends Fragment {
 //				}
 //				photoBackgroundBitmap = 
 //						YTBitmapLoader.loadAutoScaledBitmapFromUri(
-//								getSupportActivity(), 
+//								getActivity(), 
 //								YTBitmapLoader.getPortraitCroppedImageUri(
-//										getSupportActivity(),
+//										getActivity(),
 //										timetable.getId())
 //										);
 //				MyLog.d("TimetableFragment", "timetable id : " + timetable.getId());
@@ -221,7 +268,7 @@ public class TimetableFragment extends Fragment {
 //			}
 //		}else{
 //			
-//			ytTheme.getRootBackground().setViewTheme(getSupportActivity(), backgroundView);
+//			ytTheme.getRootBackground().setViewTheme(getActivity(), backgroundView);
 //		}
 		
 		//		}
@@ -232,7 +279,7 @@ public class TimetableFragment extends Fragment {
 
 		//int titleBackground = theme.getTitleBackground();
 
-		//		ytTheme.getTitleBackground().setViewTheme(getSupportActivity(), titleText);
+		//		ytTheme.getTitleBackground().setViewTheme(getActivity(), titleText);
 		//		Drawable titleTextBackground = 
 		//				BackgroundDrawableCreator.getTiledRoundedRectBitmapDrawable(
 		//						act, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT,
@@ -248,25 +295,25 @@ public class TimetableFragment extends Fragment {
 
 		pageInfoLower = (ImageView)fragmentView.findViewById(R.id.fragment_timetable_pagenumber_lower);
 		pageInfoLower.setOnClickListener(onShareDataClickedListener);
-		ytTheme.getPageInfoLowerIcon().setViewTheme(getSupportActivity(), pageInfoLower);
+		ytTheme.getPageInfoLowerIcon().setViewTheme(getActivity(), pageInfoLower);
 		//		pageInfoLower.setBackgroundResource(ytTheme.getPageInfoLowerIcon());
 		pageInfoUpper = (TextView)fragmentView.findViewById(R.id.fragment_timetable_pagenumber_upper);
 		ytTheme.getPageInfoUpperIcon()
-		.setViewTheme(getSupportActivity(), pageInfoUpper, FRAG_TIMETABLE_ROUNDRECT_RXY, true, true, false, false);
+		.setViewTheme(getActivity(), pageInfoUpper, FRAG_TIMETABLE_ROUNDRECT_RXY, true, true, false, false);
 		//		pageInfoUpper.setBackgroundResource(ytTheme.getPageInfoUpperIcon());
 
 		optionButton = (ImageButton) fragmentView.findViewById(R.id.fragment_timetable_title_option_button);
-		ytTheme.getOptionIcon().setViewTheme(getSupportActivity(), optionButton);
+		ytTheme.getOptionIcon().setViewTheme(getActivity(), optionButton);
 		//		optionButton.setBackgroundResource(ytTheme.getOptionIcon());
 		optionButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				MyLog.d("TimetableFragment", "optionButton Clicked");
 				// TODO Auto-generated method stub
-//				Intent act = new Intent(getSupportActivity(), TimetableSettingPagerActivity.class);
-				Intent act = new Intent(getSupportActivity(), TimetableSettingInfoActivity.class);
+//				Intent act = new Intent(getActivity(), TimetableSettingPagerActivity.class);
+				Intent act = new Intent(getActivity(), TimetableSettingInfoActivity.class);
 				act.putExtra("TimetablePageIndex", getMyIndexInViewPager());
-				getSupportActivity()
+				getActivity()
 				.startActivityForResult(act, RequestCodes.CALL_ACTIVITY_EDIT_TIMETABLE_SETTING);
 
 				Map<String, String> settingClickInfo = new HashMap<String, String>();
@@ -298,13 +345,13 @@ public class TimetableFragment extends Fragment {
 		//dayRowDividerWrapper = (FrameLayout) fragmentView.findViewById(R.id.fragment_timetable_dayrow_overlap);
 		//timeline = (LinearLayout) fragmentView.findViewById(R.id	.fragment_timetable_timeline);
 		//		dayRow.setBackgroundDrawable(
-		//				BackgroundDrawableCreator.getTiledRoundedRectBitmapDrawable(getSupportActivity(), 12.0f, R.drawable.yt_timetable_dayrow_background_src));
+		//				BackgroundDrawableCreator.getTiledRoundedRectBitmapDrawable(getActivity(), 12.0f, R.drawable.yt_timetable_dayrow_background_src));
 		grid = (LinearLayout) fragmentView.findViewById(R.id.fragment_timetable_cell_list);
-//		ytTheme.getGridBackground().setViewTheme(getSupportActivity(), grid);
+//		ytTheme.getGridBackground().setViewTheme(getActivity(), grid);
 		//		if(ytTheme.getGridBackground() != YTTimetableTheme.SRC_NONE){
 		//			Drawable gridBackgroundDrawable = 
 		//					BackgroundDrawableCreator.getTiledRoundedRectBitmapDrawable(
-		//							getSupportActivity(), Shader.TileMode.REPEAT, Shader.TileMode.REPEAT,
+		//							getActivity(), Shader.TileMode.REPEAT, Shader.TileMode.REPEAT,
 		//							FRAG_TIMETABLE_ROUNDRECT_RXY, ytTheme.getGridBackground());
 		//			gridBackgroundDrawable.setAlpha(ytTheme.getImageAlpha());
 		//			grid.setBackgroundDrawable(gridBackgroundDrawable);
@@ -331,17 +378,17 @@ public class TimetableFragment extends Fragment {
 		//gridOverlapLayout.setBackgroundResource(R.color.black);
 
 		currentTimeMarker = (ImageView) fragmentView.findViewById(R.id.view_timetable_current_time_marker);
-		ytTheme.getTimelineTime().setViewTheme(getSupportActivity(), currentTimeMarker);
+		ytTheme.getTimelineTime().setViewTheme(getActivity(), currentTimeMarker);
 		//		currentTimeMarker.setBackgroundResource(ytTheme.getTimelineTime());
 
-		markSelectedRangeLayout = new LinearLayout(this.getSupportActivity());
-		markButtonOK = new Button(this.getSupportActivity());
+		markSelectedRangeLayout = new LinearLayout(this.getActivity());
+		markButtonOK = new Button(this.getActivity());
 		markButtonOK.setBackgroundResource(R.drawable.ic_oneditlesson_check);
-		markButtonCancel = new Button(this.getSupportActivity());
+		markButtonCancel = new Button(this.getActivity());
 		markButtonCancel.setBackgroundResource(R.drawable.ic_oneditlesson_cancel);
-		pasteLessonToMark = new Button(getSupportActivity());
+		pasteLessonToMark = new Button(getActivity());
 		pasteLessonToMark.setBackgroundResource(R.drawable.ic_oneditlesson_paste);
-		markButtonEditLength = new Button(getSupportActivity());
+		markButtonEditLength = new Button(getActivity());
 		markButtonEditLength.setBackgroundResource(R.drawable.ic_oneditlesson_4scroll);
 		markSelectedRangeLayout.setVisibility(View.INVISIBLE);
 		markButtonOK.setVisibility(View.INVISIBLE);
@@ -353,13 +400,13 @@ public class TimetableFragment extends Fragment {
 		markButtonEditLength.setOnTouchListener(new MarkButtonEditLengthTouchListener());
 		//pasteLessonToMark.setOnClickListener(pasteLessonToMarkOnClick);
 
-		lessonEditOK = new Button(this.getSupportActivity());
+		lessonEditOK = new Button(this.getActivity());
 		lessonEditOK.setBackgroundResource(R.drawable.ic_oneditlesson_check);
-		lessonRemove = new Button(this.getSupportActivity());
+		lessonRemove = new Button(this.getActivity());
 		lessonRemove.setBackgroundResource(R.drawable.ic_oneditlesson_cancel);
-		lessonCopy = new Button(this.getSupportActivity());
+		lessonCopy = new Button(this.getActivity());
 		lessonCopy.setBackgroundResource(R.drawable.ic_oneditlesson_copy);
-		lessonEditLength = new ImageView(getSupportActivity());
+		lessonEditLength = new ImageView(getActivity());
 		lessonEditLength.setBackgroundResource(R.drawable.ic_oneditlesson_2scroll);
 
 
@@ -392,33 +439,33 @@ public class TimetableFragment extends Fragment {
 			}
 		});
 		ImageView panelWrapperIcon = (ImageView) testPanel.findViewById(R.id.ico_plus);
-		ytTheme.getModeButtonsWrapperIcon().setViewTheme(getSupportActivity(), panelWrapperIcon);
+		ytTheme.getModeButtonsWrapperIcon().setViewTheme(getActivity(), panelWrapperIcon);
 		//		panelWrapperIcon.setBackgroundResource(ytTheme.getModeButtonsWrapperIcon());
 		ImageView panelWrapperBackgroundIcon = 
 				(ImageView) testPanel.findViewById(R.id.ico_plus_background);
 		ytTheme.getModeButtonsWrapperbackgroundIcon().setViewTheme(
-				getSupportActivity(), panelWrapperBackgroundIcon);
+				getActivity(), panelWrapperBackgroundIcon);
 		//		panelWrapperBackgroundIcon.setBackgroundResource(
 		//				ytTheme.getModeButtonsWrapperbackgroundIcon());
 		//
 		modeButton_add_row = (PathButton) fragmentView.findViewById(R.id.fragment_timetable_button_add);
-		modeButton_add_row.setmOnModeBtnClickedListener(addRowOnClick);
-		ytTheme.getAddRowIcon().setViewTheme(getSupportActivity(), modeButton_add_row);
+		modeButton_add_row.setOnModeBtnClickedListener(addRowOnClick);
+		ytTheme.getAddRowIcon().setViewTheme(getActivity(), modeButton_add_row);
 		//		btn1.setBackgroundResource(ytTheme.getAddRowIcon());
 		modeButton_add_row.setTag("1");
 		modeButton_remove_row = (PathButton) fragmentView.findViewById(R.id.fragment_timetable_button_remove);
-		modeButton_remove_row.setmOnModeBtnClickedListener(removeRowOnClick);
-		ytTheme.getRemoveRowIcon().setViewTheme(getSupportActivity(), modeButton_remove_row);
+		modeButton_remove_row.setOnModeBtnClickedListener(removeRowOnClick);
+		ytTheme.getRemoveRowIcon().setViewTheme(getActivity(), modeButton_remove_row);
 		//		btn2.setBackgroundResource(ytTheme.getRemoveRowIcon());
 		modeButton_remove_row.setTag("2");
 		modeButton_clear_timetable = (PathButton) fragmentView.findViewById(R.id.fragment_timetable_button_cleartable);
-		modeButton_clear_timetable.setmOnModeBtnClickedListener(clearTimetableOnClick);
-		ytTheme.getClearTableIcon().setViewTheme(getSupportActivity(), modeButton_clear_timetable);
+		modeButton_clear_timetable.setOnModeBtnClickedListener(clearTimetableOnClick);
+		ytTheme.getClearTableIcon().setViewTheme(getActivity(), modeButton_clear_timetable);
 		modeButton_clear_timetable.setTag("3");
 
 		modeButton_delete_timetable = (PathButton) fragmentView.findViewById(R.id.fragment_timetable_button_deletetable);
-		modeButton_delete_timetable.setmOnModeBtnClickedListener(deleteTimetableOnClick);
-		ytTheme.getDeleteTimetableIcon().setViewTheme(getSupportActivity(), modeButton_delete_timetable);
+		modeButton_delete_timetable.setOnModeBtnClickedListener(deleteTimetableOnClick);
+		ytTheme.getDeleteTimetableIcon().setViewTheme(getActivity(), modeButton_delete_timetable);
 		//		btn3.setBackgroundResource(ytTheme.getDeleteTimetableIcon());
 		modeButton_delete_timetable.setTag("4");
 
@@ -442,7 +489,7 @@ public class TimetableFragment extends Fragment {
 //		for(int i = 0 ; i < gridOverlapLayout.getChildCount() ; i++){
 //			View v = gridOverlapLayout.getChildAt(i);
 //			if(v.getTag() instanceof Lesson){
-//				LazyViewAnimationManager.registerLessonViewAnimation(getSupportActivity(), 
+//				LazyViewAnimationManager.registerLessonViewAnimation(getActivity(), 
 //						0, 
 //						v, 
 //						animSet);
@@ -562,9 +609,9 @@ public class TimetableFragment extends Fragment {
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-			if(TimetableDataManager.getIsFirstConnectorLaunch(getSupportActivity())
+			if(TimetableDataManager.getIsFirstConnectorLaunch(getActivity())
 					== true){
-				StartConnectorTutorialDialogBuilder.createDialog(getSupportActivity(),
+				StartConnectorTutorialDialogBuilder.createDialog(getActivity(),
 						TimetableFragment.this)
 				.show();
 				return;
@@ -584,11 +631,11 @@ public class TimetableFragment extends Fragment {
 				dismissProgressDialog();
 			}
 		});
-		String uuid = new DeviceUuidFactory(getSupportActivity()).getDeviceUuid().toString();
-		String name = UserNameFactory.getUserName(getSupportActivity());
-		boolean isFullVersion = TimetableDataManager.getCurrentFullVersionState(getSupportActivity());
+		String uuid = new DeviceUuidFactory(getActivity()).getDeviceUuid().toString();
+		String name = UserNameFactory.getUserName(getActivity());
+		boolean isFullVersion = TimetableDataManager.getCurrentFullVersionState(getActivity());
 		
-		TimetableNetworkManager.updateConnectorUseInfo(uuid, name, isFullVersion, getSupportActivity(),
+		TimetableNetworkManager.updateConnectorUseInfo(uuid, name, isFullVersion, getActivity(),
 				new TimetableNetworkManager.OnFinishedConnectorAsync(){
 					@Override
 					public void onFinished(ConnectorState cs, boolean isSucceed) {
@@ -599,7 +646,7 @@ public class TimetableFragment extends Fragment {
 						}else{
 							dismissProgressDialog();
 							String warn = getString(R.string.connector_result_failed);
-							Toast.makeText(getSupportActivity(), warn, Toast.LENGTH_SHORT)
+							Toast.makeText(getActivity(), warn, Toast.LENGTH_SHORT)
 							.show();
 						}
 					}
@@ -607,7 +654,7 @@ public class TimetableFragment extends Fragment {
 	}
 
 	private void showShareDataDialog(ConnectorState cs){
-		ShareDataDialogBuilder.createDialog(getSupportActivity(), 
+		ShareDataDialogBuilder.createDialog(getActivity(), 
 				cs,
 				timetable, this)
 		.show();
@@ -625,7 +672,7 @@ public class TimetableFragment extends Fragment {
 		}else{			
 			String succeedDownloading = key + " : " + res.getString(
 					R.string.fragment_timetable_share_download_succeed);
-			Toast.makeText(getSupportActivity(), succeedDownloading, Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(), succeedDownloading, Toast.LENGTH_LONG).show();
 		}
 	
 		if(downloadedTable.getThemeType() == ThemeType.Photo){
@@ -634,14 +681,14 @@ public class TimetableFragment extends Fragment {
 			Bitmap bit = SerializeBitmapUtils.byteArrayToBitmap(bitArr);
 			downloadedTable.setBitmapByByteArray(null);
 			if(bit != null){			
-				YTBitmapLoader.saveTimetableBackgroundBitmap(getSupportActivity(),
+				YTBitmapLoader.saveTimetableBackgroundBitmap(getActivity(),
 						bit, 
 						downloadedTable.getId());
 			}
 //			downloadedTable.setBmpForShare(null);
 		}
 
-		final TimetableActivity ta = (TimetableActivity) this.getSupportActivity();
+		final TimetableActivity ta = (TimetableActivity) this.getActivity();
 		ta.addPageAt(TimetableActivity.TIMETABLE_PAGE_OFFSET, downloadedTable, false);
 		ta.getViewPager().post(new Runnable(){
 			@Override
@@ -677,7 +724,7 @@ public class TimetableFragment extends Fragment {
 	private ProgressDialog pd;
 	public void showProgressDialog(String title, String message,
 			DialogInterface.OnCancelListener onCancelListener){
-		pd = new ProgressDialog(getSupportActivity());
+		pd = new ProgressDialog(getActivity());
 		if(title != null)
 			pd.setTitle(title);
 		if(message != null)
@@ -715,7 +762,7 @@ public class TimetableFragment extends Fragment {
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-			final EditText input = new EditText(getSupportActivity());
+			final EditText input = new EditText(getActivity());
 			input.setSelectAllOnFocus(true);
 			input.setSingleLine();
 			if(timetable.getTitle() != null){
@@ -725,7 +772,7 @@ public class TimetableFragment extends Fragment {
 
 			// set title
 			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-					getSupportActivity());
+					getActivity());
 			// set title
 			if(title != null)
 				alertDialogBuilder.setTitle(title);
@@ -770,9 +817,9 @@ public class TimetableFragment extends Fragment {
 	boolean lessonViewAdded = false;
 	private void prepareLessonViewDrag(){
 		lessonViewAdded = true;
-		mSlop = ViewConfiguration.get(getSupportActivity()).getScaledTouchSlop();
+		mSlop = ViewConfiguration.get(getActivity()).getScaledTouchSlop();
 
-		wm = (WindowManager)getSupportActivity().getSystemService(Context.WINDOW_SERVICE);
+		wm = (WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE);
 
 		lessonViewDragImageParams = new WindowManager.LayoutParams();
 		//Gravity.top 설정이 있어 줘야 현재 액티비티의 맨 위를 기준(상태 표시줄 위, 즉 화면의 진짜배기 맨 바깥부분. FLAG_LAYOUT_IN_SCREEN으로 인해. )으로 x,y좌표가 저장된다.
@@ -788,7 +835,7 @@ public class TimetableFragment extends Fragment {
 		lessonViewDragImageParams.format = PixelFormat.TRANSLUCENT;
 		lessonViewDragImageParams.alpha = 0.4f;
 
-		lessonViewDragImage = new ImageView(getSupportActivity());
+		lessonViewDragImage = new ImageView(getActivity());
 		lessonViewDragImage.setVisibility(View.GONE);
 
 		lessonViewDropMarkerParams = new FrameLayout.LayoutParams(
@@ -804,7 +851,7 @@ public class TimetableFragment extends Fragment {
 		//lessonViewDropMarkerParams. = PixelFormat.TRANSLUCENT;
 		//lessonViewDropMarkerParams.set = 0.4f;
 
-		lessonViewDropMarker = new ImageView(getSupportActivity());
+		lessonViewDropMarker = new ImageView(getActivity());
 		lessonViewDropMarker.setVisibility(View.GONE);
 		//	lessonViewDropMarker.setAlpha(0.4f);
 		lessonViewDropMarker.setLayoutParams(lessonViewDropMarkerParams);
@@ -825,14 +872,14 @@ public class TimetableFragment extends Fragment {
 		public boolean onLongClick(View v) {
 			MyLog.d("TouchSystemCheck", "touched : " + "lessonViewOnLongClickListener");
 			// TODO Auto-generated method stub
-			//Toast.makeText(getSupportActivity(), "수업뷰 롱클릭!", Toast.LENGTH_LONG).show();
+			//Toast.makeText(getActivity(), "수업뷰 롱클릭!", Toast.LENGTH_LONG).show();
 			if(isEditLessonLengthMode == true){
 				return false;
 			}
 			dismissOverlapMarker(true);
 
 			Animation lessonViewAnimation = 
-					AnimationUtils.loadAnimation(getSupportActivity(), R.anim.lesson_longclicked);
+					AnimationUtils.loadAnimation(getActivity(), R.anim.lesson_longclicked);
 			//			lessonViewAnimation.setAnimationListener(new Animation.AnimationListener() {				
 			//				public void onAnimationStart(Animation animation) {}
 			//				public void onAnimationRepeat(Animation animation) {}
@@ -849,9 +896,9 @@ public class TimetableFragment extends Fragment {
 			tableScroll.requestDisallowInterceptTouchEvent(true);
 
 			makeImageForDrag();
-			vibratePhone(getSupportActivity(), LONGCLICK_VIBRATE_TIME);
+			vibratePhone(getActivity(), LONGCLICK_VIBRATE_TIME);
 
-			TimetableActivity ta = (TimetableActivity) getSupportActivity();
+			TimetableActivity ta = (TimetableActivity) getActivity();
 			ta.getViewPager().requestDisallowInterceptTouchEvent(true);
 
 			return true;
@@ -874,7 +921,7 @@ public class TimetableFragment extends Fragment {
 		lessonViewDropMarkerParams.width = itemForDrag.getWidth();
 		lessonViewDropMarkerParams.height = itemForDrag.getHeight();
 		ytTheme.getLessonViewDropMarkerBackgroundShape().setViewTheme(
-				getSupportActivity(), lessonViewDropMarker);
+				getActivity(), lessonViewDropMarker);
 		//		Drawable lessonViewDropMarkerBackground = 
 		//				res.getDrawable(ytTheme.getLessonViewDropMarkerBackgroundShape());
 		//
@@ -1022,10 +1069,10 @@ public class TimetableFragment extends Fragment {
         MyLog.d("TimetableFragment", "onActivityCreated" + ", index : " + myPageIndex + ", timetable : " + timetable);
         if(ytTheme.getCurrentTheme() == YTTimetableTheme.ThemeType.Photo){
 			//포토모드라면 저장되어있는 사진을 로드해서 배경이미지로.
-			((TimetableActivity)getSupportActivity())
+			((TimetableActivity)getActivity())
 			.loadBitmapFromTimetableId(timetable.getId(), backgroundView);
 		}else{
-			ytTheme.getRootBackground().setViewTheme(getSupportActivity(), backgroundView);
+			ytTheme.getRootBackground().setViewTheme(getActivity(), backgroundView);
 		}
 	}
 	@Override
@@ -1057,8 +1104,8 @@ public class TimetableFragment extends Fragment {
         if(wm != null)
 		    wm.removeView(lessonViewDragImage);
 		lessonViewAdded = false;
-		//		YTAppWidgetProvider_2x4.onTimetableDataChanged(getSupportActivity());
-		//		YTAppWidgetProvider_4x4.onTimetableDataChanged(getSupportActivity());
+		//		YTAppWidgetProvider_2x4.onTimetableDataChanged(getActivity());
+		//		YTAppWidgetProvider_4x4.onTimetableDataChanged(getActivity());
 		MyLog.d("TimetableFragment", "onDestroy" + ", " + this.toString());
 		
 		super.onDestroy();
@@ -1092,7 +1139,7 @@ public class TimetableFragment extends Fragment {
 	}
 
 	private int getMyIndexInViewPager(){
-		TimetableActivity parent = (TimetableActivity) getSupportActivity();
+		TimetableActivity parent = (TimetableActivity) getActivity();
 		if(parent == null){
 			MyLog.d("getMyIndexInViewPager", "parent null");
 		}
@@ -1106,7 +1153,7 @@ public class TimetableFragment extends Fragment {
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-			//Toast.makeText(getSupportActivity(), "PathButton : " + v.getTag() , Toast.LENGTH_SHORT).show();
+			//Toast.makeText(getActivity(), "PathButton : " + v.getTag() , Toast.LENGTH_SHORT).show();
 			//			Timetable currentTable = timetable;
 			Timetable currentTable = timetable;
 			if(currentTable.isTimetableOverflow24Hours(
@@ -1114,7 +1161,7 @@ public class TimetableFragment extends Fragment {
 					, currentTable.getPeriodUnit())
 					){
 				String warn = res.getString(R.string.fragment_timetable_warning_over24h);
-				Toast.makeText(getSupportActivity(), warn, Toast.LENGTH_LONG).show();
+				Toast.makeText(getActivity(), warn, Toast.LENGTH_LONG).show();
 				return;
 			}
 			currentTable.setPeriodNum(currentTable.getPeriodNum() + 1);
@@ -1142,7 +1189,7 @@ public class TimetableFragment extends Fragment {
 			MyLog.d("onClick", "minus");
 			if(timetable.getPeriodNum() <= 1){
 				String warn = res.getString(R.string.fragment_timetable_warning_leaveoneperiod);
-				Toast.makeText(getSupportActivity(), warn, Toast.LENGTH_LONG).show();
+				Toast.makeText(getActivity(), warn, Toast.LENGTH_LONG).show();
 				return;
 			}
 			for(int i = 0; i < timetable.getLessonList().size() ; i++){
@@ -1157,7 +1204,7 @@ public class TimetableFragment extends Fragment {
 					String warnD = res.getString(
 							R.string.fragment_timetable_warning_tableLengthLowerThanLesson_D);
 					Toast.makeText(
-							getSupportActivity(), 
+							getActivity(), 
 							warnA + "\"" + l.getLessonName() + "\" " 
 							+ warnB + warnC + (int)l.getLessonEndPeriodByFloat() 
 							+ warnD,									
@@ -1185,7 +1232,7 @@ public class TimetableFragment extends Fragment {
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 			MyLog.d("onClick", "clear Table");
-			ClearTimetableAlertDialogBuilder.createDialog(getSupportActivity(), myPageIndex, TimetableFragment.this).show();
+			ClearTimetableAlertDialogBuilder.createDialog(getActivity(), myPageIndex, TimetableFragment.this).show();
 		}
 	};
 
@@ -1198,11 +1245,11 @@ public class TimetableFragment extends Fragment {
 			Timetable main = TimetableDataManager.getMainTimetable();
 			if(cur == main){
 				String warn = res.getString(R.string.fragment_timetable_warning_deleteMainTable);
-				Toast.makeText(getSupportActivity(), warn, Toast.LENGTH_LONG).show();
+				Toast.makeText(getActivity(), warn, Toast.LENGTH_LONG).show();
 				return;
 			}
 			//팝업창을 띄우고 타임테이블이 삭제됨을 경고한 뒤 테이블을 삭제.
-			DeleteTimetableAlertDialogBuilder.createDialog(getSupportActivity(), 
+			DeleteTimetableAlertDialogBuilder.createDialog(getActivity(), 
 					TimetableFragment.this).show();
 			//			dialog.show(getFragmentManager(), "DeleteTimetable");
 			//			Bundle b = new Bundle();
@@ -1261,14 +1308,14 @@ public class TimetableFragment extends Fragment {
 
 		//2.Timetable클래스의 날짜수만큼 타이틀의 요일 표시용 LinearLayout을 더한다.
 		for(int i = 0; i < timetable.getDayNum() ; i++){
-			LayoutInflater li = getSupportActivity().getLayoutInflater();
+			LayoutInflater li = getActivity().getLayoutInflater();
 			LinearLayout dayCell = (LinearLayout) li.inflate(R.layout.view_timetable_dayrow_daycell, dayRow, false);
 
 			int gregorianDay = cal.get(Calendar.DAY_OF_WEEK);
 
 			TextView day = (TextView) dayCell.findViewById(R.id.view_timetable_dayrow_daycell_day);
 			String sDay = new String();
-			sDay = Timetable.getDayStringFromGregorianCalendar(getSupportActivity(), gregorianDay); 
+			sDay = Timetable.getDayStringFromGregorianCalendar(getActivity(), gregorianDay); 
 			day.setText(sDay);
 			day.setTextColor(ytTheme.getTimetableTextColor());
 
@@ -1294,43 +1341,43 @@ public class TimetableFragment extends Fragment {
 			if(ytTheme.getDayrowWrapperBackground() == null){
 				if(i == 0){
 					ytTheme.getDayrowDateBakcground().setViewTheme(
-							getSupportActivity(), 
+							getActivity(), 
 							date, 
 							TimetableFragment.FRAG_TIMETABLE_ROUNDRECT_RXY, 
 							true, false, false, false);
 					//					ytTheme
 					//					.getDayrowDividerBackground()
-					//					.setViewTheme(getSupportActivity(), dayCellDivider);
+					//					.setViewTheme(getActivity(), dayCellDivider);
 					ytTheme.getDayrowDayBackground().setViewTheme(
-							getSupportActivity(), 
+							getActivity(), 
 							day, 
 							TimetableFragment.FRAG_TIMETABLE_ROUNDRECT_RXY, 
 							false, false, false, true);
 				}else if(i == timetable.getDayNum() - 1){
 					ytTheme.getDayrowDateBakcground().setViewTheme(
-							getSupportActivity(), 
+							getActivity(), 
 							date, 
 							TimetableFragment.FRAG_TIMETABLE_ROUNDRECT_RXY, 
 							false, true, false, false);
 					//					ytTheme
 					//					.getDayrowDividerBackground()
-					//					.setViewTheme(getSupportActivity(), dayCellDivider);
+					//					.setViewTheme(getActivity(), dayCellDivider);
 					ytTheme.getDayrowDayBackground().setViewTheme(
-							getSupportActivity(), 
+							getActivity(), 
 							day, 
 							TimetableFragment.FRAG_TIMETABLE_ROUNDRECT_RXY, 
 							false, false, true, false);
 				}else{
 					ytTheme.getDayrowDateBakcground().setViewTheme(
-							getSupportActivity(), 
+							getActivity(), 
 							date, 
 							TimetableFragment.FRAG_TIMETABLE_ROUNDRECT_RXY, 
 							false, false, false, false);
 					//					ytTheme
 					//					.getDayrowDividerBackground()
-					//					.setViewTheme(getSupportActivity(), dayCellDivider);
+					//					.setViewTheme(getActivity(), dayCellDivider);
 					ytTheme.getDayrowDayBackground().setViewTheme(
-							getSupportActivity(), 
+							getActivity(), 
 							day, 
 							TimetableFragment.FRAG_TIMETABLE_ROUNDRECT_RXY, 
 							false, false, false, false);
@@ -1338,7 +1385,7 @@ public class TimetableFragment extends Fragment {
 			}else{
 				//				dayCellDivider.setBackgroundColor(Color.TRANSPARENT);
 				ytTheme.getDayrowWrapperBackground().setViewTheme(
-						getSupportActivity(), dayRowOverlap, 
+						getActivity(), dayRowOverlap, 
 						FRAG_TIMETABLE_ROUNDRECT_RXY, 
 						true, true, true, true);
 			}
@@ -1370,7 +1417,7 @@ public class TimetableFragment extends Fragment {
 				    	LinearLayout dayCell = (LinearLayout) dayRow.getChildAt(index);
 
 				    	LinearLayout divider = 
-				    			new LinearLayout(TimetableFragment.this.getSupportActivity());
+				    			new LinearLayout(TimetableFragment.this.getActivity());
 				    	divider.setOrientation(LinearLayout.VERTICAL);
 				    	divider.setBackgroundColor(Color.RED);
 				    	FrameLayout.LayoutParams dividerParams = 
@@ -1457,10 +1504,10 @@ public class TimetableFragment extends Fragment {
 		}
 		grid.invalidate();
 
-//		ytTheme.getGridBackground().setViewTheme(getSupportActivity(), grid);
+//		ytTheme.getGridBackground().setViewTheme(getActivity(), grid);
 		//		Drawable gridBackgroundDrawable = 
 		//				BackgroundDrawableCreator.getTiledRoundedRectBitmapDrawable(
-		//						getSupportActivity(), Shader.TileMode.REPEAT, Shader.TileMode.REPEAT,
+		//						getActivity(), Shader.TileMode.REPEAT, Shader.TileMode.REPEAT,
 		//						FRAG_TIMETABLE_ROUNDRECT_RXY, ytTheme.getGridBackground());
 		//		gridBackgroundDrawable.setAlpha(ytTheme.getImageAlpha());
 		//		grid.setBackgroundDrawable(gridBackgroundDrawable);
@@ -1484,7 +1531,7 @@ public class TimetableFragment extends Fragment {
 		//Resources res = getResources();
 		int cellMargin = Math.round(res.getDimension(R.dimen.fragment_timetable_cell_margin));
 		int bodyPadding = Math.round(res.getDimension(R.dimen.fragment_timetable_body_padding));
-		LinearLayout row = new LinearLayout(getSupportActivity());
+		LinearLayout row = new LinearLayout(getActivity());
 		LinearLayout.LayoutParams rowParams = 
 				new LinearLayout.LayoutParams(
 						android.view.ViewGroup.LayoutParams.FILL_PARENT, 
@@ -1510,14 +1557,14 @@ public class TimetableFragment extends Fragment {
 			View cell = null;
 			if(timetable.getPeriodUnit() == 30
 					|| timetable.getPeriodUnit() == 45){
-				cell = View.inflate(this.getSupportActivity(),
+				cell = View.inflate(this.getActivity(),
 						R.layout.view_timetable_timecell_half_square, null);
 			}else{
-				cell = View.inflate(this.getSupportActivity(),
+				cell = View.inflate(this.getActivity(),
 						R.layout.view_timetable_timecell, null);
 			}
 		
-			ytTheme.getTimecellBackgroundShape().setViewTheme(getSupportActivity(), cell);
+			ytTheme.getTimecellBackgroundShape().setViewTheme(getActivity(), cell);
 			//			Drawable cellBackground =
 			//					res.getDrawable(ytTheme.getTimecellBackgroundShape());
 			//			cellBackground.setAlpha(ytTheme.getShapeAlpha());
@@ -1540,15 +1587,15 @@ public class TimetableFragment extends Fragment {
 
 		if(ytTheme.getGridBackground() != null){
 			if(period == 0){
-				ytTheme.getGridBackground().setViewTheme(getSupportActivity(), 
+				ytTheme.getGridBackground().setViewTheme(getActivity(), 
 						row, FRAG_TIMETABLE_ROUNDRECT_RXY, 
 						true, true, false, false);
 			}else if(period == timetable.getPeriodNum() - 1){
-				ytTheme.getGridBackground().setViewTheme(getSupportActivity(), 
+				ytTheme.getGridBackground().setViewTheme(getActivity(), 
 						row, FRAG_TIMETABLE_ROUNDRECT_RXY, 
 						false, false, true, true);
 			}else{
-				ytTheme.getGridBackground().setViewTheme(getSupportActivity(), 
+				ytTheme.getGridBackground().setViewTheme(getActivity(), 
 						row, FRAG_TIMETABLE_ROUNDRECT_RXY, 
 						false, false, false, false);
 			}
@@ -1586,7 +1633,7 @@ public class TimetableFragment extends Fragment {
 		//Resources res = getResources();
 		//2-2.타임라인용 셀(=교시 표시용 셀)을 만든다.
 		TextView timelineCell = (TextView) 
-				View.inflate(getSupportActivity(),
+				View.inflate(getActivity(),
 						R.layout.view_timetable_timeline_cell,
 						null);
 		LinearLayout.LayoutParams timelineCellParams = 
@@ -1627,13 +1674,13 @@ public class TimetableFragment extends Fragment {
 					if(period == timetable.getPeriodNum()){
 						//period only exists one
 						ytTheme.getTimelineBackground_1().setViewTheme(
-								getSupportActivity(), timelineCell, 
+								getActivity(), timelineCell, 
 								FRAG_TIMETABLE_ROUNDRECT_RXY, 
 								true, true, true, true);
 					}else{
 						//first period.
 						ytTheme.getTimelineBackground_1().setViewTheme(
-								getSupportActivity(), timelineCell, 
+								getActivity(), timelineCell, 
 								FRAG_TIMETABLE_ROUNDRECT_RXY, 
 								true, true, false, false);
 					}
@@ -1642,12 +1689,12 @@ public class TimetableFragment extends Fragment {
 					if(period == timetable.getPeriodNum()){
 						//final period - rb lb roundrect
 						ytTheme.getTimelineBackground_1().setViewTheme(
-								getSupportActivity(), timelineCell, 
+								getActivity(), timelineCell, 
 								FRAG_TIMETABLE_ROUNDRECT_RXY, 
 								false, false, true, true);
 					}else{
 						ytTheme.getTimelineBackground_1().setViewTheme(
-								getSupportActivity(), timelineCell, 
+								getActivity(), timelineCell, 
 								FRAG_TIMETABLE_ROUNDRECT_RXY, 
 								false, false, false, false);
 					}
@@ -1656,26 +1703,26 @@ public class TimetableFragment extends Fragment {
 				if(period == timetable.getPeriodNum()){
 					//final period - rb lb roundrect
 					ytTheme.getTimelineBackground_2().setViewTheme(
-							getSupportActivity(), timelineCell, 
+							getActivity(), timelineCell, 
 							FRAG_TIMETABLE_ROUNDRECT_RXY, 
 							false, false, true, true);
 				}else{
 					ytTheme.getTimelineBackground_2().setViewTheme(
-							getSupportActivity(), timelineCell, 
+							getActivity(), timelineCell, 
 							FRAG_TIMETABLE_ROUNDRECT_RXY, 
 							false, false, false, false);
 				}
 			}
 		}else{
-//			ytTheme.getTimelineWrapperBackground().setViewTheme(getSupportActivity(), 
+//			ytTheme.getTimelineWrapperBackground().setViewTheme(getActivity(), 
 //					timelineWrapper, FRAG_TIMETABLE_ROUNDRECT_RXY, 
 //					false, false, false, false,
 //					true, false, true, false);
-//			ytTheme.getTimelineWrapperBackground().setViewTheme(getSupportActivity(), 
+//			ytTheme.getTimelineWrapperBackground().setViewTheme(getActivity(), 
 //					timelineUpperRound, FRAG_TIMETABLE_ROUNDRECT_RXY, 
 //					true, true, false, false,
 //					true, true, true, false);
-//			ytTheme.getTimelineWrapperBackground().setViewTheme(getSupportActivity(), 
+//			ytTheme.getTimelineWrapperBackground().setViewTheme(getActivity(), 
 //					timelineBottomRound, FRAG_TIMETABLE_ROUNDRECT_RXY, 
 //					false, false, true, true,
 //					true, false, true, true);
@@ -1685,13 +1732,13 @@ public class TimetableFragment extends Fragment {
 					if(period == timetable.getPeriodNum()){
 						//period only exists one
 						ytTheme.getTimelineWrapperBackground().setViewTheme(
-								getSupportActivity(), timelineCell, 
+								getActivity(), timelineCell, 
 								FRAG_TIMETABLE_ROUNDRECT_RXY, 
 								true, true, true, true);
 					}else{
 						//first period.
 						ytTheme.getTimelineWrapperBackground().setViewTheme(
-								getSupportActivity(), timelineCell, 
+								getActivity(), timelineCell, 
 								FRAG_TIMETABLE_ROUNDRECT_RXY, 
 								true, true, false, false,
 								true, true, true, false);
@@ -1701,13 +1748,13 @@ public class TimetableFragment extends Fragment {
 					if(period == timetable.getPeriodNum()){
 						//final period - rb lb roundrect
 						ytTheme.getTimelineWrapperBackground().setViewTheme(
-								getSupportActivity(), timelineCell, 
+								getActivity(), timelineCell, 
 								FRAG_TIMETABLE_ROUNDRECT_RXY, 
 								false, false, true, true,
 								true, false, true, true);
 					}else{
 						ytTheme.getTimelineWrapperBackground().setViewTheme(
-								getSupportActivity(), timelineCell, 
+								getActivity(), timelineCell, 
 								FRAG_TIMETABLE_ROUNDRECT_RXY, 
 								false, false, false, false,
 								true, false, true, false);
@@ -1717,13 +1764,13 @@ public class TimetableFragment extends Fragment {
 				if(period == timetable.getPeriodNum()){
 					//final period - rb lb roundrect
 					ytTheme.getTimelineWrapperBackground().setViewTheme(
-							getSupportActivity(), timelineCell, 
+							getActivity(), timelineCell, 
 							FRAG_TIMETABLE_ROUNDRECT_RXY, 
 							false, false, true, true,
 							true, false, true, true);
 				}else{
 					ytTheme.getTimelineWrapperBackground().setViewTheme(
-							getSupportActivity(), timelineCell, 
+							getActivity(), timelineCell, 
 							FRAG_TIMETABLE_ROUNDRECT_RXY, 
 							false, false, false, false,
 							true, false, true, false);
@@ -1744,7 +1791,7 @@ public class TimetableFragment extends Fragment {
 		//
 		//		Drawable timelineCellBackgroundDrawable = 
 		//				BackgroundDrawableCreator.getTiledRoundedRectBitmapDrawable(
-		//						getSupportActivity(),
+		//						getActivity(),
 		//						Shader.TileMode.REPEAT, Shader.TileMode.REPEAT, 
 		//						corners, resId);
 		//		timelineCellBackgroundDrawable.setAlpha(ytTheme.getImageAlpha());
@@ -1877,7 +1924,7 @@ public class TimetableFragment extends Fragment {
 			}
 			//스크롤뷰의 interceptTouchEvent를 블로킹해두지 않으면 selectPeriodMode가 활성화된 와중에 드래그를 스크롤뷰가 빼앗아가버려 event가 Cancel된다.
 			tableScroll.requestDisallowInterceptTouchEvent(true);
-			vibratePhone(getSupportActivity(), LONGCLICK_VIBRATE_TIME);
+			vibratePhone(getActivity(), LONGCLICK_VIBRATE_TIME);
 
 			MyLog.d("longClick", "lessonList Size : " + timetable.getLessonList().size());
 			return false;
@@ -2250,7 +2297,7 @@ public class TimetableFragment extends Fragment {
 			isSelectPeriodMode = false;
 			dismissOverlapMarker(true);
 			Toast.makeText(
-					getSupportActivity(), 
+					getActivity(), 
 					warn,
 					Toast.LENGTH_LONG)
 					.show();
@@ -2359,8 +2406,8 @@ public class TimetableFragment extends Fragment {
 
 	private boolean handleEditLessonLengthModeOnTouchUp(MotionEvent event){
 //		TimetableDataManager.writeDatasToExternalStorage();
-//		YTAppWidgetProvider_2x4.onTimetableDataChanged(getSupportActivity());
-//		YTAppWidgetProvider_4x4.onTimetableDataChanged(getSupportActivity());
+//		YTAppWidgetProvider_2x4.onTimetableDataChanged(getActivity());
+//		YTAppWidgetProvider_4x4.onTimetableDataChanged(getActivity());
 		return true;
 	}
 
@@ -2471,7 +2518,7 @@ public class TimetableFragment extends Fragment {
 				longClickedLesson.setPeriodInfo(tmpPInfo);
 				String warn = res.getString(R.string.fragment_timetable_warning_lessonAlreadyExists);
 				Toast.makeText(
-						getSupportActivity(), 
+						getActivity(), 
 						warn, 
 						Toast.LENGTH_LONG
 						).show();
@@ -2492,14 +2539,14 @@ public class TimetableFragment extends Fragment {
 		//current time marker위로 뷰를 놓으면 가려져버림. 
 		currentTimeMarker.bringToFront();
 
-		TimetableActivity ta = (TimetableActivity) getSupportActivity();
+		TimetableActivity ta = (TimetableActivity) getActivity();
 		ta.getViewPager().requestDisallowInterceptTouchEvent(false);
 //		TimetableDataManager.writeDatasToExternalStorage();
-		YTAlarmManager.cancelLessonAlarm(getSupportActivity(), longClickedLesson);
+		YTAlarmManager.cancelLessonAlarm(getActivity(), longClickedLesson);
 		if(timetable.getLessonAlarmTime() != Timetable.LESSON_ALARM_NONE){
-			YTAlarmManager.cancelLessonAlarm(getSupportActivity(), longClickedLesson);
+			YTAlarmManager.cancelLessonAlarm(getActivity(), longClickedLesson);
 			YTAlarmManager.startLessonAlarm(
-					getSupportActivity(), longClickedLesson, timetable.getLessonAlarmTime());
+					getActivity(), longClickedLesson, timetable.getLessonAlarmTime());
 		}
 		longClickedLesson = null;
 		return true;
@@ -2545,12 +2592,12 @@ public class TimetableFragment extends Fragment {
 	}
 	
 	private void startSettingActivity(boolean showTimeSettingDialog, boolean showDaySettingDialog){
-//		Intent intent = new Intent(getSupportActivity(), TimetableSettingFragment.class);
-        Intent intent = new Intent(getSupportActivity(), TimetableSettingInfoActivity.class);
+//		Intent intent = new Intent(getActivity(), TimetableSettingFragment.class);
+        Intent intent = new Intent(getActivity(), TimetableSettingInfoActivity.class);
 		intent.putExtra("ShowTimeSettingDialog", showTimeSettingDialog);
         intent.putExtra("ShowDaySettingDialog", showDaySettingDialog);
 		intent.putExtra("TimetablePageIndex", getMyIndexInViewPager());
-		getSupportActivity().startActivityForResult(intent, RequestCodes.CALL_ACTIVITY_EDIT_TIMETABLE_SETTING);
+		getActivity().startActivityForResult(intent, RequestCodes.CALL_ACTIVITY_EDIT_TIMETABLE_SETTING);
 	}
 
 
@@ -2753,7 +2800,7 @@ public class TimetableFragment extends Fragment {
 
 		//needed????
 		ytTheme.getSelectedRangeBackground().setViewTheme(
-				getSupportActivity(), markSelectedRangeLayout);
+				getActivity(), markSelectedRangeLayout);
 		int[] wh = getGridOverlapViewWH(startDayIndex, endDayIndex, startPeriod, endPeriod);
 		MyLog.d("markSelectedCells", "width : " + wh[0] + ", height : " + wh[1]);
 		FrameLayout.LayoutParams params = 
@@ -3008,7 +3055,7 @@ public class TimetableFragment extends Fragment {
 //		@Override
 //		public void onClick(View v) {
 //			// TODO Auto-generated method stub
-//			Intent intent = new Intent(getSupportActivity(), TimetableSettingPagerActivity.class);
+//			Intent intent = new Intent(getActivity(), TimetableSettingPagerActivity.class);
 //			intent.putExtra("ShowTimeSettingDialog", true);
 //			intent.putExtra("TimetablePageIndex", getMyIndexInViewPager());
 //			startActivityForResult(intent, RequestCodes.CALL_ACTIVITY_EDIT_TIMETABLE_SETTING);
@@ -3035,7 +3082,7 @@ public class TimetableFragment extends Fragment {
 			// TODO Auto-generated method stub
 			//			LessonEditDialogFragment dialog = new LessonEditDialogFragment();
 			String s = getString(R.string.fragment_timetable_oneditlesson_toast);
-			Toast.makeText(getSupportActivity(), s, Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(), s, Toast.LENGTH_LONG).show();
 
 			LessonEditDialogBuilder builder = new LessonEditDialogBuilder(
 					TimetableFragment.this.getActivity(), TimetableFragment.this);
@@ -3096,7 +3143,7 @@ public class TimetableFragment extends Fragment {
 				Lesson pastedLesson = pasteLesson(i, startPeriod);
 				if(timetable.getLessonAlarmTime() != Timetable.LESSON_ALARM_NONE){
 					YTAlarmManager.startLessonAlarm(
-							getSupportActivity(), pastedLesson, timetable.getLessonAlarmTime());
+							getActivity(), pastedLesson, timetable.getLessonAlarmTime());
 				}
 			}
 			//			MyLog.d("FileThreadSafeTest", "Lessons pasted, size : " + timetable.getLessonList().size());
@@ -3165,7 +3212,7 @@ public class TimetableFragment extends Fragment {
 			Lesson lesson = (Lesson) lessonView.getTag();
 			
 			String s = getString(R.string.fragment_timetable_oneditlesson_toast);
-			Toast.makeText(getSupportActivity(), s, Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(), s, Toast.LENGTH_LONG).show();
 			//lessonViewToEdit = v;
 			//lessonToAddAndEdit = lesson;
 
@@ -3213,7 +3260,7 @@ public class TimetableFragment extends Fragment {
 			gridOverlapLayout.removeView(lessonView);
 //			TimetableDataManager.writeDatasToExternalStorage();
 
-			YTAlarmManager.cancelLessonAlarm(getSupportActivity(), tmpLesson);
+			YTAlarmManager.cancelLessonAlarm(getActivity(), tmpLesson);
 
 			dismissOverlapMarker(true);
 		}
@@ -3525,7 +3572,7 @@ public class TimetableFragment extends Fragment {
 			// TODO Auto-generated method stub
 			lessonCopied = (Lesson) lessonView.getTag();
 			String nt = res.getString(R.string.fragment_timetable_notice_lessoncopied);
-			Toast.makeText(getSupportActivity(), nt, Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), nt, Toast.LENGTH_SHORT).show();
 
 			dismissOverlapMarker(true);
 		}
@@ -3653,12 +3700,12 @@ public class TimetableFragment extends Fragment {
 				currentTimeMarker.bringToFront();
 
 //				TimetableDataManager.writeDatasToExternalStorage();
-				YTAlarmManager.cancelTimetableAlarm(getSupportActivity(), timetable);
+				YTAlarmManager.cancelTimetableAlarm(getActivity(), timetable);
 				if(timetable.getLessonAlarmTime() != Timetable.LESSON_ALARM_NONE){
-					YTAlarmManager.startTimetableAlarm(getSupportActivity(), timetable);
+					YTAlarmManager.startTimetableAlarm(getActivity(), timetable);
 				}
-//				YTAppWidgetProvider_2x4.onTimetableDataChanged(getSupportActivity());
-//				YTAppWidgetProvider_4x4.onTimetableDataChanged(getSupportActivity());
+//				YTAppWidgetProvider_2x4.onTimetableDataChanged(getActivity());
+//				YTAppWidgetProvider_4x4.onTimetableDataChanged(getActivity());
 
 			}else if(resultCode == android.app.Activity.RESULT_CANCELED){
 				for(int i = 0; i < timetable.getLessonList().size() ; i++)
@@ -3668,14 +3715,14 @@ public class TimetableFragment extends Fragment {
 		}else if(requestCode == TimetableFragment.FRAG_TIMETABLE_DIALOG_DELETE_TIMETABLE){
 			if(resultCode == android.app.Activity.RESULT_OK){
 
-				TimetableActivity ta = (TimetableActivity) getSupportActivity();
+				TimetableActivity ta = (TimetableActivity) getActivity();
 				int position =  ta.getViewPager().getCurrentItem();
 				TimetableDataManager.deleteTimetableBackgroundPhotoIfExists(
-						getSupportActivity(), 
+						getActivity(), 
 						timetable);
 				ta.removePageAt(position);
 				TimetableDataManager.writeDatasToExternalStorage();
-				YTAlarmManager.cancelTimetableAlarm(getSupportActivity(), timetable);
+				YTAlarmManager.cancelTimetableAlarm(getActivity(), timetable);
 			}else if(resultCode == android.app.Activity.RESULT_CANCELED){
 
 			}
@@ -3685,7 +3732,7 @@ public class TimetableFragment extends Fragment {
 	}
 
 	public View createLessonViewFromLesson(Lesson lesson){
-		View lessonView= View.inflate(getSupportActivity(), R.layout.view_timetable_lessonview, null);
+		View lessonView= View.inflate(getActivity(), R.layout.view_timetable_lessonview, null);
 		//grid.setclip
 		TextView textSubject = (
 				(TextView)lessonView.findViewById(R.id.view_timetable_lessoninfo_subject)
@@ -3816,7 +3863,7 @@ public class TimetableFragment extends Fragment {
 
 		ytTheme.getLessonViewBackgroundShape().setColor(lesson.getColor());
 		ytTheme.getLessonViewBackgroundShape().setViewTheme(
-				getSupportActivity(), lessonView);
+				getActivity(), lessonView);
 
 		lessonView.setOnClickListener(lessonOnClick);
 		lessonView.setOnLongClickListener(lessonViewOnLongClickListener);

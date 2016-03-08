@@ -1,9 +1,8 @@
 package com.sulga.yooiitable.customviews;
 
-import org.holoeverywhere.widget.*;
-
-import android.content.*;
-import android.util.*;
+import android.content.Context;
+import android.util.AttributeSet;
+import android.widget.LinearLayout;
 
 public class SquareLinearLayout extends LinearLayout {
 

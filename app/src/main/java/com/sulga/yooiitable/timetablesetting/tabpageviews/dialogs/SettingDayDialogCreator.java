@@ -1,15 +1,19 @@
 package com.sulga.yooiitable.timetablesetting.tabpageviews.dialogs;
 
-import org.holoeverywhere.app.*;
-import org.holoeverywhere.widget.*;
-
-import android.content.*;
-import android.content.res.*;
-import android.view.*;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.res.Resources;
+import android.support.v7.app.AlertDialog;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.sulga.yooiitable.R;
-import com.sulga.yooiitable.mylog.*;
-import com.sulga.yooiitable.timetablesetting.utils.*;
+import com.sulga.yooiitable.mylog.MyLog;
+import com.sulga.yooiitable.timetablesetting.utils.TimetableSettingStringManager;
 
 
 public class SettingDayDialogCreator {
@@ -55,7 +59,7 @@ public class SettingDayDialogCreator {
 		.create();		
 
 		final Spinner startDaySpinner = (Spinner) dialogView.findViewById(R.id.dialog_settings_daypick_startday_spinner);
-		ArrayAdapter startDayAdapter = new ArrayAdapter<String>(context, 
+		ArrayAdapter startDayAdapter = new ArrayAdapter<String>(context,
 				R.layout.simple_spinner_dropdown_item, 
 				startDayNames);
 		startDaySpinner.setAdapter(startDayAdapter);

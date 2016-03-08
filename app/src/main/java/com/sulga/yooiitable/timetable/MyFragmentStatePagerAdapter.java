@@ -16,8 +16,6 @@
 
 package com.sulga.yooiitable.timetable;
 
-import java.util.ArrayList;
-
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
@@ -29,6 +27,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.sulga.yooiitable.mylog.MyLog;
+
+import java.util.ArrayList;
 
 /**
  * Implementation of {@link android.support.v4.view.PagerAdapter} that
@@ -67,14 +67,14 @@ import com.sulga.yooiitable.mylog.MyLog;
  *      complete}
  */
 public abstract class MyFragmentStatePagerAdapter extends PagerAdapter {
-    private static final String TAG = "FragmentStatePagerAdapter";
+    private static final String TAG = "FragmentStateAdapter";
     private static final boolean DEBUG = false;
 
     private final FragmentManager mFragmentManager;
     private FragmentTransaction mCurTransaction = null;
 
-    private ArrayList<Fragment.SavedState> mSavedState = new ArrayList<Fragment.SavedState>();
-    private ArrayList<Fragment> mFragments = new ArrayList<Fragment>();
+    private ArrayList<Fragment.SavedState> mSavedState = new ArrayList<>();
+    private ArrayList<Fragment> mFragments = new ArrayList<>();
     private Fragment mCurrentPrimaryItem = null;
 
     public MyFragmentStatePagerAdapter(FragmentManager fm) {

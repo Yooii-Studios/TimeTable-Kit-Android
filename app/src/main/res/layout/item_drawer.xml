@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="?attr/spinnerDropDownItemStyle"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="?android:attr/spinnerDropDownItemStyle"
     android:layout_width="fill_parent"
-    android:layout_height="?attr/dropdownListPreferredItemHeight"
-    android:background="?attr/activatedBackgroundIndicator"
+    android:background="?android:attr/activatedBackgroundIndicator"
     android:orientation="horizontal" >
  
     <ImageView
         android:id="@+id/item_drawer_icon"
         android:layout_width="24dp"
         android:layout_height="24dp"
-         />
+        tools:ignore="ContentDescription"/>
  
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
-        android:gravity="center_vertical|left"
+        android:gravity="center_vertical|start"
         android:orientation="vertical" >
  
         <TextView
@@ -26,5 +26,4 @@
             android:ellipsize="end"
             android:singleLine="true" />
      </LinearLayout>
- 
 </LinearLayout>

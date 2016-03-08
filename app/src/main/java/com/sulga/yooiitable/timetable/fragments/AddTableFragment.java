@@ -1,22 +1,21 @@
 package com.sulga.yooiitable.timetable.fragments;
 
-import java.util.*;
-
-import org.holoeverywhere.LayoutInflater;
-import org.holoeverywhere.app.*;
-
-import android.content.*;
-import android.os.*;
-import android.view.*;
-import android.widget.*;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.sulga.yooiitable.R;
-import com.sulga.yooiitable.constants.*;
-import com.sulga.yooiitable.data.*;
-import com.sulga.yooiitable.overlapviewer.*;
-import com.sulga.yooiitable.timetable.*;
-import com.sulga.yooiitable.utils.*;
+import com.sulga.yooiitable.constants.RequestCodes;
+import com.sulga.yooiitable.data.TimetableDataManager;
+import com.sulga.yooiitable.overlapviewer.OverlapTablesViewerActivity;
+import com.sulga.yooiitable.timetable.TimetableActivity;
 import com.yooiistudios.common.ad.AdUtils;
+
+import java.util.ArrayList;
 
 
 public class AddTableFragment extends Fragment {
@@ -42,12 +41,11 @@ public class AddTableFragment extends Fragment {
 		addTableButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				if( ( TimetableDataManager.getTimetables().size() == 4 ) &&
-						( TimetableDataManager.getCurrentFullVersionState(getSupportActivity()) == false ) ){
+						(!TimetableDataManager.getCurrentFullVersionState(getActivity())) ){
 //					ToastMaker.popupUnlockFullVersionToast(getSupportApplication(),
 //							ToastMaker.UNLOCK_FULL_VERSION_TOAST_OVERFLOW_PAGENUM);
-                    AdUtils.showInHouseStoreAd(getSupportActivity());
+                    AdUtils.showInHouseStoreAd(getActivity());
 					return;
 				}
 				TimetableActivity ta = (TimetableActivity) AddTableFragment.this.getActivity();
@@ -104,11 +102,10 @@ public class AddTableFragment extends Fragment {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Intent intent = new Intent(
 						AddTableFragment.this.getActivity(), OverlapTablesViewerActivity.class);
 				
-				ArrayList<Integer> checkedItems = new ArrayList<Integer>();
+				ArrayList<Integer> checkedItems = new ArrayList<>();
 				for(int i = 0; i < TimetableDataManager.getTimetables().size() ; i++){
 					checkedItems.add(i);
 				}

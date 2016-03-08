@@ -3,7 +3,7 @@
     android:id="@+id/view_schedule_root"
     android:layout_width="fill_parent"
     android:layout_height="@dimen/view_schedule_height"
-    android:background="@color/transparent" >
+    android:background="@android:color/transparent" >
 
     <FrameLayout
         android:id="@+id/view_schedule_fadeoutview"

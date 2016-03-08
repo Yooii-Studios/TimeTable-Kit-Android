@@ -1,12 +1,12 @@
 package com.sulga.yooiitable.customviews;
 
-import org.holoeverywhere.widget.*;
+import android.content.Context;
+import android.support.v4.view.ViewPager;
+import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.view.View;
 
-import android.content.*;
-import android.util.*;
-import android.view.*;
-
-import com.sulga.yooiitable.mylog.*;
+import com.sulga.yooiitable.mylog.MyLog;
 
 public class ParentViewPager extends ViewPager {
 

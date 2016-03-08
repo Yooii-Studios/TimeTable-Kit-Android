@@ -1,33 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:tools="http://schemas.android.com/tools"
+      xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      tools:ignore="HardcodedText">
 
     <item
         android:id="@+id/menu_item_share"
-        android:actionProviderClass="com.actionbarsherlock.widget.ShareActionProvider"
         android:icon="@drawable/abs__ic_menu_share_holo_dark"
-        android:showAsAction="always"
-        android:title="Share"/>
+        app:showAsAction="always"
+        android:title="Share" />
     <item
         android:id="@+id/menu_item_overflow"
         android:icon="@drawable/abs__ic_menu_moreoverflow_normal_holo_dark"
-        android:showAsAction="always"
+        app:showAsAction="always"
         android:title="Overflow">
         <menu>
             <item
                 android:id="@+id/menu_item_store"
-                android:showAsAction="ifRoom"
+                app:showAsAction="ifRoom"
                 android:title="@string/menu_store"/>
             <item
                 android:id="@+id/menu_item_settings"
-                android:showAsAction="ifRoom"
+                app:showAsAction="ifRoom"
                 android:title="@string/menu_settings"/>
             <item 
                 android:id="@+id/menu_item_rate"
-                android:showAsAction="ifRoom"
+                app:showAsAction="ifRoom"
                 android:title="@string/timetable_setting_info_rate"/>
             <item
                 android:id="@+id/menu_item_likeinfacebook"
-                android:showAsAction="ifRoom"
+                app:showAsAction="ifRoom"
                 android:title="@string/timetable_setting_info_linkfacebook"/>
         </menu>
     </item>

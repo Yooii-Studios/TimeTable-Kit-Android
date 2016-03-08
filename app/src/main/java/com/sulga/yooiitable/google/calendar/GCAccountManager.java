@@ -1,25 +1,31 @@
 package com.sulga.yooiitable.google.calendar;
 
-import java.util.*;
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.support.v7.app.AlertDialog;
+import android.widget.Toast;
 
-import org.holoeverywhere.app.*;
-import org.holoeverywhere.widget.*;
-
-import android.accounts.*;
-import android.content.*;
-import android.content.res.*;
-
-import com.flurry.android.*;
-import com.google.android.gms.auth.*;
-import com.google.android.gms.common.*;
-import com.google.api.client.extensions.android.http.*;
-import com.google.api.client.googleapis.extensions.android.gms.auth.*;
-import com.google.api.client.http.*;
-import com.google.api.client.json.*;
-import com.google.api.client.json.jackson2.*;
-import com.google.api.services.calendar.*;
+import com.flurry.android.FlurryAgent;
+import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.common.AccountPicker;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.services.calendar.CalendarScopes;
 import com.sulga.yooiitable.R;
-import com.sulga.yooiitable.constants.*;
+import com.sulga.yooiitable.constants.FlurryConstants;
+import com.sulga.yooiitable.constants.RequestCodes;
+
+import java.util.Collections;
 
 public class GCAccountManager {
 	private static volatile GCAccountManager manager;
@@ -37,13 +43,13 @@ public class GCAccountManager {
 	AccountManager accountManager;
 	public void showAccountSelectDialog(Activity activity){
 		//accountManager = AccountManager.get(activity);
-		if(checkPlayServices(activity) == false){
+		if(!checkPlayServices(activity)){
 			return;
 		}
 
 		Intent pickAccountIntent = AccountPicker.newChooseAccountIntent(null, null,
 				new String[] { GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE }, true, null, null, null, null);
-		activity.startActivityForResult(pickAccountIntent, 
+		activity.startActivityForResult(pickAccountIntent,
 				RequestCodes.GCACCOUNT_REQUEST_CODE_PICK_ACCOUNT);
 	}
 

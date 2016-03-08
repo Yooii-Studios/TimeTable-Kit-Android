@@ -1,28 +1,29 @@
 package com.sulga.yooiitable.splashscreen;
 
-import org.holoeverywhere.app.*;
-
-import android.content.*;
-import android.graphics.*;
-import android.graphics.drawable.*;
-import android.os.*;
-import android.widget.*;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.ImageView;
 
 import com.sulga.yooiitable.R;
-import com.sulga.yooiitable.mylog.*;
-import com.sulga.yooiitable.timetable.*;
-import com.sulga.yooiitable.utils.*;
+import com.sulga.yooiitable.mylog.MyLog;
+import com.sulga.yooiitable.timetable.TimetableActivity;
 
-public class YTSplashScreenActivity extends Activity {
+public class YTSplashScreenActivity extends AppCompatActivity {
 	private static final String TAG = "YTSplashScreenActivity";
 	// Splash screen timer
 	private static int SPLASH_TIME_OUT = 2000;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash_screen);
 
-		getSupportActionBar().hide();
+//		getSupportActionBar().hide();
 
 		if(startTimetableActivityHandler == null){
 			startTimetableActivityHandler = new Handler();
@@ -49,13 +50,10 @@ public class YTSplashScreenActivity extends Activity {
 				}
 			}, SPLASH_TIME_OUT);
 		}
-		
-//		LanguageInitiater.setActivityLanguage(this);
 	}
 
 	private static Handler startTimetableActivityHandler = null;
 
-	
 	public void onResume(){
 		super.onResume();
 		MyLog.d(TAG, "onResume called");
@@ -72,9 +70,6 @@ public class YTSplashScreenActivity extends Activity {
 	@Override
 	public void onDestroy(){
 		super.onDestroy();
-		
-		//		YTAppWidgetProvider_2x4.onTimetableDataChanged(getSupportActivity());
-		//		YTAppWidgetProvider_4x4.onTimetableDataChanged(getSupportActivity());
 	}
 
 	private static void recycleBitmap(ImageView iv) {
@@ -93,5 +88,4 @@ public class YTSplashScreenActivity extends Activity {
 		if(d != null)
 			d.setCallback(null);
 	}
-
 }
