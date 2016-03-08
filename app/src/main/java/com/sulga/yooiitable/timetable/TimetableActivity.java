@@ -137,10 +137,6 @@ public class TimetableActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_timetable_main_withdrawer);
         turnOnScreen();
 
-		MyLog.d(TAG, "onCreate Called");
-		//		Debug.startMethodTracing("TimetableFragment");
-		//validation check
-		//		AppValidationChecker.validationCheck(this);
 		//full version check, must do this when releasing
         InAppBillingManager.updateFullVersionState(this, new InAppBillingManager.OnFullVersionStateUpdateFinishedListener() {
             @Override
@@ -193,7 +189,7 @@ public class TimetableActivity extends AppCompatActivity {
                 Intent intent = new Intent(TimetableActivity.this, StoreActivity.class);
                 startActivity(intent);
 
-				Map<String, String> info = new HashMap<String, String>();
+				Map<String, String> info = new HashMap<>();
 				info.put(FlurryConstants.STORE_CLICKTYPE_KEY, FlurryConstants.STORE_CLICKTYPE_DOGEAR);
 				FlurryAgent.logEvent(FlurryConstants.STORE_CLICKED, info);
 			}
