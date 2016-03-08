@@ -12,11 +12,12 @@ import com.sulga.yooiitable.R;
 
 /**
  * Created by fldldi0212 on 15. 1. 14..
+ *
+ * TimeIntervalPickerDialogBuilder
  */
 public class TimeIntervalPickerDialogBuilder {
     public static Dialog build(Context context, String title, int originalValue, int periodNum,
-                               final OnTimeIntervalPickedListener onTimeIntervalPickedListener)
-    {
+                               final OnTimeIntervalPickedListener onTimeIntervalPickedListener) {
         View dialogView = View.inflate(context, R.layout.dialog_numberpicker_layout, null);
 
         final Dialog dialog =  new AlertDialog.Builder(context)
@@ -55,6 +56,6 @@ public class TimeIntervalPickerDialogBuilder {
     }
 
     public interface OnTimeIntervalPickedListener{
-        public void onTimeIntervalPicked(int pickedNumber);
+        void onTimeIntervalPicked(int pickedNumber);
     }
 }

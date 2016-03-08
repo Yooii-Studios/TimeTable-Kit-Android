@@ -39,8 +39,6 @@ public class TimetableSettingFragment extends Fragment {
 	private int timetablePageIndex;	//you MUST set getActivity()
 	private Timetable timetable;
 
-//	private View ;
-	
 	LinearLayout settingsDayWrapper;
 	LinearLayout settingsPeriodWrapper;
 	LinearLayout settingsStartTimeWrapper;
@@ -170,7 +168,6 @@ public class TimetableSettingFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 final int def_startDayIdx = TimetableSettingStringManager.
                         getIntegerItemIndexOfArray(tt_startDay, startDays);
                 final int def_endDayIdx = TimetableSettingStringManager.
@@ -187,7 +184,6 @@ public class TimetableSettingFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 int defColumnTypeIdx = TimetableSettingStringManager
                         .getColumnTypeItemIndexOfArray(tt_columnType, columnTypes);
                 int defColumnNumIdx = -1;
@@ -214,12 +210,11 @@ public class TimetableSettingFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 final Calendar c = Calendar.getInstance();
                 c.set(Calendar.HOUR_OF_DAY, tt_startHour);
                 c.set(Calendar.MINUTE, tt_startMin);
-                TimePickerDialog timeDialog = new TimePickerDialog(
-                        TimetableSettingFragment.this.getActivity(),
+
+                TimePickerDialog timeDialog = new TimePickerDialog(getActivity(),
                         new OnStartTimeSetListener(tt_startHour, tt_startMin),
                         c.get(Calendar.HOUR_OF_DAY),
                         c.get(Calendar.MINUTE),
@@ -259,10 +254,7 @@ public class TimetableSettingFragment extends Fragment {
             }
         });
 
-//        if(showTimeSettingDialog == true){
-//            showTimeSettingDialogOnStart();
-//        }
-        if(showDaySettingDialog == true) {
+        if(showDaySettingDialog) {
             showDaySettingDialogOnStart();
         }
         return contentView;
@@ -276,8 +268,6 @@ public class TimetableSettingFragment extends Fragment {
         }
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            // TODO Auto-generated method stub
-
             String warnTitle =
                     TimetableSettingFragment.this.getActivity()
                             .getResources().getString(R.string.notice);
@@ -341,22 +331,6 @@ public class TimetableSettingFragment extends Fragment {
             dialog.dismiss();
         }
     }
-//	private void showTimeSettingDialogOnStart(){
-//		int defStartTimeIdx = TimetableSettingStringManager
-//				.getIntegerItemIndexOfArray(tt_startHour, startTimes);
-//		int defTimeOffsetIdx = TimetableSettingStringManager.
-//				getIntegerItemIndexOfArray(tt_timeOffset, timeOffsets);
-//		if(defStartTimeIdx == -1){
-//			defStartTimeIdx = 0;
-//		}
-//		if(defTimeOffsetIdx == -1){
-//			defTimeOffsetIdx = 0;
-//		}
-//		SettingTimeDialogCreator.createDialog(getActivity(),
-//				startTimeStrings, startTimes, defStartTimeIdx,
-//				timeOffsetStrings, timeOffsets, defTimeOffsetIdx,
-//				onSettingsTimeEndListener).show();
-//	}
 
     private void showDaySettingDialogOnStart(){
         int def_startDayIdx = TimetableSettingStringManager.
@@ -435,17 +409,13 @@ public class TimetableSettingFragment extends Fragment {
 
 		@Override
 		public void onSettingsEnd(int startDay, int endDay, String startString, String endString) {
-			// TODO Auto-generated method stub
 			tt_startDay = startDay;
 			tt_endDay = endDay;
-			
-//			int startDayIdx = timetable.getDayIndexFromGregorianCalendarDay(tt_startDay);
-//			int endDayIdx = timetable.getDayIndexFromGregorianCalendarDay(tt_endDay);
 			
 			saveOption();
 			for(int i = timetable.getLessonList().size() - 1; i >= 0 ; i--){
 				Lesson l = timetable.getLessonList().get(i);
-				if(timetable.doesTimetableIncludesGregorianDay(l.getDay()) == false){
+				if(!timetable.doesTimetableIncludesGregorianDay(l.getDay())){
 					//if lesson overflows timetable day size
 					YTAlarmManager.cancelLessonAlarm(getActivity(), l);
 					timetable.onRemoveLesson(l);
@@ -460,7 +430,6 @@ public class TimetableSettingFragment extends Fragment {
 
 		@Override
 		public void onSettingsEnd(ColumnTypes columnType, int columnNum) {
-			// TODO Auto-generated method stub
 			tt_columnType = columnType;
 			tt_columnNum = columnNum;
 			
@@ -474,20 +443,4 @@ public class TimetableSettingFragment extends Fragment {
 		}
 	};
 	private boolean clearTimetable = false;
-//	SettingTimeDialogCreator.OnSettingTimeEndListener onSettingsTimeEndListener = new SettingTimeDialogCreator.OnSettingTimeEndListener() {
-//
-//		@Override
-//		public void onSettingsEnd(boolean willClearTimetable, int startTime,
-//				int timeOffset) {
-//			// TODO Auto-generated method stub
-//			clearTimetable = willClearTimetable;
-//			tt_startTime = startTime;
-//			tt_timeOffset = timeOffset;
-//			saveOption();
-//			String timeStr =
-//					startTime < 10 ?
-//							"0" + Integer.toString(startTime) + " : 00" : Integer.toString(startTime) + " : 00";
-//			settingsTimeText.setText(timeStr + " / " + Integer.toString(tt_timeOffset) + "Min");
-//		}
-//	};
 }
