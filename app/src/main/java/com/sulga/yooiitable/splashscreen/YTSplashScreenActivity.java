@@ -16,7 +16,7 @@ import com.sulga.yooiitable.timetable.TimetableActivity;
 public class YTSplashScreenActivity extends AppCompatActivity {
 	private static final String TAG = "YTSplashScreenActivity";
 	// Splash screen timer
-	private static int SPLASH_TIME_OUT = 2000;
+	private static int SPLASH_TIME_OUT = 800;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -37,8 +37,7 @@ public class YTSplashScreenActivity extends AppCompatActivity {
 					MyLog.d(TAG, "Main Activity Called");
 					// This method will be executed once the timer is over
 					// Start your app main activity
-					Intent i = new Intent(YTSplashScreenActivity.this, 
-							TimetableActivity.class);
+					Intent i = new Intent(YTSplashScreenActivity.this, TimetableActivity.class);
 					i.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 					startActivity(i);
 
