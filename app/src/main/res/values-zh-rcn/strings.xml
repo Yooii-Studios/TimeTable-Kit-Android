@@ -47,7 +47,6 @@
     <string name="timetable_setting_warning_tableinit_on_timeoffsetchange">若更改时间设置，时间表将会重置</string>
     <string name="timetable_setting_theme_select_theme_prompt">主题背景</string>
     <string name="timetable_setting_theme_select_theme_title">选择主题</string>
-    <string name="timetable_setting_theme_select_language_prompt">语言(Language)</string>
     <string name="timetable_setting_info_shop">商店</string>
     <string name="timetable_setting_info_yooii_info">Timetable Kit 信息</string>
     <string name="timetable_setting_info_rate">给 Timetable Kit 打分</string>
