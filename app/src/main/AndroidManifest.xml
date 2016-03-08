@@ -172,15 +172,14 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Holo.Theme" />
-        <activity
-            android:name="com.google.ads.AdActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
         <activity android:name="com.sulga.yooiitable.appwidget.YTAppWidgetConfigure" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name="com.google.android.gms.ads.AdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
         <receiver android:name="com.sulga.yooiitable.appwidget.YTAppWidgetProvider_2x4" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -201,11 +200,6 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/appwidget_4x4_info_yooiitable" />
         </receiver>
-               
-        <activity
-            android:name="com.google.android.gms.ads.AdActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|locale|layoutDirection" />
-        
     </application>
 
 </manifest>
