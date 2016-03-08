@@ -1,11 +1,11 @@
 package com.sulga.yooiitable.alarm;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
 
 import com.sulga.yooiitable.R;
 import com.sulga.yooiitable.constants.Devs;
@@ -34,15 +34,12 @@ public class YTAlarmNotificationReceiver extends BroadcastReceiver {
 			String lessonName = intent.getStringExtra("LessonName");
 			String lessonWhere = intent.getStringExtra("LessonWhere");
 
-			String notification_stateBar = lessonName + "!";
-			String notification_alarmTitle = context.getString(R.string.app_name);
-			String notification_alarmSummary = lessonName + " at " + lessonWhere;
+			String stateBar = lessonName + "!";
+			String alarmTitle = context.getString(R.string.app_name);
+			String alarmSummary = lessonName + " at " + lessonWhere;
 
 			// 알람 노티파이를 띄움
-			startNotification(context, mainActivityIntent,
-					notification_stateBar,
-					notification_alarmTitle,
-					notification_alarmSummary);
+			startNotification(context, mainActivityIntent, stateBar, alarmTitle, alarmSummary);
 
 			// 알람 다이얼로그를 띄움
 //			displayAlarmDialog(context, alarmDialogTitle, alarmDialogMessage);
@@ -72,42 +69,57 @@ public class YTAlarmNotificationReceiver extends BroadcastReceiver {
 		}
 	}
 
-	private void startNotification(Context context, 
-			Intent mainActivityIntent, 
-			String notification_stateBar,
-			String notification_alarmTitle,
-			String notification_alarmSummary){
-		NotificationManager notifier = (NotificationManager) context
-				.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        String notifyStr = notification_stateBar;
-
+	private void startNotification(Context context, Intent intent, String stateBar,
+								   String alarmTitle, String alarmSummary) {
 		//noinspection ConstantConditions
-		notifyStr = Devs.isDevMode ? notifyStr += ", AlarmId : " + alarmId : notifyStr;
+		String tickerString = Devs.isDevMode ? stateBar += ", AlarmId : " + alarmId : stateBar;
+
+		// 이 인텐트는 노티피케이션을 클릭하면 실행되는 액티비티의 인텐트.
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
 		// 수정: 새 API 를 사용해 노티피케이션 로직 변경
-		Notification notify = new Notification(R.drawable.ic_launcher_f3, 
-				notifyStr,
+		/*
+		Notification notify = new Notification(R.drawable.ic_launcher_f3,
+				tickerString,
 				System.currentTimeMillis()
 				);
+		*/
 
-            //이 인텐트는 노티피케이션을 클릭하면 실행되는 액티비티의 인텐트.
-        mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, mainActivityIntent, 0);
-
+		/*
 		notify.setLatestEventInfo(context, 
-				notification_alarmTitle, 
-				notification_alarmSummary,
-				pendingIntent);
+				alarmTitle,
+				alarmSummary,
+				contentIntent);
 
 		notify.flags |= Notification.FLAG_AUTO_CANCEL;
 		notify.vibrate = new long[] { 200, 200, 500, 300 };
 		// notify.sound=Uri.parse("file:/");
 		notify.number++;
+		*/
 
-		notifier.notify(1, notify);
+		NotificationCompat.Builder builder = createNotificationBuilder(context, contentIntent,
+				alarmTitle, alarmSummary, tickerString);
+		builder.setNumber(builder.mNumber++);
+
+		NotificationManager notificationManager = (NotificationManager) context
+				.getSystemService(Context.NOTIFICATION_SERVICE);
+		notificationManager.notify(1, builder.build());
+	}
+
+	private NotificationCompat.Builder createNotificationBuilder(Context context,
+																 PendingIntent contentIntent,
+																 String title, String message,
+																 String tickerText) {
+		return new NotificationCompat.Builder(context)
+				.setSmallIcon(R.drawable.ic_launcher_f3)
+				.setContentTitle(title)
+				.setContentText(message)
+				.setContentIntent(contentIntent)
+				.setVibrate(new long[] {200, 200, 500, 300})
+				.setAutoCancel(true)
+				.setTicker(tickerText);
 	}
 
 	private void displayAlarmDialog(Context context, String dialogTitle, String dialogMessage) {
