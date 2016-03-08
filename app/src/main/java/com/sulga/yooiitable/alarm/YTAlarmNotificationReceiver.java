@@ -13,55 +13,43 @@ import com.sulga.yooiitable.mylog.MyLog;
 import com.sulga.yooiitable.timetable.TimetableActivity;
 
 public class YTAlarmNotificationReceiver extends BroadcastReceiver {
-
-	//private String notification_stateBar = "Statebar Text";
-	//private String notification_alarmTitle = "Alarm Title";
-	//private String notification_alarmSummary = "Alram Summary";
-
 	private int alarmId = -1;
 	private int alarmType = -1;
+
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		// TODO Auto-generated method stub
-		//Toast.makeText(context, "Alarm Received!", Toast.LENGTH_LONG).show();
 		MyLog.d("YTAlarmNotificationReceiver", "Received!!");
 		
-		//alarmId = intent.getIntExtra("AlarmId", -1);
 		alarmId = intent.getIntExtra("AlarmId", -100);
 		alarmType = intent.getIntExtra("AlarmType", -1);
 		MyLog.d("YTAlarmNotificationReceiver", "Alarm ID : " + alarmId + ", alarmType : " + alarmType);
 
 		if(alarmType == YTAlarmManager.YT_ALARM_TYPE_LESSON){
+			//메인 액티비티를 실행
 			Intent mainActivityIntent = new Intent(context, TimetableActivity.class);
-			//메인 액티비티를 실행한다.
 			mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             mainActivityIntent.putExtra("WakeLock", true);
-//			context.startActivity(mainActivityIntent);
 
 			String lessonName = intent.getStringExtra("LessonName");
 			String lessonWhere = intent.getStringExtra("LessonWhere");
-			String professor = intent.getStringExtra("Professor");
 
 			String notification_stateBar = lessonName + "!";
-			String title = context.getString(R.string.app_name);
-			String notification_alarmTitle = title;
-			String notification_alarmSummary = lessonName
-					+ " at "
-					+ lessonWhere;
-			//알람 노티파이를 띄운다.
+			String notification_alarmTitle = context.getString(R.string.app_name);
+			String notification_alarmSummary = lessonName + " at " + lessonWhere;
+
+			// 알람 노티파이를 띄움
 			startNotification(context, mainActivityIntent,
 					notification_stateBar,
 					notification_alarmTitle,
 					notification_alarmSummary);
-//			String app_name = context.getResources().getString(R.string.app_name);
-//			String alarmDialogTitle = app_name;
-//			String alarmDialogMessage = lessonName + "\n" + lessonWhere + "\n" + professor;
-			//알람 다이얼로그를 띄운다.
+
+			// 알람 다이얼로그를 띄움
 //			displayAlarmDialog(context, alarmDialogTitle, alarmDialogMessage);
-		}else if(alarmType == YTAlarmManager.YT_ALARM_TYPE_SCHEDULE){
+		} else if(alarmType == YTAlarmManager.YT_ALARM_TYPE_SCHEDULE) {
 			Intent mainActivityIntent = new Intent(context, TimetableActivity.class);
-			//메인 액티비티를 실행한다.
+
+			//메인 액티비티를 실행
 			mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             mainActivityIntent.putExtra("WakeLock", true);
@@ -69,28 +57,19 @@ public class YTAlarmNotificationReceiver extends BroadcastReceiver {
 
 			String scheduleName = intent.getStringExtra("ScheduleName");
 			String scheduleMemo = intent.getStringExtra("ScheduleMemo");
-			//String professor = intent.getStringExtra("Professor");
-			
+
 			String app_name = context.getResources().getString(R.string.app_name);
 			
 			String notification_stateBar = scheduleName + "!";
-			String notification_alarmTitle = app_name;
-			String notification_alarmSummary = scheduleName; 
-					
-			//알람 노티파이를 띄운다.
-			startNotification(context, mainActivityIntent,
-					notification_stateBar, 
-					notification_alarmTitle, 
-					notification_alarmSummary);
 
-			String alarmDialogTitle = app_name;
+			// 알람 노티파이를 띄움
+			startNotification(context, mainActivityIntent, notification_stateBar, app_name,
+					scheduleName);
+
+			// 알람 다이얼로그를 띄움
 			String alarmDialogMessage = scheduleName + "\n" + scheduleMemo;
-			//알람 다이얼로그를 띄운다.
-			displayAlarmDialog(context, alarmDialogTitle, alarmDialogMessage);
+			displayAlarmDialog(context, app_name, alarmDialogMessage);
 		}
-
-
-		//displayAlert(context);
 	}
 
 	private void startNotification(Context context, 
@@ -102,8 +81,11 @@ public class YTAlarmNotificationReceiver extends BroadcastReceiver {
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 
         String notifyStr = notification_stateBar;
-        notifyStr = Devs.isDevMode == true ?
-                notifyStr += ", AlarmId : " + alarmId : notifyStr;
+
+		//noinspection ConstantConditions
+		notifyStr = Devs.isDevMode ? notifyStr += ", AlarmId : " + alarmId : notifyStr;
+
+		// 수정: 새 API 를 사용해 노티피케이션 로직 변경
 		Notification notify = new Notification(R.drawable.ic_launcher_f3, 
 				notifyStr,
 				System.currentTimeMillis()
@@ -113,13 +95,12 @@ public class YTAlarmNotificationReceiver extends BroadcastReceiver {
         mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-		PendingIntent pender = PendingIntent
-				.getActivity(context, 0, mainActivityIntent, 0);
+		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, mainActivityIntent, 0);
 
 		notify.setLatestEventInfo(context, 
 				notification_alarmTitle, 
 				notification_alarmSummary,
-				pender);
+				pendingIntent);
 
 		notify.flags |= Notification.FLAG_AUTO_CANCEL;
 		notify.vibrate = new long[] { 200, 200, 500, 300 };
@@ -129,10 +110,7 @@ public class YTAlarmNotificationReceiver extends BroadcastReceiver {
 		notifier.notify(1, notify);
 	}
 
-	private void displayAlarmDialog(Context context, 
-			String dialogTitle,
-			String dialogMessage)
-	{
+	private void displayAlarmDialog(Context context, String dialogTitle, String dialogMessage) {
 		Intent alarmDialogIntent = new Intent("android.intent.action.MAIN");
 
 		alarmDialogIntent.setClass(context, YTAlarmDialogPopUpActivity.class);
@@ -143,8 +121,9 @@ public class YTAlarmNotificationReceiver extends BroadcastReceiver {
 		alarmDialogIntent.putExtra("AlarmId", alarmId);
 		alarmDialogIntent.putExtra("Title", dialogTitle);
 		alarmDialogIntent.putExtra("Message", dialogMessage);
+
 		// Pass on the alarm ID as extra data
-		//alarmIntent.putExtra("AlarmID", intent.getIntExtra("AlarmID", -1));
+		// alarmIntent.putExtra("AlarmID", intent.getIntExtra("AlarmID", -1));
 
 		// Start the popup activity
 		context.startActivity(alarmDialogIntent);        
