@@ -72,6 +72,7 @@ import com.sulga.yooiitable.timetableinfo.activity.NaverStoreActivity;
 import com.sulga.yooiitable.timetableinfo.activity.StoreActivity;
 import com.sulga.yooiitable.utils.AlertDialogCreator;
 import com.sulga.yooiitable.utils.DeviceUuidFactory;
+import com.sulga.yooiitable.utils.InAppBillingManager;
 import com.sulga.yooiitable.utils.LanguageInitiater;
 import com.sulga.yooiitable.utils.ToastMaker;
 import com.sulga.yooiitable.utils.UserNameFactory;
@@ -136,9 +137,8 @@ public class TimetableActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_timetable_main_withdrawer);
         turnOnScreen();
 
-		// TODO: 업데이트 전 구매 확인 다시 돌려놓아야 함
-		/*
-        InAppBillingManager.updateFullVersionState(this, new InAppBillingManager.OnFullVersionStateUpdateFinishedListener() {
+        InAppBillingManager.updateFullVersionState(this,
+                new InAppBillingManager.OnFullVersionStateUpdateFinishedListener() {
             @Override
             public void onFullVersionStateUpdateFinished(boolean isSucceed,
                     boolean isFullVersion) {
@@ -153,7 +153,6 @@ public class TimetableActivity extends AppCompatActivity {
 				}
 			}
         });
-        */
 
 		addTableProgressDialog = new ProgressDialog(this);
 		String addingTableString = getResources()
@@ -185,8 +184,6 @@ public class TimetableActivity extends AppCompatActivity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-
                 Intent intent = new Intent(TimetableActivity.this, StoreActivity.class);
                 startActivity(intent);
 
@@ -218,9 +215,9 @@ public class TimetableActivity extends AppCompatActivity {
             AdUtils.showPopupAdIfSatisfied(this);
         }
 
-		// TODO: 업데이트 전 구매 확인 로직 되돌리기
-		TimetableDataManager.saveFullVersionState(TimetableActivity.this, true);
-		dogEar.setVisibility(View.GONE);
+		// 풀버전 테스트 시 아래 부분 주석 풀자(삭제하지 말 것)
+//		TimetableDataManager.saveFullVersionState(TimetableActivity.this, true);
+//		dogEar.setVisibility(View.GONE);
     }
 
     @Override
