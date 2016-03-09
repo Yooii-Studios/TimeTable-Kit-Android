@@ -215,7 +215,7 @@
         <item>90분</item>
     </string-array>
     <string-array name="timetable_setting_lessonAlarms">
-        <item>알림 안사용함</item>
+        <item>알림 사용하지 않음</item>
         <item>정각</item>
         <item>1분 전</item>
         <item>5분 전</item>
