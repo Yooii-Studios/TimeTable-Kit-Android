@@ -17,10 +17,18 @@ gen/
 
 # Local configuration file (sdk path, etc)
 local.properties
+.DS_Store
 
 # Eclipse project files
 .classpath
 .project
+
+# Proguard
+proguard/
+
+# Log files 
+*.log
+*.txt
 
 # Android Studio
 .idea/
@@ -31,5 +39,9 @@ local.properties
 /*/out
 /*/*/build/
 /*/build/
-build
+build/
 /*/*/production/
+
+*.iml
+
+infer-out

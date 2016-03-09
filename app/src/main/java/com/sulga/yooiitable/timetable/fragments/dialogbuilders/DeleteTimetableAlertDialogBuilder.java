@@ -1,21 +1,22 @@
 package com.sulga.yooiitable.timetable.fragments.dialogbuilders;
 
-import org.holoeverywhere.app.*;
-import org.holoeverywhere.widget.*;
 
-import android.content.*;
-import android.content.res.*;
-import android.view.*;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.res.Resources;
+import android.support.v7.app.AlertDialog;
+import android.view.View;
+import android.widget.Button;
 
-import com.flurry.android.*;
+import com.flurry.android.FlurryAgent;
 import com.sulga.yooiitable.R;
-import com.sulga.yooiitable.constants.*;
-import com.sulga.yooiitable.timetable.fragments.*;
+import com.sulga.yooiitable.constants.FlurryConstants;
+import com.sulga.yooiitable.timetable.fragments.TimetableFragment;
 
 
 public class DeleteTimetableAlertDialogBuilder{
 	public static Dialog createDialog(Context context,
-			final TimetableFragment parent){
+									  final TimetableFragment parent){
 		Resources res = context.getResources();
 		String title = res.getString(R.string.dialog_deletetimetable_title);
 		

@@ -1,15 +1,18 @@
 package com.sulga.yooiitable.timetable;
 
-import org.holoeverywhere.app.*;
-import org.holoeverywhere.widget.ArrayAdapter;
 
-import android.content.*;
-import android.view.*;
-import android.widget.*;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
+import android.view.ContextThemeWrapper;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sulga.yooiitable.R;
-import com.sulga.yooiitable.language.*;
+import com.sulga.yooiitable.language.YTLanguageType;
 import com.sulga.yooiitable.timetablesetting.SelectOptionDialogCreator.OnSelectOptionDialogItemSelectedListener;
 
 public class SettingLanguageDialogCreator {
@@ -17,17 +20,15 @@ public class SettingLanguageDialogCreator {
 	public static void showSettingsLanguageListDialog(Context context, String title, 
 				final OnSelectOptionDialogItemSelectedListener listener){
 		AlertDialog.Builder selectOptionDialog = new AlertDialog.Builder(
-				new ContextThemeWrapper(context, R.style.Holo_Theme_Dialog));
+				new ContextThemeWrapper(context, android.R.style.Theme_Dialog));
 
 		YTLanguageType[] languageTypes = YTLanguageType.values();	
 		selectOptionDialog.setTitle(title);
 
-		LanguageListAdapter adt = new LanguageListAdapter(
-				context, android.R.layout.select_dialog_item, languageTypes);
+		LanguageListAdapter adt = new LanguageListAdapter(context, languageTypes);
 		selectOptionDialog.setAdapter(adt, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
 				if(listener != null){
 					listener.onClick(which);
 				}
@@ -37,12 +38,9 @@ public class SettingLanguageDialogCreator {
 	}
 
 	static class LanguageListAdapter extends ArrayAdapter<YTLanguageType> {
-
-		//		int promptLayout;
 		YTLanguageType[] items;
 		Context context;
-		public LanguageListAdapter(Context context, int selectDialogItem,
-				YTLanguageType[] objects) {
+		public LanguageListAdapter(Context context, YTLanguageType[] objects) {
 			super(context, R.layout.item_theme_spinner, objects);
 			this.items = objects;
 			this.context = context;
@@ -71,10 +69,6 @@ public class SettingLanguageDialogCreator {
 					.findViewById(R.id.item_theme_spinner_img); 
 			lockImg.setVisibility(View.GONE);
 			themeName.setText(YTLanguageType.toTranselatedString(position, context));
-			//            TextView tvText1 = (TextView)convertView.findViewById(android.R.id.text1);
-			//            TextView tvText2 = (TextView)convertView.findViewById(android.R.id.text2);
-			//            tvText1.setText(getItem(position).city);
-			//            tvText2.setText(getItem(position).distance);
 			return convertView;
 		}
 	}

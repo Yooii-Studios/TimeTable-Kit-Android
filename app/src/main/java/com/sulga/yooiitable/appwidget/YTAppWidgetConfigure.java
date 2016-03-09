@@ -3,28 +3,25 @@ package com.sulga.yooiitable.appwidget;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.sulga.yooiitable.R;
 import com.sulga.yooiitable.mylog.MyLog;
 import com.sulga.yooiitable.theme.YTTimetableTheme;
 
-import org.holoeverywhere.app.Activity;
-import org.holoeverywhere.preference.PreferenceManager;
-import org.holoeverywhere.preference.SharedPreferences;
-import org.holoeverywhere.preference.SharedPreferences.Editor;
-import org.holoeverywhere.widget.Button;
-import org.holoeverywhere.widget.SeekBar;
-import org.holoeverywhere.widget.TextView;
-
-public class YTAppWidgetConfigure extends Activity {
+public class YTAppWidgetConfigure extends AppCompatActivity {
 	private static final String TAG = "YTAppWidgetConfigure";
 
 	//컨피규어 액티비티는 앱위젯 아이디를 받는게 필수.
@@ -261,13 +258,12 @@ public class YTAppWidgetConfigure extends Activity {
 
 	public static void setAppWidgetConfigure(Context context, int appWidgetId, 
 			int argbColor){
-		SharedPreferences prefs = PreferenceManager.wrap(context,
-                "AppWidgetConfigure",
-                Context.MODE_PRIVATE);
-		Editor edit = prefs.edit();
+		SharedPreferences prefs =
+				context.getSharedPreferences("AppWidgetConfigure", Context.MODE_PRIVATE);
+		SharedPreferences.Editor edit = prefs.edit();
 		String colorKey = Integer.toString(appWidgetId) + "ARGB";
 		edit.putInt(colorKey, argbColor);
-		edit.commit();
+		edit.apply();
 	}
 
 	/**
@@ -278,9 +274,8 @@ public class YTAppWidgetConfigure extends Activity {
 	 * ARGB Color
 	 */
 	public static int getAppWidgetARGBColor(Context context, int appWidgetId){
-		SharedPreferences prefs = PreferenceManager.wrap(context, 
-				"AppWidgetConfigure", 
-				Context.MODE_PRIVATE);
+		SharedPreferences prefs =
+				context.getSharedPreferences("AppWidgetConfigure", Context.MODE_PRIVATE);
 		String colorKey = Integer.toString(appWidgetId) + "ARGB";
 		int argbColor = prefs.getInt(colorKey, 0x7d333333);
 

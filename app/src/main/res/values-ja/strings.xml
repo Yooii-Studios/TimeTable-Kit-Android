@@ -47,7 +47,6 @@
     <string name="timetable_setting_warning_tableinit_on_timeoffsetchange">授業時間の単位を変更すると、時間割が初期化されます。</string>
     <string name="timetable_setting_theme_select_theme_prompt">テーマ</string>
     <string name="timetable_setting_theme_select_theme_title">テーマをご選択ください。</string>
-    <string name="timetable_setting_theme_select_language_prompt">言語(Language)</string>
     <string name="timetable_setting_info_shop">有料版を購入する</string>
     <string name="timetable_setting_info_yooii_info">タイムテーブルキットの情報</string>
     <string name="timetable_setting_info_rate">評価する</string>
@@ -60,7 +59,7 @@
     <string name="timetable_setting_info_version">バージョン</string>
     <string name="tab_timetablesetting">設定する</string>
     <string name="tab_timetabletheme">テーマ</string>
-    <string name="tab_alarmandtheme">通知\\テーマ</string>
+    <string name="tab_alarmandtheme">通知 / テーマ</string>
     <string name="tab_info">ストア / 情報</string>
     <string name="notice">アラーム</string>
     <string name="unlock_full_version">フルバージョンをご購入ください！</string>
@@ -265,4 +264,10 @@
     <string name="quit_ad_dialog_title_text">このアプリを終了しますか。</string>
     <string name="store_buy_full_version">プロバージョンをご購入ください！</string>
     <string name="minute_short">分</string>
+
+    <!-- Permissions -->
+    <string name="need_permission_read_storage">時間割の使用に外部保存所の権限が必要。</string>
+    <string name="need_permission_read_contacts">コネクタの使用にアドレス帳の権限が必要。</string>
+    <string name="permission_granted">承認を得ました。</string>
+    <string name="permission_not_granted">承認を得ません。</string>
 </resources>

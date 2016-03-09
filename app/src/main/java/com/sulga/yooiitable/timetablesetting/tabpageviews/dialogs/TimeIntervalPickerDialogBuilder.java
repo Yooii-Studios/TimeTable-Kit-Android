@@ -1,24 +1,23 @@
 package com.sulga.yooiitable.timetablesetting.tabpageviews.dialogs;
 
+import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.widget.Button;
+import android.widget.NumberPicker;
 
 import com.sulga.yooiitable.R;
 
-import org.holoeverywhere.app.AlertDialog;
-import org.holoeverywhere.app.Dialog;
-import org.holoeverywhere.widget.Button;
-import org.holoeverywhere.widget.NumberPicker;
 
 /**
  * Created by fldldi0212 on 15. 1. 14..
+ *
+ * TimeIntervalPickerDialogBuilder
  */
 public class TimeIntervalPickerDialogBuilder {
     public static Dialog build(Context context, String title, int originalValue, int periodNum,
-                               final OnTimeIntervalPickedListener onTimeIntervalPickedListener)
-    {
+                               final OnTimeIntervalPickedListener onTimeIntervalPickedListener) {
         View dialogView = View.inflate(context, R.layout.dialog_numberpicker_layout, null);
 
         final Dialog dialog =  new AlertDialog.Builder(context)
@@ -57,6 +56,6 @@ public class TimeIntervalPickerDialogBuilder {
     }
 
     public interface OnTimeIntervalPickedListener{
-        public void onTimeIntervalPicked(int pickedNumber);
+        void onTimeIntervalPicked(int pickedNumber);
     }
 }

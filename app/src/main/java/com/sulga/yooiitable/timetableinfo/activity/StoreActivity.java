@@ -1,25 +1,33 @@
 package com.sulga.yooiitable.timetableinfo.activity;
 
-import java.util.*;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import org.holoeverywhere.app.*;
-import org.holoeverywhere.widget.*;
-
-import android.content.*;
-import android.os.*;
-import android.util.*;
-import android.view.*;
-
-import com.actionbarsherlock.view.MenuItem;
-import com.flurry.android.*;
-import com.sulga.inappbilling.testapp.util.*;
+import com.flurry.android.FlurryAgent;
+import com.sulga.inappbilling.testapp.util.IabHelper;
+import com.sulga.inappbilling.testapp.util.IabResult;
+import com.sulga.inappbilling.testapp.util.Inventory;
+import com.sulga.inappbilling.testapp.util.Purchase;
+import com.sulga.inappbilling.testapp.util.SkuDetails;
 import com.sulga.yooiitable.R;
-import com.sulga.yooiitable.constants.*;
-import com.sulga.yooiitable.data.*;
-import com.sulga.yooiitable.mylog.*;
-import com.sulga.yooiitable.utils.*;
+import com.sulga.yooiitable.constants.FlurryConstants;
+import com.sulga.yooiitable.constants.InApp;
+import com.sulga.yooiitable.constants.RequestCodes;
+import com.sulga.yooiitable.data.TimetableDataManager;
+import com.sulga.yooiitable.mylog.MyLog;
+import com.sulga.yooiitable.utils.InAppBillingManager;
 
-public class StoreActivity extends Activity {
+import java.util.ArrayList;
+import java.util.List;
+
+public class StoreActivity extends AppCompatActivity {
 	private final String TAG = "StoreActivity";
 
 	private boolean isFullVersion;

@@ -1,18 +1,19 @@
 package com.sulga.yooiitable.timetable.fragments.dialogbuilders;
 
-import org.holoeverywhere.app.*;
 
-import android.content.*;
-import android.view.*;
-import android.widget.*;
+import android.app.Dialog;
+import android.content.Context;
+import android.support.v7.app.AlertDialog;
+import android.view.View;
+import android.widget.ImageButton;
 
 import com.sulga.yooiitable.R;
-import com.sulga.yooiitable.timetable.fragments.*;
+import com.sulga.yooiitable.timetable.fragments.TimetableFragment;
 
 public class StartConnectorTutorialDialogBuilder {
 
 	public static Dialog createDialog(final Context context,
-			final TimetableFragment parentFrag){
+									  final TimetableFragment parentFrag){
 		View dialogView = View.inflate(context, R.layout.dialog_tutorial_connector, null);
 
 		final Dialog dialog =  new AlertDialog.Builder(context)

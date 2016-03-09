@@ -1,34 +1,39 @@
 package com.sulga.yooiitable.utils;
 
-import java.util.*;
-
-import org.holoeverywhere.app.*;
-import org.holoeverywhere.widget.Button;
-import org.holoeverywhere.widget.EditText;
-import org.holoeverywhere.widget.TextView;
-
-import android.content.*;
-import android.graphics.*;
-import android.graphics.drawable.*;
-import android.net.*;
-import android.text.*;
-import android.text.method.*;
-import android.view.*;
-import android.widget.*;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
+import android.support.v7.app.AlertDialog;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.text.method.ScrollingMovementMethod;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.sulga.yooiitable.R;
-import com.sulga.yooiitable.data.*;
-import com.sulga.yooiitable.mylog.*;
-import com.sulga.yooiitable.sharetable.*;
+import com.sulga.yooiitable.data.TimetableDataManager;
+import com.sulga.yooiitable.mylog.MyLog;
+import com.sulga.yooiitable.sharetable.ConnectorState;
+import com.sulga.yooiitable.sharetable.UploadInfoObject;
+
+import java.util.ArrayList;
 
 
 public class AlertDialogCreator{
 
-	public static AlertDialog getClearTimetableAlertDialog(String title, 
-			String message, 
-			Context context,
-			DialogInterface.OnClickListener okOnClick, 
-			DialogInterface.OnClickListener cancelOnClick){
+	public static AlertDialog getClearTimetableAlertDialog(String title,
+														   String message,
+														   Context context,
+														   DialogInterface.OnClickListener okOnClick,
+														   DialogInterface.OnClickListener cancelOnClick){
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
 				context);
 
@@ -48,12 +53,12 @@ public class AlertDialogCreator{
 	}
 
 	public static Dialog getSimpleEditTextAlertDialog(Context context,
-			int inputType,
-			String hint,
-			String _initialEditTextText,
-			String title,
-			final EditTextDialogOnClickListener positiveOnClick,
-			final EditTextDialogOnClickListener negativeOnClick
+													  int inputType,
+													  String hint,
+													  String _initialEditTextText,
+													  String title,
+													  final EditTextDialogOnClickListener positiveOnClick,
+													  final EditTextDialogOnClickListener negativeOnClick
 			){
 
 		View dialogView = View.inflate(context, 

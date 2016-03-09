@@ -1,18 +1,18 @@
 package com.sulga.yooiitable.timetablesetting;
 
-import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
 import com.sulga.yooiitable.R;
 import com.sulga.yooiitable.alarm.YTAlarmManager;
 import com.sulga.yooiitable.constants.FlurryConstants;
-import com.sulga.yooiitable.data.Lesson;
 import com.sulga.yooiitable.data.Timetable;
 import com.sulga.yooiitable.data.TimetableDataManager;
 import com.sulga.yooiitable.language.YTLanguage;
@@ -23,34 +23,31 @@ import com.sulga.yooiitable.timetableinfo.TimetableSettingInfoActivity;
 import com.sulga.yooiitable.timetablesetting.utils.TimetableSettingStringManager;
 import com.yooiistudios.common.ad.AdUtils;
 
-import org.holoeverywhere.LayoutInflater;
-import org.holoeverywhere.app.Fragment;
-import org.holoeverywhere.widget.Toast;
-
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 /**
  * Created by fldldi0212 on 15. 1. 20..
+ *
+ * TimetableSettingsAlarmFragment
  */
 public class TimetableSettingsAlarmFragment extends Fragment {
     public static String BUNDLE_PAGE_INDEX_KEY = "TimetablePageIndex";
-    private static final String TAG = "TimetableSettingFragment";
-    //Context context;
-    public static final int COLUMNNUM_USER_CUSTOM = -1;
 
     private int timetablePageIndex;	//you MUST set getActivity()
     private Timetable timetable;
 
     LinearLayout settingsAlarmWrapper;
+    TextView settingsAlarmPromptText;
     TextView settingsAlarmText;
 
     LinearLayout pickThemeWrapper;
+    TextView pickThemePromptText;
     TextView pickThemeText;
     int pickThemeClickedItemPosition;
 
     LinearLayout pickLanguageWrapper;
+    TextView pickLanguagePromptText;
     TextView pickLanguageText;
 
     private static String[] alarmTimeStrings;
@@ -67,38 +64,31 @@ public class TimetableSettingsAlarmFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        //setContentView(R.layout.view_timetable_option_settings_iconstyle);
-        View contentView = inflater.inflate(
-                R.layout.view_timetable_option_settings_alarm_iconstyle,
-                container,
-                false);
+        View contentView = inflater.inflate(R.layout.view_timetable_option_settings_alarm_iconstyle,
+                container, false);
         timetablePageIndex = getArguments().getInt(BUNDLE_PAGE_INDEX_KEY, -1);
-        timetable = TimetableDataManager
-                .getInstance()
-                .getTimetableAtPage(timetablePageIndex);
+        timetable = TimetableDataManager.getInstance().getTimetableAtPage(timetablePageIndex);
 
         settingsAlarmWrapper = (LinearLayout)
                 contentView.findViewById(R.id.view_timetable_settings_alarm_wrapper);
+        settingsAlarmPromptText = (TextView)
+                contentView.findViewById(R.id.view_timetable_settings_alarm_prompt);
         settingsAlarmText = (TextView)
                 contentView.findViewById(R.id.view_timetable_settings_alarm_text);
 
         pickThemeWrapper = (LinearLayout)
                 contentView.findViewById(R.id.view_timetable_settings_theme_wrapper);
+        pickThemePromptText = (TextView)
+                contentView.findViewById(R.id.view_timetable_settings_theme_prompt);
         pickThemeText = (TextView)
                 contentView.findViewById(R.id.view_timetable_settings_theme_text);
 
         pickLanguageWrapper = (LinearLayout)
                 contentView.findViewById(R.id.view_timetable_settings_language_wrapper);
+        pickLanguagePromptText = (TextView)
+                contentView.findViewById(R.id.view_timetable_settings_language_prompt);
         pickLanguageText = (TextView)
                 contentView.findViewById(R.id.view_timetable_settings_language_text);
-
-//        if(TimetableDataManager.getCurrentFullVersionState(getActivity()) == false){
-            //if not full version
-//            alarmLockImage.setVisibility(View.VISIBLE);
-//        }else{
-//            alarmLockImage.setVisibility(View.INVISIBLE);
-//        }
 
         themeStrings = getResources().getStringArray(R.array.timetable_setting_theme_themes);
         alarmTimeStrings = getResources().getStringArray(R.array.timetable_setting_lessonAlarms);
@@ -113,20 +103,23 @@ public class TimetableSettingsAlarmFragment extends Fragment {
         return contentView;
     }
 
-    void initSettingsText(){
+    void initSettingsText() {
         //Theme
         int def_themeTypeIdx =
                 TimetableSettingStringManager.
                         getThemeTypeItemIndexOfArray(timetable.getThemeType(), YTTimetableTheme.ThemeType.values());
         pickThemeText.setText(themeStrings[def_themeTypeIdx]);
+        pickThemePromptText.setText(R.string.activity_setting_viewpager_themeprompt);
         //Alarm
         int def_alarmIdx = TimetableSettingStringManager.
                 getIntegerItemIndexOfArray(tt_lessonAlarmTime, alarmTimes);
         settingsAlarmText.setText(alarmTimeStrings[def_alarmIdx]);
+        settingsAlarmPromptText.setText(R.string.activity_setting_viewpager_alarmprompt);
 
-        YTLanguageType currentLanguageType = YTLanguage.getCurrentLanguageType(getSupportActivity());
-        String languageStr = YTLanguageType.toTranselatedString(currentLanguageType.getIndex(), getSupportActivity());
+        YTLanguageType currentLanguageType = YTLanguage.getCurrentLanguageType(getActivity());
+        String languageStr = YTLanguageType.toTranselatedString(currentLanguageType.getIndex(), getActivity());
         pickLanguageText.setText(languageStr);
+        pickLanguagePromptText.setText(R.string.activity_setting_viewpager_languageprompt);
     }
 
     void setupPickThemeWrapper(){
@@ -134,7 +127,6 @@ public class TimetableSettingsAlarmFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 SelectOptionDialogCreator.showThemeUnlockListDialog(
                         getActivity(),
                         getResources().getString(R.string.timetable_setting_theme_select_theme_title),
@@ -144,49 +136,31 @@ public class TimetableSettingsAlarmFragment extends Fragment {
 
                             @Override
                             public void onClick(int clickedItemPosition) {
-                                // TODO Auto-generated method stub
                                 YTTimetableTheme.ThemeType[] themes =
                                         YTTimetableTheme.getThemeTypeValues();
                                 YTTimetableTheme.ThemeType clickedTheme =
                                         themes[clickedItemPosition];
                                 pickThemeClickedItemPosition = clickedItemPosition;
 
-                                if(TimetableDataManager.getCurrentFullVersionState(getActivity()) == false){
+                                if(!TimetableDataManager.getCurrentFullVersionState(getActivity())){
                                     for(int i = 0; i < YTTimetableTheme.lockedThemes.length ; i++){
                                         YTTimetableTheme.ThemeType locked = YTTimetableTheme.lockedThemes[i];
                                         if(clickedTheme == locked){
-//                                            String message = getActivity().getResources().getString(R.string.unlock_full_version);
-//                                            ToastMaker.popupToastAtCenter(getActivity(), message);
-                                            AdUtils.showInHouseStoreAd(getSupportActivity());
+                                            AdUtils.showInHouseStoreAd(getActivity());
                                             return;
                                         }
                                     }
                                 }
 
-                                if(clickedTheme != YTTimetableTheme.ThemeType.Photo){
-                                    timetable.setThemeType(
-                                            themes[clickedItemPosition]
-                                    );
-                                    ((TimetableSettingInfoActivity)getActivity()).onThemeSettled();
-                                    //									pickThemeText.setText(
-                                    //											themeStrings[clickedItemPosition]
-                                    //											);
-                                }else{
-                                    //									Intent intent = new Intent(Intent.ACTION_PICK);
-                                    //
-                                    //									intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-                                    //									//								intent.putExtra("crop", "true");
-                                    //									intent.putExtra("outputFormat", Bitmap.CompressFormat.PNG.toString());
-                                    //									intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                                    //									Intent photoPickerIntent = new Intent(Intent.ACTION_PICK,
-                                    //											android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                                    ((TimetableSettingInfoActivity)getActivity()).showImagePicker();
-                                    //									((Activity)m_Context).startActivityForResult(photoPickerIntent,
-                                    //											RequestCodes.YT_TIMETABLE_THEME_REQUEST_CODE_PICK_IMAGE_PORTRAIT);
+                                if (clickedTheme != YTTimetableTheme.ThemeType.Photo) {
+                                    timetable.setThemeType(themes[clickedItemPosition]);
+                                    ((TimetableSettingInfoActivity) getActivity()).onThemeSettled();
+                                } else {
+                                    ((TimetableSettingInfoActivity) getActivity()).showImagePicker();
                                 }
                                 pickThemeText.setText(themeStrings[clickedItemPosition]);
 
-                                Map<String, String> info = new HashMap<String, String>();
+                                Map<String, String> info = new HashMap<>();
                                 info.put(FlurryConstants.THEME_INFO_KEY, clickedTheme.toString());
                                 FlurryAgent.logEvent(FlurryConstants.THEME_SELECTED, info);
                             }
@@ -202,14 +176,6 @@ public class TimetableSettingsAlarmFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
-//                if(TimetableDataManager.getCurrentFullVersionState(getActivity()) == false){
-                    //if not full version
-//                    String warning = getActivity().getResources().getString(R.string.unlock_full_version);
-//                    ToastMaker.popupToastAtCenter(getActivity(), warning);
-//                    AdUtils.showInHouseStoreAd(getSupportActivity());
-//                    return;
-//                }
                 SelectOptionDialogCreator.showListDialog(
                         getActivity(),
                         getResources().getString(R.string.timetable_setting_select_lessonAlarm_title),
@@ -217,10 +183,8 @@ public class TimetableSettingsAlarmFragment extends Fragment {
                         new SelectOptionDialogCreator.OnSelectOptionDialogItemSelectedListener() {
                             @Override
                             public void onClick(int clickedItemPosition) {
-                                // TODO Auto-generated method stub
                                 tt_lessonAlarmTime = alarmTimes[clickedItemPosition];
-//								pickLessonAlarmText.setText(alarmTimeStrings[clickedItemPosition]);
-                                String str = "";
+                                String str;
                                 String alarmCancelled = getActivity().getResources()
                                         .getString(R.string.timetable_setting_alarm_cancelled);
                                 String alarmSettledOnTime = getActivity().getResources()
@@ -242,7 +206,7 @@ public class TimetableSettingsAlarmFragment extends Fragment {
                                             + alarmBeforeB;
                                 }
 
-                                Map<String, String> alarmInfo = new HashMap<String, String>();
+                                Map<String, String> alarmInfo = new HashMap<>();
                                 String alarmTypeStr = tt_lessonAlarmTime == Timetable.LESSON_ALARM_NONE ?
                                         "None" : Integer.toString(tt_lessonAlarmTime);
                                 alarmInfo.put(FlurryConstants.ALARM_INFO_TIME, alarmTypeStr);
@@ -271,15 +235,14 @@ public class TimetableSettingsAlarmFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 SettingLanguageDialogCreator.showSettingsLanguageListDialog(
-                        getSupportActivity(),
+                        getActivity(),
                         langTitle,
                         new SelectOptionDialogCreator.OnSelectOptionDialogItemSelectedListener() {
 
                             @Override
                             public void onClick(int clickedItemPosition) {
-                                // TODO Auto-generated method stub
                                 onLanguageChanged(clickedItemPosition);
-                                ((TimetableSettingInfoActivity)getSupportActivity()).onLanguageChanged();
+                                ((TimetableSettingInfoActivity)getActivity()).onLanguageChanged();
                             }
                         });
             }
@@ -287,19 +250,13 @@ public class TimetableSettingsAlarmFragment extends Fragment {
 
     }
 
-    public void onLanguageChanged(int position){
-        YTLanguage.setLanguageType(YTLanguageType.valueOf(position), getSupportActivity());
-        // update locale
-        YTLanguageType currentLanguageType = YTLanguage.getCurrentLanguageType(getSupportActivity());
-        Locale locale = new Locale(currentLanguageType.getCode(), currentLanguageType.getRegion());
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.locale = locale;
-        getResources().updateConfiguration(config, this.getResources().getDisplayMetrics());
+    public void onLanguageChanged(int position) {
+        YTLanguage.setLanguageType(YTLanguageType.valueOf(position), getActivity());
+        initSettingsText();
     }
 
-    public boolean saveOption(){
-        if(tt_lessonAlarmTime == Timetable.LESSON_ALARM_NONE){
+    public boolean saveOption() {
+        if (tt_lessonAlarmTime == Timetable.LESSON_ALARM_NONE) {
             YTAlarmManager.cancelTimetableAlarm(getActivity(), timetable);
         }
         timetable.setLessonAlarmTime(tt_lessonAlarmTime);
@@ -307,17 +264,14 @@ public class TimetableSettingsAlarmFragment extends Fragment {
     }
 
     private void saveAlarmOption(){
-        if(timetablePageIndex != -1){
-            Timetable timetable =
-                    TimetableDataManager
-                            .getInstance()
-                            .getTimetableAtPage(timetablePageIndex);
-            if(timetable.getLessonAlarmTime() != Timetable.LESSON_ALARM_NONE){
+        if (timetablePageIndex != -1) {
+            Timetable timetable = TimetableDataManager.getInstance().getTimetableAtPage(timetablePageIndex);
+            if (timetable.getLessonAlarmTime() != Timetable.LESSON_ALARM_NONE) {
                 YTAlarmManager.cancelTimetableAlarm(getActivity(), timetable);
                 YTAlarmManager.startTimetableAlarm(getActivity(), timetable);
-            }
-            else if(timetable.getLessonAlarmTime() == Timetable.LESSON_ALARM_NONE)
+            } else if (timetable.getLessonAlarmTime() == Timetable.LESSON_ALARM_NONE) {
                 YTAlarmManager.cancelTimetableAlarm(getActivity(), timetable);
+            }
         }
 
     }

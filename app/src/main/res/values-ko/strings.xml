@@ -53,8 +53,8 @@
     <string name="timetable_setting_info_version">버전</string>
     <string name="tab_timetablesetting">설정</string>
     <string name="tab_timetabletheme">테마</string>
-    <string name="tab_info">상점\\정보</string>
-    <string name="tab_alarmandtheme">알림\\테마</string>
+    <string name="tab_info">상점 / 정보</string>
+    <string name="tab_alarmandtheme">알림 / 테마</string>
     <string name="notice">알람!</string>
     <string name="unlock_full_version">풀버전을 구매해 주세요!</string>
     <string name="buy_full_version_explain">시간표와 이벤트 개수 증가, 광고 제거, 모든 테마와 알람을 사용하실 수 있습니다.</string>
@@ -215,7 +215,7 @@
         <item>90분</item>
     </string-array>
     <string-array name="timetable_setting_lessonAlarms">
-        <item>알림 안사용함</item>
+        <item>알림 사용하지 않음</item>
         <item>정각</item>
         <item>1분 전</item>
         <item>5분 전</item>
@@ -264,4 +264,9 @@
     <string name="store_buy_full_version">프로 버전을 구매해 주세요!</string>
     <string name="minute_short">분</string>
 
+    <!-- Permissions -->
+    <string name="need_permission_read_storage">시간표 사용을 위해 외부 저장소 권한이 필요합니다.</string>
+    <string name="need_permission_read_contacts">커넥터 사용을 위해 주소록 권한이 필요합니다.</string>
+    <string name="permission_granted">권한이 승인되었습니다.</string>
+    <string name="permission_not_granted">권한이 승인되지 않았습니다.</string>
 </resources>

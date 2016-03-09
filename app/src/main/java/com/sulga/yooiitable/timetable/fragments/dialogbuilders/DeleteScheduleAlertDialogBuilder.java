@@ -1,11 +1,11 @@
 package com.sulga.yooiitable.timetable.fragments.dialogbuilders;
 
-import org.holoeverywhere.app.*;
-import org.holoeverywhere.widget.*;
-
-import android.content.*;
-import android.content.res.*;
-import android.view.*;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.res.Resources;
+import android.support.v7.app.AlertDialog;
+import android.view.View;
+import android.widget.Button;
 
 import com.sulga.yooiitable.R;
 

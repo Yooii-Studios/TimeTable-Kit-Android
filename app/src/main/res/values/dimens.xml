@@ -136,12 +136,17 @@
     <dimen name="item_schedules_info_height">110dip</dimen>
 
     <!-- 옵션화면 값들 -->
-    <dimen name="fragment_settings_textsize_big">22sp</dimen>
+    <dimen name="fragment_settings_item_height">64dp</dimen>
+    <dimen name="fragment_settings_textsize_big">21sp</dimen>
     <dimen name="fragment_settings_textsize_small">15sp</dimen>
+    <dimen name="fragment_settings_text_margin_left">15dp</dimen>
 	<dimen name="view_settings_title_textsize">30sp</dimen>
-	<dimen name="view_settings_prompt_textsize">28sp</dimen>
-	<dimen name="view_settings_prompt_textsize_bitsmall">24sp</dimen>
-	<dimen name="view_timetable_settings_icon_wh">64dp</dimen>
+	<dimen name="view_settings_prompt_textsize">21sp</dimen>
+	<dimen name="view_settings_prompt_textsize_bitsmall">21sp</dimen>
+	<dimen name="view_timetable_settings_icon_wh">48dp</dimen>
+    <dimen name="view_timetable_settings_icon_margin">8dp</dimen>
+    <dimen name="view_timetable_settings_text_layout_left_margin">0dp</dimen>
+    <dimen name="view_timetable_settings_item_margin">5dp</dimen>
 
     <!-- 뷰페이저 플링 디스턴스 -->
     <dimen name="viewpager_minimum_fling_distance">160dip</dimen>

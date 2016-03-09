@@ -4,8 +4,6 @@ import android.content.*;
 import android.graphics.drawable.shapes.*;
 import android.view.*;
 
-import com.actionbarsherlock.*;
-import com.sulga.yooiitable.mylog.*;
 import com.sulga.yooiitable.utils.*;
 
 public class YTShapeRoundRectThemePart extends YTRoundRectThemePart {
@@ -109,7 +107,6 @@ public class YTShapeRoundRectThemePart extends YTRoundRectThemePart {
 	
 	/**
 	 * You should call setViewTheme after setColor!!
-	 * @param v
 	 * @param _color
 	 */
 	public void setColor(int _color){

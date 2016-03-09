@@ -1,13 +1,14 @@
 package com.sulga.yooiitable.google.calendar;
 
-import java.io.*;
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 
-import org.holoeverywhere.app.*;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
+import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
+import com.sulga.yooiitable.constants.RequestCodes;
 
-import android.os.*;
-
-import com.google.api.client.googleapis.extensions.android.gms.auth.*;
-import com.sulga.yooiitable.constants.*;
+import java.io.IOException;
 
 abstract class GCBasicAsyncTask extends AsyncTask<Void, Integer, Boolean> {
 
@@ -30,8 +31,6 @@ abstract class GCBasicAsyncTask extends AsyncTask<Void, Integer, Boolean> {
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
-		//activity.numAsyncTasks++;
-		//progressBar.setVisibility(View.VISIBLE);
 	}
 
 	@Override
@@ -64,12 +63,6 @@ abstract class GCBasicAsyncTask extends AsyncTask<Void, Integer, Boolean> {
 	@Override
 	protected void onPostExecute(Boolean success) {
 		super.onPostExecute(success);
-		//	    if (0 == --activity.numAsyncTasks) {
-		//	      progressBar.setVisibility(View.GONE);
-		//	    }
-		//	    if (success) {
-		//	      activity.refreshView();
-		//	    }
 	}
 
 	abstract protected void doInBackground() throws IOException;

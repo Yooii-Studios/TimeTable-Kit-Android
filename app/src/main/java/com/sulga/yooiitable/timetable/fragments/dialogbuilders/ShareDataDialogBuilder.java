@@ -1,37 +1,46 @@
 package com.sulga.yooiitable.timetable.fragments.dialogbuilders;
 
-import java.io.*;
-
-import org.holoeverywhere.app.*;
-import org.holoeverywhere.widget.Button;
-import org.holoeverywhere.widget.EditText;
-import org.holoeverywhere.widget.TextView;
-import org.holoeverywhere.widget.Toast;
-
-import android.content.*;
-import android.content.res.*;
-import android.graphics.*;
-import android.graphics.drawable.*;
-import android.net.*;
-import android.text.*;
-import android.view.*;
-import android.widget.*;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.support.v7.app.AlertDialog;
+import android.text.InputType;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sulga.yooiitable.R;
-import com.sulga.yooiitable.data.*;
-import com.sulga.yooiitable.mylog.*;
-import com.sulga.yooiitable.sharetable.*;
+import com.sulga.yooiitable.data.Timetable;
+import com.sulga.yooiitable.data.TimetableDataManager;
+import com.sulga.yooiitable.mylog.MyLog;
+import com.sulga.yooiitable.sharetable.ConnectorState;
+import com.sulga.yooiitable.sharetable.TimetableNetworkManager;
 import com.sulga.yooiitable.theme.YTTimetableTheme.ThemeType;
-import com.sulga.yooiitable.timetable.*;
-import com.sulga.yooiitable.timetable.fragments.*;
-import com.sulga.yooiitable.utils.*;
+import com.sulga.yooiitable.timetable.TimetableActivity;
+import com.sulga.yooiitable.timetable.fragments.TimetableFragment;
+import com.sulga.yooiitable.utils.AlertDialogCreator;
+import com.sulga.yooiitable.utils.DeviceUuidFactory;
+import com.sulga.yooiitable.utils.SerializeBitmapUtils;
+import com.sulga.yooiitable.utils.ToastMaker;
+import com.sulga.yooiitable.utils.UserNameFactory;
+import com.sulga.yooiitable.utils.YTBitmapLoader;
 import com.yooiistudios.common.ad.AdUtils;
 
+import java.io.FileNotFoundException;
+
 public class ShareDataDialogBuilder {
-	public static Dialog createDialog(final Context context, 
-			final ConnectorState cs, 
-			final Timetable timetable, 
-			final TimetableFragment parentFrag){
+	public static Dialog createDialog(final Context context,
+									  final ConnectorState cs,
+									  final Timetable timetable,
+									  final TimetableFragment parentFrag){
 		Resources res = context.getResources();
 		String title = res.getString(R.string.dialog_sharetimetable_title);
 
@@ -59,7 +68,6 @@ public class ShareDataDialogBuilder {
 			banner.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
 					String linkUrl = TimetableDataManager.getConnectorBannerLinkUrl(context);
 					context.startActivity(new Intent(Intent.ACTION_VIEW, 
 							Uri.parse(linkUrl)));
@@ -82,9 +90,8 @@ public class ShareDataDialogBuilder {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				if( ( TimetableDataManager.getTimetables().size() >= 4 ) &&
-						( TimetableDataManager.getCurrentFullVersionState(context) == false ) ){
+						(!TimetableDataManager.getCurrentFullVersionState(context)) ){
 //					ToastMaker.popupUnlockFullVersionToast(context,
 //							ToastMaker.UNLOCK_FULL_VERSION_TOAST_OVERFLOW_PAGENUM);
                     AdUtils.showInHouseStoreAd(context);
@@ -117,20 +124,6 @@ public class ShareDataDialogBuilder {
 		final String maxUploadbleNumber = isFullVersion ? 
 				Integer.toString(cs.getMaxUploadP())
 				: Integer.toString(cs.getMaxUploadF());
-//		int uploadedTimetableCount = cs.getTodayUploadAvailCount();
-//		if(uploadedTimetableCount >= 3 && isFullVersion == false ||
-//				uploadedTimetableCount >= 6 && isFullVersion == true){
-//			String uploadLimited_A = context
-//					.getString(R.string.dialog_share_data_upload_limited_A);
-//			String uploadLimited_B = context
-//					.getString(R.string.dialog_share_data_upload_limited_B);
-//			
-//			String uploadLimited = uploadLimited_A + 
-//					" " + maxUploadbleNumber +
-//					uploadLimited_B;
-//			Toast.makeText(context, uploadLimited, Toast.LENGTH_SHORT)
-//			.show();
-//		}
 
 		String message = uploadCountPrompt + " " 
 					+ "(" 
@@ -152,14 +145,13 @@ public class ShareDataDialogBuilder {
 				new AlertDialogCreator.EditTextDialogOnClickListener() {
 			@Override
 			public void onClick(EditText editText, Dialog d) {
-				// TODO Auto-generated method stub
 				MyLog.d("ShareDataTest", "Upload timetable : " + timetable + ", key : " + editText.getText().toString());
 				if(editText.getText().toString().length() < 1){
 //					Toast.makeText(context, hint, Toast.LENGTH_SHORT).show();
 					return;
 				}
-				if(uploadedTimetableCount >= 3 && isFullVersion == false ||
-						uploadedTimetableCount >= 6 && isFullVersion == true){
+				if(uploadedTimetableCount >= 3 && !isFullVersion ||
+						uploadedTimetableCount >= 6 && isFullVersion){
 					String uploadLimited_A = context
 							.getString(R.string.dialog_share_data_upload_limited_A);
 					String uploadLimited_B = context
@@ -206,11 +198,9 @@ public class ShareDataDialogBuilder {
 
 			@Override
 			public void onClick(EditText editText, Dialog d) {
-				// TODO Auto-generated method stub
 				d.dismiss();
 			}
 		});
-		//		AlertDialogCreator.getEditTextDialogEditText(d).setHint("HINTTTT");
 		d.show();
 	}
 
@@ -222,28 +212,15 @@ public class ShareDataDialogBuilder {
 				.getTodayDownloadAvailCount(context);
 		final boolean isFullVersion = 
 				TimetableDataManager.getCurrentFullVersionState(context);
-		final String maxDownloadbleNumber = isFullVersion ? 
+		final String maxDownloadableNumber = isFullVersion ?
 				Integer.toString(cs.getMaxDownloadP())
 				: Integer.toString(cs.getMaxDownloadF());
 
-//		if(downloadedTableCount >= cs.getMaxDownloadF() && isFullVersion == false ||
-//				downloadedTableCount >= cs.getMaxDownloadP() && isFullVersion == true){
-//			String downloadLimited_A = context
-//					.getString(R.string.dialog_share_data_download_limited_A);
-//			String downloadLimited_B = context
-//					.getString(R.string.dialog_share_data_download_limited_B);
-//			String downloadLimited = downloadLimited_A + 
-//					" " + maxDownloadbleNumber + 
-//					downloadLimited_B;
-//			Toast.makeText(context, downloadLimited, Toast.LENGTH_SHORT)
-//			.show();
-//		}
-
-		String message = downloadCountPrompt + " "  
+		String message = downloadCountPrompt + " "
 				+ "(" 
 				+ Integer.toString(downloadedTableCount) 
 				+ " / " 
-				+ maxDownloadbleNumber 
+				+ maxDownloadableNumber
 				+ ")";
 		String fileRemovedAfter24 = context.getString(R.string.dialog_share_data_dataremovedafter24hours);
 		final String hint = context.getResources().getString(R.string.dialog_sharedata_hint);
@@ -257,20 +234,19 @@ public class ShareDataDialogBuilder {
 				new AlertDialogCreator.EditTextDialogOnClickListener() {
 			@Override
 			public void onClick(EditText editText, Dialog d) {
-				// TODO Auto-generated method stub
 				if(editText.getText().toString().length() < 1){
 //					Toast.makeText(context, hint, Toast.LENGTH_SHORT).show();
 					return;
 				}
 				MyLog.d("showDownloadTimetableDialog", "downloadedTableCoun : " + downloadedTableCount + ", cs.getMaxDownloadF : " + cs.getMaxDownloadF());
-				if(downloadedTableCount >= cs.getMaxDownloadF() && isFullVersion == false ||
-						downloadedTableCount >= cs.getMaxDownloadP() && isFullVersion == true){
+				if(downloadedTableCount >= cs.getMaxDownloadF() && !isFullVersion ||
+						downloadedTableCount >= cs.getMaxDownloadP() && isFullVersion){
 					String downloadLimited_A = context
 							.getString(R.string.dialog_share_data_download_limited_A);
 					String downloadLimited_B = context
 							.getString(R.string.dialog_share_data_download_limited_B);
 					String downloadLimited = downloadLimited_A + 
-							" " + maxDownloadbleNumber + 
+							" " + maxDownloadableNumber +
 							downloadLimited_B;
 					Toast.makeText(context, downloadLimited, Toast.LENGTH_SHORT)
 					.show();
@@ -288,7 +264,6 @@ public class ShareDataDialogBuilder {
 
 			@Override
 			public void onClick(EditText editText, Dialog d) {
-				// TODO Auto-generated method stub
 				d.dismiss();
 			}
 		}).show();

@@ -1,24 +1,22 @@
 package com.sulga.yooiitable.timetableinfo.activity;
 
-import java.io.*;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
+import android.view.MenuItem;
+import android.widget.TextView;
 
-import org.holoeverywhere.app.*;
-import org.holoeverywhere.widget.*;
-
-import android.os.*;
-import android.view.*;
-
-import com.actionbarsherlock.view.MenuItem;
-import com.flurry.android.*;
+import com.flurry.android.FlurryAgent;
 import com.sulga.yooiitable.R;
-import com.sulga.yooiitable.constants.*;
+import com.sulga.yooiitable.constants.FlurryConstants;
 
-public class LicenseActivity extends Activity {
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+public class LicenseActivity extends AppCompatActivity {
 
 	TextView viewPagerIndicator;
-	TextView actionBarSherlock;
-	TextView holoEverywhere;
-	TextView supportLibrary;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -26,18 +24,9 @@ public class LicenseActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_license);
 		viewPagerIndicator = (TextView) findViewById(R.id.activity_license_viewpagerIndicator);
-		actionBarSherlock = (TextView) findViewById(R.id.activity_license_actionbarSherlock);
-		holoEverywhere = (TextView) findViewById(R.id.activity_license_holoEverywhere);
-		supportLibrary = (TextView) findViewById(R.id.activity_license_supportlibrary);
-	
+
 		String vpS = getLicenseString(R.raw.viewpagerindicator_license_text);
 		viewPagerIndicator.setText(vpS);
-		String abS = getLicenseString(R.raw.actionbarsherlock_license_text);
-		actionBarSherlock.setText(abS);
-		String heS = getLicenseString(R.raw.holoeverywhere_license_text);
-		holoEverywhere.setText(heS);
-		String sS = getLicenseString(R.raw.android_support_library_license);
-		supportLibrary.setText(sS);
 		getSupportActionBar().setTitle(getString(R.string.app_name));
 	}
 

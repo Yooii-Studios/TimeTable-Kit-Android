@@ -1,19 +1,17 @@
 package com.sulga.yooiitable.timetableinfo.activity;
 
-import org.holoeverywhere.app.*;
-import org.holoeverywhere.widget.*;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.ListView;
 
-import android.os.*;
-import android.view.*;
-
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.flurry.android.*;
+import com.flurry.android.FlurryAgent;
 import com.sulga.yooiitable.R;
-import com.sulga.yooiitable.constants.*;
+import com.sulga.yooiitable.constants.FlurryConstants;
 
-
-public class CreditsActivity extends Activity {
+public class CreditsActivity extends AppCompatActivity {
 	ListView creditListView;
 
 	Menu m_menu;

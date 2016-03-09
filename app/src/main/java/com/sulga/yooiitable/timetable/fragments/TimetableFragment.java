@@ -1,60 +1,98 @@
 package com.sulga.yooiitable.timetable.fragments;
 
-import java.text.*;
-import java.util.*;
-
-import org.holoeverywhere.LayoutInflater;
-import org.holoeverywhere.app.*;
-import org.holoeverywhere.widget.Button;
-import org.holoeverywhere.widget.EditText;
-import org.holoeverywhere.widget.FrameLayout;
-import org.holoeverywhere.widget.LinearLayout;
-import org.holoeverywhere.widget.TextView;
-import org.holoeverywhere.widget.Toast;
-
-import android.content.*;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
-import android.content.res.*;
-import android.graphics.*;
-import android.graphics.drawable.*;
-import android.os.*;
-import android.util.*;
-import android.view.*;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.PixelFormat;
+import android.graphics.Rect;
+import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Vibrator;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewConfiguration;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
-import android.view.animation.*;
+import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
-import android.widget.*;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.flurry.android.*;
+import com.flurry.android.FlurryAgent;
 import com.sulga.yooiitable.R;
-import com.sulga.yooiitable.alarm.*;
-import com.sulga.yooiitable.constants.*;
-import com.sulga.yooiitable.customviews.*;
-import com.sulga.yooiitable.data.*;
-import com.sulga.yooiitable.mylog.*;
-import com.sulga.yooiitable.sharetable.*;
-import com.sulga.yooiitable.theme.*;
+import com.sulga.yooiitable.alarm.YTAlarmManager;
+import com.sulga.yooiitable.constants.FlurryConstants;
+import com.sulga.yooiitable.constants.RequestCodes;
+import com.sulga.yooiitable.customviews.InterceptTouchFrameLayout;
+import com.sulga.yooiitable.customviews.ModeRelativeLayout;
+import com.sulga.yooiitable.customviews.PathButton;
+import com.sulga.yooiitable.customviews.SoftKeyboardDetectLinearLayout;
+import com.sulga.yooiitable.customviews.TimetableScrollView;
+import com.sulga.yooiitable.data.Lesson;
+import com.sulga.yooiitable.data.PeriodInfo;
+import com.sulga.yooiitable.data.Schedule;
+import com.sulga.yooiitable.data.Timetable;
+import com.sulga.yooiitable.data.TimetableDataManager;
+import com.sulga.yooiitable.mylog.MyLog;
+import com.sulga.yooiitable.sharetable.ConnectorState;
+import com.sulga.yooiitable.sharetable.TimetableNetworkManager;
+import com.sulga.yooiitable.theme.YTTimetableTheme;
 import com.sulga.yooiitable.theme.YTTimetableTheme.ThemeType;
-import com.sulga.yooiitable.timetable.*;
-import com.sulga.yooiitable.timetable.fragments.dialogbuilders.*;
-import com.sulga.yooiitable.timetableinfo.*;
-import com.sulga.yooiitable.utils.*;
+import com.sulga.yooiitable.timetable.TimetableActivity;
+import com.sulga.yooiitable.timetable.fragments.dialogbuilders.ClearTimetableAlertDialogBuilder;
+import com.sulga.yooiitable.timetable.fragments.dialogbuilders.DeleteTimetableAlertDialogBuilder;
+import com.sulga.yooiitable.timetable.fragments.dialogbuilders.LessonEditDialogBuilder;
+import com.sulga.yooiitable.timetable.fragments.dialogbuilders.ShareDataDialogBuilder;
+import com.sulga.yooiitable.timetable.fragments.dialogbuilders.StartConnectorTutorialDialogBuilder;
+import com.sulga.yooiitable.timetableinfo.TimetableSettingInfoActivity;
+import com.sulga.yooiitable.utils.DeviceUuidFactory;
+import com.sulga.yooiitable.utils.SerializeBitmapUtils;
+import com.sulga.yooiitable.utils.UserNameFactory;
+import com.sulga.yooiitable.utils.YTBitmapLoader;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 
 public class TimetableFragment extends Fragment {
-//	public static final String PAGE_INDEX_KEY = "PageIndex";
 	public static TimetableFragment newInstance() {
-		TimetableFragment tableFragment = new TimetableFragment();
-//		int idx = fragPageIndex;
-//		Bundle b = new Bundle();
-//		b.putInt(PAGE_INDEX_KEY, idx);
-//		tableFragment.setArguments(b);
-		return tableFragment;
+		return new TimetableFragment();
 	}
-//
-//	public static final int UPLOAD_TIMETABLE_FREEVER_MAX = 3;
-//	public static final int UPLOAD_TIMETABLE_FULLVER_MAX = 6;
-	
+
 	//	ActionBar acBar;
 	public final static int FRAG_TIMETABLE_DIALOG_DELETE_TIMETABLE = 2;
 	public final static int FRAG_TIMETABLE_DIALOG_ADD_LESSON = 1;
@@ -72,48 +110,35 @@ public class TimetableFragment extends Fragment {
 		}
 		@Override
 		public boolean equals(Object tag){
-			if(tag == null)
-			{
+			if (tag == null) {
 				return false;
 			}
-			if(this == tag)
-			{
+			if (this == tag) {
 				return true;
 			}
-			if(this.day == ((CellTag)tag).day &&
-					this.period == ((CellTag)tag).period)
-			{
+			if (this.day == ((CellTag) tag).day &&
+					this.period == ((CellTag) tag).period) {
 				return true;
-			}else
-			{
+			} else {
 				return false;
 			}		
 		}
 	}
-	//final static int ACT_EDIT = 0;
-
-	//	private Timetable timetable;
-	//	TimetableDataManager tdManager;
 
 	//private LinearLayout timeline;
 	public SoftKeyboardDetectLinearLayout softKeyboardDetectLayout;
 
-//	private FrameLayout rootView;
 	private ImageView backgroundView;
-
-	//	private TextView titleText;
 
 	private ImageView pageInfoLower;
 	private TextView pageInfoUpper;
 
 	private ImageButton optionButton;
 
-	//private TextView pageNumberText;
 	private LinearLayout grid;
 	private RelativeLayout timetableHead;
 	private LinearLayout dayRow;
 	private FrameLayout dayRowOverlap;
-	//private FrameLayout dayRowDividerWrapper;
 	private RelativeLayout timelineWrapper;
 	private LinearLayout timeline;
 	private TimetableScrollView tableScroll;
@@ -150,11 +175,7 @@ public class TimetableFragment extends Fragment {
 
 	private float cellWidth = -1;
 	private float cellHeight = -1;
-	//private float cellHeight = 0;
 	private float rowHeight = -1;	//margin까지 고려한 row의 높이.
-	//private float timelineWidth = 0;
-
-	private Bitmap photoBackgroundBitmap = null;
 
 	//레슨뷰 롱클릭후 드래그를 위한 변수들.
 	//레슨뷰 복사 이미지는 윈도우에.
@@ -173,103 +194,46 @@ public class TimetableFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		
-		MyLog.d("adapter", "TimetableFragment OnCreateView Called");
-        if(savedInstanceState != null)
-        {
-            myPageIndex = savedInstanceState.getInt("SavedTimetableIndex");
-            MyLog.d("TimetableFragment", "onCreateView savedInstanceState not null!! page Idx : " + myPageIndex);
-        }
+		if (savedInstanceState != null) {
+			myPageIndex = savedInstanceState.getInt("SavedTimetableIndex");
+		}
 		int tmpMyPageIndex = this.getMyIndexInViewPager();
-        if(tmpMyPageIndex != -1)
-            myPageIndex = tmpMyPageIndex;
-        if(myPageIndex == -1)
-            return null;
-
-        timetable = getTimetableDataFromManager(myPageIndex);
-		MyLog.d("LazyLoadTest", "onCreate : " + myPageIndex);
-		res = getResources();
-
-		if(timetable == null){
+		if (tmpMyPageIndex != -1) {
+			myPageIndex = tmpMyPageIndex;
+		}
+		if (myPageIndex == -1) {
 			return null;
 		}
-		MyLog.d("onCreateView", "Timetable Initialized..." + timetable.toString());
+
+        timetable = getTimetableDataFromManager(myPageIndex);
+		res = getResources();
+
+		if (timetable == null) {
+			return null;
+		}
 		ytTheme = new YTTimetableTheme(timetable.getThemeType());
 		fragmentView = inflater.inflate(R.layout.fragment_timetable, container, false);
 		softKeyboardDetectLayout = (SoftKeyboardDetectLinearLayout)fragmentView
 				.findViewById(R.id.fragment_timetable_softkeyboarddetect);
 		backgroundView = (ImageView) fragmentView.findViewById(R.id.fragment_timetable_background);
-//		if(ytTheme.getCurrentTheme() == YTTimetableTheme.ThemeType.Photo){
-//			//포토모드라면 저장되어있는 사진을 로드해서 배경이미지로.
-//			try {
-//				if (photoBackgroundBitmap != null) {
-//					photoBackgroundBitmap.recycle();
-//				}
-//				photoBackgroundBitmap = 
-//						YTBitmapLoader.loadAutoScaledBitmapFromUri(
-//								getSupportActivity(), 
-//								YTBitmapLoader.getPortraitCroppedImageUri(
-//										getSupportActivity(),
-//										timetable.getId())
-//										);
-//				MyLog.d("TimetableFragment", "timetable id : " + timetable.getId());
-//				backgroundView.setBackgroundDrawable(
-//						new BitmapDrawable(
-//								getResources(), photoBackgroundBitmap));
-//			} catch (FileNotFoundException e) {
-//				e.printStackTrace();
-//			}
-//		}else{
-//			
-//			ytTheme.getRootBackground().setViewTheme(getSupportActivity(), backgroundView);
-//		}
-		
-		//		}
-		//row.addView(timelineCell);
-
-		//		titleText = (TextView) fragmentView.findViewById(R.id.fragment_timetable_title_text);
-		//		titleText.setTextColor(ytTheme.getTimetableTextColor());
-
-		//int titleBackground = theme.getTitleBackground();
-
-		//		ytTheme.getTitleBackground().setViewTheme(getSupportActivity(), titleText);
-		//		Drawable titleTextBackground = 
-		//				BackgroundDrawableCreator.getTiledRoundedRectBitmapDrawable(
-		//						act, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT,
-		//						FRAG_TIMETABLE_ROUNDRECT_RXY, ytTheme.getTitleBackground());
-		//		titleTextBackground.setAlpha(ytTheme.getImageAlpha());
-		//		titleText.setBackgroundDrawable(titleTextBackground);
-
-		//		titleText.setText(timetable.getTitle());
-		//		titleText.setOnClickListener(new TitleTextViewOnClickListener(
-		//				"Edit Title", 
-		//				timetable.getTitle())
-		//				);
-
 		pageInfoLower = (ImageView)fragmentView.findViewById(R.id.fragment_timetable_pagenumber_lower);
 		pageInfoLower.setOnClickListener(onShareDataClickedListener);
-		ytTheme.getPageInfoLowerIcon().setViewTheme(getSupportActivity(), pageInfoLower);
-		//		pageInfoLower.setBackgroundResource(ytTheme.getPageInfoLowerIcon());
+		ytTheme.getPageInfoLowerIcon().setViewTheme(getActivity(), pageInfoLower);
 		pageInfoUpper = (TextView)fragmentView.findViewById(R.id.fragment_timetable_pagenumber_upper);
 		ytTheme.getPageInfoUpperIcon()
-		.setViewTheme(getSupportActivity(), pageInfoUpper, FRAG_TIMETABLE_ROUNDRECT_RXY, true, true, false, false);
-		//		pageInfoUpper.setBackgroundResource(ytTheme.getPageInfoUpperIcon());
+		.setViewTheme(getActivity(), pageInfoUpper, FRAG_TIMETABLE_ROUNDRECT_RXY, true, true, false, false);
 
 		optionButton = (ImageButton) fragmentView.findViewById(R.id.fragment_timetable_title_option_button);
-		ytTheme.getOptionIcon().setViewTheme(getSupportActivity(), optionButton);
-		//		optionButton.setBackgroundResource(ytTheme.getOptionIcon());
+		ytTheme.getOptionIcon().setViewTheme(getActivity(), optionButton);
 		optionButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				MyLog.d("TimetableFragment", "optionButton Clicked");
-				// TODO Auto-generated method stub
-//				Intent act = new Intent(getSupportActivity(), TimetableSettingPagerActivity.class);
-				Intent act = new Intent(getSupportActivity(), TimetableSettingInfoActivity.class);
+				Intent act = new Intent(getActivity(), TimetableSettingInfoActivity.class);
 				act.putExtra("TimetablePageIndex", getMyIndexInViewPager());
-				getSupportActivity()
+				getActivity()
 				.startActivityForResult(act, RequestCodes.CALL_ACTIVITY_EDIT_TIMETABLE_SETTING);
 
-				Map<String, String> settingClickInfo = new HashMap<String, String>();
+				Map<String, String> settingClickInfo = new HashMap<>();
 				settingClickInfo.put("Setting_ClickedBy", FlurryConstants.SETTING_CLICKTYPE_LION);
 				FlurryAgent.logEvent(FlurryConstants.SETTING_CLICKED, settingClickInfo);
 			}
@@ -295,82 +259,54 @@ public class TimetableFragment extends Fragment {
                 startSettingActivity(false, true);
             }
         });
-		//dayRowDividerWrapper = (FrameLayout) fragmentView.findViewById(R.id.fragment_timetable_dayrow_overlap);
-		//timeline = (LinearLayout) fragmentView.findViewById(R.id	.fragment_timetable_timeline);
-		//		dayRow.setBackgroundDrawable(
-		//				BackgroundDrawableCreator.getTiledRoundedRectBitmapDrawable(getSupportActivity(), 12.0f, R.drawable.yt_timetable_dayrow_background_src));
 		grid = (LinearLayout) fragmentView.findViewById(R.id.fragment_timetable_cell_list);
-//		ytTheme.getGridBackground().setViewTheme(getSupportActivity(), grid);
-		//		if(ytTheme.getGridBackground() != YTTimetableTheme.SRC_NONE){
-		//			Drawable gridBackgroundDrawable = 
-		//					BackgroundDrawableCreator.getTiledRoundedRectBitmapDrawable(
-		//							getSupportActivity(), Shader.TileMode.REPEAT, Shader.TileMode.REPEAT,
-		//							FRAG_TIMETABLE_ROUNDRECT_RXY, ytTheme.getGridBackground());
-		//			gridBackgroundDrawable.setAlpha(ytTheme.getImageAlpha());
-		//			grid.setBackgroundDrawable(gridBackgroundDrawable);
-		//		}else{
-		//			grid.setBackgroundColor(Color.TRANSPARENT);
-		//		}
 
 		timeline = (LinearLayout) fragmentView.findViewById(R.id.fragment_timetable_timeline);
 		timelineWrapper = (RelativeLayout) fragmentView.findViewById(R.id.fragment_timetable_timeline_wrapper);
-		//gridOverlapLayout이 터치를 가져가버려 onclick이 실행 안됨. 따라서 handleSelectPerioModeOnTouchUp에서 관리한다.
-//		timeline.setOnClickListener(onTimelineClickedListener);
-		
 
 		tableScroll = (TimetableScrollView) fragmentView.findViewById(R.id.fragment_timetable_scrollview);
 		tableScroll.setParentFragment(this);
 		tableScrollChild = (RelativeLayout)fragmentView.findViewById(R.id.fragment_timetable_scrollview_child);
-		//tableScroll.setOnTouchListener(timetableScrollOnTouch);
 
 		gridOverlapLayout = (InterceptTouchFrameLayout) 
 				fragmentView.findViewById(R.id.fragment_timetable_body_overrap);
 		gridOverlapLayout.setOnLongClickListener(overlapOnLongClickListener);
 		gridOverlapLayout.setOnTouchListener(overlapOnTouchListener);
 		gridOverlapLayout.setParentFragment(this);
-		//gridOverlapLayout.setBackgroundResource(R.color.black);
 
 		currentTimeMarker = (ImageView) fragmentView.findViewById(R.id.view_timetable_current_time_marker);
-		ytTheme.getTimelineTime().setViewTheme(getSupportActivity(), currentTimeMarker);
-		//		currentTimeMarker.setBackgroundResource(ytTheme.getTimelineTime());
+		ytTheme.getTimelineTime().setViewTheme(getActivity(), currentTimeMarker);
 
-		markSelectedRangeLayout = new LinearLayout(this.getSupportActivity());
-		markButtonOK = new Button(this.getSupportActivity());
+		markSelectedRangeLayout = new LinearLayout(this.getActivity());
+		markButtonOK = new Button(this.getActivity());
 		markButtonOK.setBackgroundResource(R.drawable.ic_oneditlesson_check);
-		markButtonCancel = new Button(this.getSupportActivity());
+		markButtonCancel = new Button(this.getActivity());
 		markButtonCancel.setBackgroundResource(R.drawable.ic_oneditlesson_cancel);
-		pasteLessonToMark = new Button(getSupportActivity());
+		pasteLessonToMark = new Button(getActivity());
 		pasteLessonToMark.setBackgroundResource(R.drawable.ic_oneditlesson_paste);
-		markButtonEditLength = new Button(getSupportActivity());
+		markButtonEditLength = new Button(getActivity());
 		markButtonEditLength.setBackgroundResource(R.drawable.ic_oneditlesson_4scroll);
 		markSelectedRangeLayout.setVisibility(View.INVISIBLE);
 		markButtonOK.setVisibility(View.INVISIBLE);
-		//markButtonOK.setOnClickListener(markOKOnClick);
 		markButtonCancel.setVisibility(View.INVISIBLE);
 		markButtonCancel.setOnClickListener(markCancelOnClick);
 		pasteLessonToMark.setVisibility(View.INVISIBLE);
 		markButtonEditLength.setVisibility(View.INVISIBLE);
 		markButtonEditLength.setOnTouchListener(new MarkButtonEditLengthTouchListener());
-		//pasteLessonToMark.setOnClickListener(pasteLessonToMarkOnClick);
 
-		lessonEditOK = new Button(this.getSupportActivity());
+		lessonEditOK = new Button(this.getActivity());
 		lessonEditOK.setBackgroundResource(R.drawable.ic_oneditlesson_check);
-		lessonRemove = new Button(this.getSupportActivity());
+		lessonRemove = new Button(this.getActivity());
 		lessonRemove.setBackgroundResource(R.drawable.ic_oneditlesson_cancel);
-		lessonCopy = new Button(this.getSupportActivity());
+		lessonCopy = new Button(this.getActivity());
 		lessonCopy.setBackgroundResource(R.drawable.ic_oneditlesson_copy);
-		lessonEditLength = new ImageView(getSupportActivity());
+		lessonEditLength = new ImageView(getActivity());
 		lessonEditLength.setBackgroundResource(R.drawable.ic_oneditlesson_2scroll);
 
-
-		//lessonEditLength.setClickable(false);
 		lessonEditOK.setVisibility(View.INVISIBLE);
 		lessonRemove.setVisibility(View.INVISIBLE);
 		lessonCopy.setVisibility(View.INVISIBLE);
 		lessonEditLength.setVisibility(View.INVISIBLE);
-		//lessonEditOK.setOnClickListener(lessonEditOKOnClick);
-		//lessonRemove.setOnClickListener(lessonRemoveOnClick);
-		//lessonCopy.setOnClickListener(lessonCopyOnClick);
 
 		gridOverlapLayout.addView(markSelectedRangeLayout);		
 		gridOverlapLayout.addView(markButtonOK);
@@ -386,40 +322,30 @@ public class TimetableFragment extends Fragment {
 		testPanel.setModeOpenBtnClickedListener(new ModeRelativeLayout.ModeOpenBtnClickedListener() {
 
 			@Override
-			public void onClick() {
-				// TODO Auto-generated method stub
-
-			}
+			public void onClick() {}
 		});
 		ImageView panelWrapperIcon = (ImageView) testPanel.findViewById(R.id.ico_plus);
-		ytTheme.getModeButtonsWrapperIcon().setViewTheme(getSupportActivity(), panelWrapperIcon);
-		//		panelWrapperIcon.setBackgroundResource(ytTheme.getModeButtonsWrapperIcon());
-		ImageView panelWrapperBackgroundIcon = 
+		ytTheme.getModeButtonsWrapperIcon().setViewTheme(getActivity(), panelWrapperIcon);
+		ImageView panelWrapperBackgroundIcon =
 				(ImageView) testPanel.findViewById(R.id.ico_plus_background);
 		ytTheme.getModeButtonsWrapperbackgroundIcon().setViewTheme(
-				getSupportActivity(), panelWrapperBackgroundIcon);
-		//		panelWrapperBackgroundIcon.setBackgroundResource(
-		//				ytTheme.getModeButtonsWrapperbackgroundIcon());
-		//
+				getActivity(), panelWrapperBackgroundIcon);
 		modeButton_add_row = (PathButton) fragmentView.findViewById(R.id.fragment_timetable_button_add);
-		modeButton_add_row.setmOnModeBtnClickedListener(addRowOnClick);
-		ytTheme.getAddRowIcon().setViewTheme(getSupportActivity(), modeButton_add_row);
-		//		btn1.setBackgroundResource(ytTheme.getAddRowIcon());
+		modeButton_add_row.setOnModeBtnClickedListener(addRowOnClick);
+		ytTheme.getAddRowIcon().setViewTheme(getActivity(), modeButton_add_row);
 		modeButton_add_row.setTag("1");
 		modeButton_remove_row = (PathButton) fragmentView.findViewById(R.id.fragment_timetable_button_remove);
-		modeButton_remove_row.setmOnModeBtnClickedListener(removeRowOnClick);
-		ytTheme.getRemoveRowIcon().setViewTheme(getSupportActivity(), modeButton_remove_row);
-		//		btn2.setBackgroundResource(ytTheme.getRemoveRowIcon());
+		modeButton_remove_row.setOnModeBtnClickedListener(removeRowOnClick);
+		ytTheme.getRemoveRowIcon().setViewTheme(getActivity(), modeButton_remove_row);
 		modeButton_remove_row.setTag("2");
 		modeButton_clear_timetable = (PathButton) fragmentView.findViewById(R.id.fragment_timetable_button_cleartable);
-		modeButton_clear_timetable.setmOnModeBtnClickedListener(clearTimetableOnClick);
-		ytTheme.getClearTableIcon().setViewTheme(getSupportActivity(), modeButton_clear_timetable);
+		modeButton_clear_timetable.setOnModeBtnClickedListener(clearTimetableOnClick);
+		ytTheme.getClearTableIcon().setViewTheme(getActivity(), modeButton_clear_timetable);
 		modeButton_clear_timetable.setTag("3");
 
 		modeButton_delete_timetable = (PathButton) fragmentView.findViewById(R.id.fragment_timetable_button_deletetable);
-		modeButton_delete_timetable.setmOnModeBtnClickedListener(deleteTimetableOnClick);
-		ytTheme.getDeleteTimetableIcon().setViewTheme(getSupportActivity(), modeButton_delete_timetable);
-		//		btn3.setBackgroundResource(ytTheme.getDeleteTimetableIcon());
+		modeButton_delete_timetable.setOnModeBtnClickedListener(deleteTimetableOnClick);
+		ytTheme.getDeleteTimetableIcon().setViewTheme(getActivity(), modeButton_delete_timetable);
 		modeButton_delete_timetable.setTag("4");
 
 		testPanel.addMenuButtons(modeButton_add_row);
@@ -439,15 +365,6 @@ public class TimetableFragment extends Fragment {
 	}
 		
 	public void onPageSelected(){
-//		for(int i = 0 ; i < gridOverlapLayout.getChildCount() ; i++){
-//			View v = gridOverlapLayout.getChildAt(i);
-//			if(v.getTag() instanceof Lesson){
-//				LazyViewAnimationManager.registerLessonViewAnimation(getSupportActivity(), 
-//						0, 
-//						v, 
-//						animSet);
-//			}
-//		}
 	}
 
 	private static AnimationSet animSet;
@@ -488,11 +405,6 @@ public class TimetableFragment extends Fragment {
 
 	//	boolean initialized = false;
 	private void initGridOnGlobalLayout(){
-		//		if(initialized == true){
-		//			return;
-		//		}
-		//		initialized = true;
-		MyLog.d("initOnGlobalLayout", this.toString() + ", Called");
 		//adds lesson views and init datas needed for adding lesson views.
 		float bodyPadding = res.getDimension(R.dimen.fragment_timetable_body_padding);
 		View tmpCell = grid.findViewWithTag(new CellTag(0,0));
@@ -505,16 +417,12 @@ public class TimetableFragment extends Fragment {
 			rowHeight = tmpCellParent.getHeight() - bodyPadding * 2;
 		clearAndAddLessonViews(View.VISIBLE);
 
-		MyLog.d("initOnGlobalLayout", this.toString() + ", Timeline child count : " + timeline.getChildCount());
-
 		if(timeline.getChildCount() == 0){
 			for(int i = 1 ; i <= timetable.getPeriodNum() ; i++){
 				//정사각형으로 만들기 위해서, addTimeLine은 viewtreeobsetver내에서.
-				MyLog.d("createTimeline", "addTimeline called" + i);
 				addTimeLine(i);
 			}
 		}
-		MyLog.d("initOnGlobalLayout", this.toString() + ", Timeline child count : " + timeline.getChildCount());
 		//cellHeight를 이용해야되서...이 안으로.
 		markCurrentTime();
 		//
@@ -550,9 +458,7 @@ public class TimetableFragment extends Fragment {
 		}
 
 		MyLog.d("markCurrentTime", "getViewTopMarginFromPeriod : " + getViewTopMarginFromPeriod(curTimeByPeriod));
-		currentTimeMarkerParams.topMargin = 
-				(int) this.getViewTopMarginFromPeriod(curTimeByPeriod);
-		//				+ (int)res.getDimension(R.dimen.fragment_timetable_body_padding);
+		currentTimeMarkerParams.topMargin = (int) this.getViewTopMarginFromPeriod(curTimeByPeriod);
 		currentTimeMarker.setLayoutParams(currentTimeMarkerParams);
 		currentTimeMarker.setVisibility(View.VISIBLE);
 		currentTimeMarker.bringToFront();
@@ -561,10 +467,8 @@ public class TimetableFragment extends Fragment {
 	private View.OnClickListener onShareDataClickedListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			if(TimetableDataManager.getIsFirstConnectorLaunch(getSupportActivity())
-					== true){
-				StartConnectorTutorialDialogBuilder.createDialog(getSupportActivity(),
+			if(TimetableDataManager.getIsFirstConnectorLaunch(getActivity())){
+				StartConnectorTutorialDialogBuilder.createDialog(getActivity(),
 						TimetableFragment.this)
 				.show();
 				return;
@@ -580,26 +484,24 @@ public class TimetableFragment extends Fragment {
 
 			@Override
 			public void onCancel(DialogInterface dialog) {
-				// TODO Auto-generated method stub
 				dismissProgressDialog();
 			}
 		});
-		String uuid = new DeviceUuidFactory(getSupportActivity()).getDeviceUuid().toString();
-		String name = UserNameFactory.getUserName(getSupportActivity());
-		boolean isFullVersion = TimetableDataManager.getCurrentFullVersionState(getSupportActivity());
+		String uuid = new DeviceUuidFactory(getActivity()).getDeviceUuid().toString();
+		String name = UserNameFactory.getUserName(getActivity());
+		boolean isFullVersion = TimetableDataManager.getCurrentFullVersionState(getActivity());
 		
-		TimetableNetworkManager.updateConnectorUseInfo(uuid, name, isFullVersion, getSupportActivity(),
+		TimetableNetworkManager.updateConnectorUseInfo(uuid, name, isFullVersion, getActivity(),
 				new TimetableNetworkManager.OnFinishedConnectorAsync(){
 					@Override
 					public void onFinished(ConnectorState cs, boolean isSucceed) {
-						// TODO Auto-generated method stub
-						if(isSucceed == true){
+						if(isSucceed){
 							dismissProgressDialog();
 							showShareDataDialog(cs);
 						}else{
 							dismissProgressDialog();
 							String warn = getString(R.string.connector_result_failed);
-							Toast.makeText(getSupportActivity(), warn, Toast.LENGTH_SHORT)
+							Toast.makeText(getActivity(), warn, Toast.LENGTH_SHORT)
 							.show();
 						}
 					}
@@ -607,17 +509,15 @@ public class TimetableFragment extends Fragment {
 	}
 
 	private void showShareDataDialog(ConnectorState cs){
-		ShareDataDialogBuilder.createDialog(getSupportActivity(), 
+		ShareDataDialogBuilder.createDialog(getActivity(), 
 				cs,
 				timetable, this)
 		.show();
 	}
 
-//	public static final int DOWNLOAD_TIMETABLE_MAX_FREE = 3;
-//	public static final int DOWNLOAD_TIMETABLE_MAX_FULL = 6;
 	public void onDownloadTimetableFinished(String key, Timetable downloadedTable){
 		if(downloadedTable == null){
-			Map<String, String> info = new HashMap<String, String>();
+			Map<String, String> info = new HashMap<>();
 			info.put(FlurryConstants.DOWNLOAD_INFO_RESULT_KEY, 
 					FlurryConstants.DOWNLOAD_RESULT_FAILED);
 			FlurryAgent.logEvent(FlurryConstants.DOWNLOAD_ACTION, info);
@@ -625,7 +525,7 @@ public class TimetableFragment extends Fragment {
 		}else{			
 			String succeedDownloading = key + " : " + res.getString(
 					R.string.fragment_timetable_share_download_succeed);
-			Toast.makeText(getSupportActivity(), succeedDownloading, Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(), succeedDownloading, Toast.LENGTH_LONG).show();
 		}
 	
 		if(downloadedTable.getThemeType() == ThemeType.Photo){
@@ -634,25 +534,22 @@ public class TimetableFragment extends Fragment {
 			Bitmap bit = SerializeBitmapUtils.byteArrayToBitmap(bitArr);
 			downloadedTable.setBitmapByByteArray(null);
 			if(bit != null){			
-				YTBitmapLoader.saveTimetableBackgroundBitmap(getSupportActivity(),
+				YTBitmapLoader.saveTimetableBackgroundBitmap(getActivity(),
 						bit, 
 						downloadedTable.getId());
 			}
-//			downloadedTable.setBmpForShare(null);
 		}
 
-		final TimetableActivity ta = (TimetableActivity) this.getSupportActivity();
+		final TimetableActivity ta = (TimetableActivity) this.getActivity();
 		ta.addPageAt(TimetableActivity.TIMETABLE_PAGE_OFFSET, downloadedTable, false);
 		ta.getViewPager().post(new Runnable(){
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
-				ta.getViewPager().setCurrentItem(TimetableActivity.TIMETABLE_PAGE_OFFSET, 
-						false);
+				ta.getViewPager().setCurrentItem(TimetableActivity.TIMETABLE_PAGE_OFFSET, false);
 			}
 		});
 		
-		Map<String, String> info = new HashMap<String, String>();
+		Map<String, String> info = new HashMap<>();
 		info.put(FlurryConstants.DOWNLOAD_INFO_RESULT_KEY,
 				FlurryConstants.DOWNLOAD_RESULT_SUCCEED);
 		FlurryAgent.logEvent(FlurryConstants.DOWNLOAD_ACTION, info);
@@ -660,14 +557,12 @@ public class TimetableFragment extends Fragment {
 
 	public void onUploadDataFinished(boolean isSucceed){
 		if(isSucceed){
-			
-			Map<String, String> info = new HashMap<String, String>();
+			Map<String, String> info = new HashMap<>();
 			info.put(FlurryConstants.UPLOAD_INFO_RESULT_KEY,
 					FlurryConstants.UPLOAD_RESULT_SUCCEED);
 			FlurryAgent.logEvent(FlurryConstants.UPLOAD_ACTION, info);
-			
 		}else{
-			Map<String, String> info = new HashMap<String, String>();
+			Map<String, String> info = new HashMap<>();
 			info.put(FlurryConstants.UPLOAD_INFO_RESULT_KEY, 
 					FlurryConstants.UPLOAD_RESULT_FAILED);
 			FlurryAgent.logEvent(FlurryConstants.UPLOAD_ACTION, info);
@@ -677,13 +572,13 @@ public class TimetableFragment extends Fragment {
 	private ProgressDialog pd;
 	public void showProgressDialog(String title, String message,
 			DialogInterface.OnCancelListener onCancelListener){
-		pd = new ProgressDialog(getSupportActivity());
+		pd = new ProgressDialog(getActivity());
 		if(title != null)
 			pd.setTitle(title);
 		if(message != null)
 			pd.setMessage(message);
 		
-		if(pd.isShowing() == false){
+		if(!pd.isShowing()){
 			pd.show();
 		}else{
 			pd.dismiss();
@@ -696,7 +591,7 @@ public class TimetableFragment extends Fragment {
 	}
 	public void dismissProgressDialog(){
 		if(pd != null){
-			if(pd.isShowing() == true)
+			if(pd.isShowing())
 				pd.dismiss();
 		}
 	}
@@ -714,8 +609,7 @@ public class TimetableFragment extends Fragment {
 		}
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			final EditText input = new EditText(getSupportActivity());
+			final EditText input = new EditText(getActivity());
 			input.setSelectAllOnFocus(true);
 			input.setSingleLine();
 			if(timetable.getTitle() != null){
@@ -725,7 +619,7 @@ public class TimetableFragment extends Fragment {
 
 			// set title
 			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-					getSupportActivity());
+					getActivity());
 			// set title
 			if(title != null)
 				alertDialogBuilder.setTitle(title);
@@ -737,13 +631,8 @@ public class TimetableFragment extends Fragment {
 
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					// TODO Auto-generated method stub
-
 					String title = input.getText().toString();
 					timetable.setTitle(title);
-					//					titleText.setText(title);
-
-//					TimetableDataManager.writeDatasToExternalStorage();
 				}
 			})
 			.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -762,17 +651,15 @@ public class TimetableFragment extends Fragment {
 				}
 			});
 			dialog.show();
-
 		}
-
 	}
 
 	boolean lessonViewAdded = false;
 	private void prepareLessonViewDrag(){
 		lessonViewAdded = true;
-		mSlop = ViewConfiguration.get(getSupportActivity()).getScaledTouchSlop();
+		mSlop = ViewConfiguration.get(getActivity()).getScaledTouchSlop();
 
-		wm = (WindowManager)getSupportActivity().getSystemService(Context.WINDOW_SERVICE);
+		wm = (WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE);
 
 		lessonViewDragImageParams = new WindowManager.LayoutParams();
 		//Gravity.top 설정이 있어 줘야 현재 액티비티의 맨 위를 기준(상태 표시줄 위, 즉 화면의 진짜배기 맨 바깥부분. FLAG_LAYOUT_IN_SCREEN으로 인해. )으로 x,y좌표가 저장된다.
@@ -788,7 +675,7 @@ public class TimetableFragment extends Fragment {
 		lessonViewDragImageParams.format = PixelFormat.TRANSLUCENT;
 		lessonViewDragImageParams.alpha = 0.4f;
 
-		lessonViewDragImage = new ImageView(getSupportActivity());
+		lessonViewDragImage = new ImageView(getActivity());
 		lessonViewDragImage.setVisibility(View.GONE);
 
 		lessonViewDropMarkerParams = new FrameLayout.LayoutParams(
@@ -801,17 +688,12 @@ public class TimetableFragment extends Fragment {
 		lessonViewDropMarkerParams.topMargin = 0;
 		lessonViewDropMarkerParams.width = android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 		lessonViewDropMarkerParams.height = android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-		//lessonViewDropMarkerParams. = PixelFormat.TRANSLUCENT;
-		//lessonViewDropMarkerParams.set = 0.4f;
 
-		lessonViewDropMarker = new ImageView(getSupportActivity());
+		lessonViewDropMarker = new ImageView(getActivity());
 		lessonViewDropMarker.setVisibility(View.GONE);
-		//	lessonViewDropMarker.setAlpha(0.4f);
 		lessonViewDropMarker.setLayoutParams(lessonViewDropMarkerParams);
 
-//		wm.removeView(lessonViewDragImage);
 		wm.addView(lessonViewDragImage, lessonViewDragImageParams);
-		//wm.addView(lessonViewDropMarker, lessonViewDropMarkerParams);
 		gridOverlapLayout.addView(lessonViewDropMarker);
 
 	}
@@ -823,25 +705,14 @@ public class TimetableFragment extends Fragment {
 
 		@Override
 		public boolean onLongClick(View v) {
-			MyLog.d("TouchSystemCheck", "touched : " + "lessonViewOnLongClickListener");
-			// TODO Auto-generated method stub
-			//Toast.makeText(getSupportActivity(), "수업뷰 롱클릭!", Toast.LENGTH_LONG).show();
-			if(isEditLessonLengthMode == true){
+			if(isEditLessonLengthMode){
 				return false;
 			}
 			dismissOverlapMarker(true);
 
 			Animation lessonViewAnimation = 
-					AnimationUtils.loadAnimation(getSupportActivity(), R.anim.lesson_longclicked);
-			//			lessonViewAnimation.setAnimationListener(new Animation.AnimationListener() {				
-			//				public void onAnimationStart(Animation animation) {}
-			//				public void onAnimationRepeat(Animation animation) {}
-			//				public void onAnimationEnd(Animation animation) {
-			//					v.setAlpha(0.5f);
-			//				}
-			//			});
+					AnimationUtils.loadAnimation(getActivity(), R.anim.lesson_longclicked);
 			v.startAnimation(lessonViewAnimation);
-			//int top = v.getTop();
 
 			itemForDrag = v;
 			longClickedLesson = (Lesson) v.getTag();
@@ -849,9 +720,9 @@ public class TimetableFragment extends Fragment {
 			tableScroll.requestDisallowInterceptTouchEvent(true);
 
 			makeImageForDrag();
-			vibratePhone(getSupportActivity(), LONGCLICK_VIBRATE_TIME);
+			vibratePhone(getActivity(), LONGCLICK_VIBRATE_TIME);
 
-			TimetableActivity ta = (TimetableActivity) getSupportActivity();
+			TimetableActivity ta = (TimetableActivity) getActivity();
 			ta.getViewPager().requestDisallowInterceptTouchEvent(true);
 
 			return true;
@@ -864,9 +735,6 @@ public class TimetableFragment extends Fragment {
 	}
 
 	private void makeImageForDrag(){
-		//Resources res = getResources();
-		//		Timetable timetable = getTimetableDataFromManager();
-
 		itemForDrag.buildDrawingCache();
 		Bitmap capture = itemForDrag.getDrawingCache();
 		lessonViewDragImage.setImageBitmap(capture);
@@ -874,15 +742,7 @@ public class TimetableFragment extends Fragment {
 		lessonViewDropMarkerParams.width = itemForDrag.getWidth();
 		lessonViewDropMarkerParams.height = itemForDrag.getHeight();
 		ytTheme.getLessonViewDropMarkerBackgroundShape().setViewTheme(
-				getSupportActivity(), lessonViewDropMarker);
-		//		Drawable lessonViewDropMarkerBackground = 
-		//				res.getDrawable(ytTheme.getLessonViewDropMarkerBackgroundShape());
-		//
-		//		lessonViewDropMarkerBackground.setAlpha(ytTheme.getShapeAlpha());
-		//		lessonViewDropMarker.setBackgroundDrawable(lessonViewDropMarkerBackground);
-		//		GradientDrawable gd = (GradientDrawable) lessonViewDropMarker.getBackground();
-		//		gd.setColor(Color.CYAN);
-		//		lessonViewDropMarker.setBackgroundDrawable(gd);
+				getActivity(), lessonViewDropMarker);
 	}
 
 	private void processDragging(TimetableScrollView scr, 
@@ -891,24 +751,15 @@ public class TimetableFragment extends Fragment {
 		//scrRect.bottom은 안 보이는 길이까지(스크롤되어야할 길이들까지)포함해 총 길이를 표현한다.
 		gridOverlapLayout.getLocalVisibleRect(scrRect);
 
-		//		MyLog.d("moveScrollBar",  
-		//				"yScrolled : " + yScrolled +
-		//				", scrRect.bottom : " + scrRect.bottom + 
-		//				", scrRect.top : " + scrRect.top + 
-		//				", scr.getSCrollY : " + scr.getScrollY()
-		//				);
-
-		if( scrRect.bottom - yInScrollViewScrolled <= cellHeight ){
+		if (scrRect.bottom - yInScrollViewScrolled <= cellHeight) {
 			moveScrollBar(scr, 1);
-		}else if(yInScrollViewScrolled - scr.getScrollY() <= cellHeight){
+		} else if (yInScrollViewScrolled - scr.getScrollY() <= cellHeight) {
 			moveScrollBar(scr, -1);
 		}
 	}
 
-	private void moveScrollBar(
-			TimetableScrollView scr, int movePeriod){
+	private void moveScrollBar(TimetableScrollView scr, int movePeriod) {
 		int moveHeight = (int) (movePeriod * cellHeight) / 10;
-
 		scr.smoothScrollBy(0, moveHeight);
 	}
 
@@ -943,14 +794,6 @@ public class TimetableFragment extends Fragment {
 					- l.getPeriodLengthByFloat();
 		}
 
-		MyLog.d("getDroppedItem", "startPeriodByInt : " + startPeriodByInt
-				+ ", endPeriodByInt : " + endPeriodByInt
-				+ ", upperOffset : " + upperOffset 
-				+ ", lowerOffset : " + lowerOffset);
-		MyLog.d("getDroppedItem", 
-				"centerPeriod : " + centerPeriod +  
-				", startPeriod : " + startPeriod);
-
 		if(startPeriod <= 0)
 			startPeriod = 0;
 		float endPeriod = startPeriod + l.getPeriodLengthByFloat();
@@ -963,11 +806,9 @@ public class TimetableFragment extends Fragment {
 	}
 
 	private int getTimetableBodyViewLeftMargin(int startDay){
-		//Resources res = getResources();
 		View lt_cell = grid.findViewWithTag(new CellTag(startDay, 1));
 
 		float timelineOffset =  res.getDimension(R.dimen.fragment_timetable_timeline_width);
-//				res.getDimension(R.dimen.fragment_timetable_body_padding);								
 
 		int cellLeft = lt_cell.getLeft();
 		int left = Math.round(timelineOffset + cellLeft);
@@ -981,7 +822,6 @@ public class TimetableFragment extends Fragment {
 		float topOffset = (startPeriod - (float)intStartPeriod) * rowHeight;
 		int[] loc = new int[2];
 		cell.getLocationOnScreen(loc);
-		MyLog.d("getTimetableBodyViewTopMargin", loc[1]+"");
 		return loc[1] - getScrollViewTop() + tableScroll.getScrollY() + (int)topOffset;
 	}
 
@@ -1000,7 +840,6 @@ public class TimetableFragment extends Fragment {
 
 	@Override
 	public void onSaveInstanceState (Bundle outState){
-        MyLog.d("onSaveInstanceState", "my idx now : " + getMyIndexInViewPager() + ", me : " + this);
         outState.putInt("SavedTimetableIndex", getMyIndexInViewPager());
 		super.onSaveInstanceState(outState);
 	}
@@ -1010,7 +849,6 @@ public class TimetableFragment extends Fragment {
 		super.onActivityCreated(savedInstanceState);
         if(savedInstanceState != null) {
             myPageIndex = savedInstanceState.getInt("SavedTimetableIndex");
-            MyLog.d("TimetableFragment", "onActivityCreated, savedInstance not null, saved timetable idx : " + myPageIndex );
         }
         int tmpMyPageIndex = this.getMyIndexInViewPager();
         if(tmpMyPageIndex != -1)
@@ -1019,48 +857,43 @@ public class TimetableFragment extends Fragment {
         if(myPageIndex == -1)
             return;
 
-        MyLog.d("TimetableFragment", "onActivityCreated" + ", index : " + myPageIndex + ", timetable : " + timetable);
         if(ytTheme.getCurrentTheme() == YTTimetableTheme.ThemeType.Photo){
 			//포토모드라면 저장되어있는 사진을 로드해서 배경이미지로.
-			((TimetableActivity)getSupportActivity())
+			((TimetableActivity)getActivity())
 			.loadBitmapFromTimetableId(timetable.getId(), backgroundView);
 		}else{
-			ytTheme.getRootBackground().setViewTheme(getSupportActivity(), backgroundView);
+			ytTheme.getRootBackground().setViewTheme(getActivity(), backgroundView);
 		}
 	}
 	@Override
 	public void onResume(){
 		super.onResume();
-        MyLog.d("onResume", "index now : " + myPageIndex);
-		if(lessonViewAdded == false && myPageIndex != -1)
+		if(!lessonViewAdded && myPageIndex != -1)
 			prepareLessonViewDrag();
 	}
 
 	@Override
 	public void onPause(){
 		super.onPause();
-		MyLog.d("TimetableFragment", "onPause" + ", " + this.toString());
 	}
+
 	@Override
 	public void onStop(){
 		super.onStop();
-		MyLog.d("TimetableFragment", "onStop" + ", " + this.toString());
 	}
+
 	@Override
 	public void onDestroyView(){
 		super.onDestroyView();
-		MyLog.d("TimetableFragment", "onDestroyView" + ", " + this.toString());
 	}
+
 	@Override
 	public void onDestroy(){
 		recycleBitmap(backgroundView);
         if(wm != null)
 		    wm.removeView(lessonViewDragImage);
 		lessonViewAdded = false;
-		//		YTAppWidgetProvider_2x4.onTimetableDataChanged(getSupportActivity());
-		//		YTAppWidgetProvider_4x4.onTimetableDataChanged(getSupportActivity());
-		MyLog.d("TimetableFragment", "onDestroy" + ", " + this.toString());
-		
+
 		super.onDestroy();
 	}
 
@@ -1072,16 +905,15 @@ public class TimetableFragment extends Fragment {
 			return;
 		}
 		if (d != null && d instanceof BitmapDrawable) {
-			MyLog.d("RecycleBitmap", "Recycling!");
 			Bitmap b = ((BitmapDrawable)d).getBitmap();
 			b.recycle();
 		} // 현재로서는 BitmapDrawable 이외의 drawable 들에 대한 직접적인 메모리 해제는 불가능하다.
 		if(d != null)
 			d.setCallback(null);
     }
+
 	public void onDetatch(){
 		super.onDetach();
-		MyLog.d("TimetableFragment", "onDetach" + ", " + this.toString());
 	}
 	
 	public Timetable getTimetableDataFromManager(int pageIndex){
@@ -1092,7 +924,7 @@ public class TimetableFragment extends Fragment {
 	}
 
 	private int getMyIndexInViewPager(){
-		TimetableActivity parent = (TimetableActivity) getSupportActivity();
+		TimetableActivity parent = (TimetableActivity) getActivity();
 		if(parent == null){
 			MyLog.d("getMyIndexInViewPager", "parent null");
 		}
@@ -1105,16 +937,13 @@ public class TimetableFragment extends Fragment {
 
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			//Toast.makeText(getSupportActivity(), "PathButton : " + v.getTag() , Toast.LENGTH_SHORT).show();
-			//			Timetable currentTable = timetable;
 			Timetable currentTable = timetable;
 			if(currentTable.isTimetableOverflow24Hours(
 					currentTable.getPeriodNum() + 1
 					, currentTable.getPeriodUnit())
 					){
 				String warn = res.getString(R.string.fragment_timetable_warning_over24h);
-				Toast.makeText(getSupportActivity(), warn, Toast.LENGTH_LONG).show();
+				Toast.makeText(getActivity(), warn, Toast.LENGTH_LONG).show();
 				return;
 			}
 			currentTable.setPeriodNum(currentTable.getPeriodNum() + 1);
@@ -1137,12 +966,9 @@ public class TimetableFragment extends Fragment {
 
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
-
-			MyLog.d("onClick", "minus");
 			if(timetable.getPeriodNum() <= 1){
 				String warn = res.getString(R.string.fragment_timetable_warning_leaveoneperiod);
-				Toast.makeText(getSupportActivity(), warn, Toast.LENGTH_LONG).show();
+				Toast.makeText(getActivity(), warn, Toast.LENGTH_LONG).show();
 				return;
 			}
 			for(int i = 0; i < timetable.getLessonList().size() ; i++){
@@ -1157,7 +983,7 @@ public class TimetableFragment extends Fragment {
 					String warnD = res.getString(
 							R.string.fragment_timetable_warning_tableLengthLowerThanLesson_D);
 					Toast.makeText(
-							getSupportActivity(), 
+							getActivity(), 
 							warnA + "\"" + l.getLessonName() + "\" " 
 							+ warnB + warnC + (int)l.getLessonEndPeriodByFloat() 
 							+ warnD,									
@@ -1183,36 +1009,23 @@ public class TimetableFragment extends Fragment {
 
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			MyLog.d("onClick", "clear Table");
-			ClearTimetableAlertDialogBuilder.createDialog(getSupportActivity(), myPageIndex, TimetableFragment.this).show();
+			ClearTimetableAlertDialogBuilder.createDialog(getActivity(), myPageIndex, TimetableFragment.this).show();
 		}
 	};
 
 	PathButton.ModeBtnClickedListener deleteTimetableOnClick = new PathButton.ModeBtnClickedListener() {
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			MyLog.d("onClick", "delete Table");
 			Timetable cur = timetable;
 			Timetable main = TimetableDataManager.getMainTimetable();
 			if(cur == main){
 				String warn = res.getString(R.string.fragment_timetable_warning_deleteMainTable);
-				Toast.makeText(getSupportActivity(), warn, Toast.LENGTH_LONG).show();
+				Toast.makeText(getActivity(), warn, Toast.LENGTH_LONG).show();
 				return;
 			}
 			//팝업창을 띄우고 타임테이블이 삭제됨을 경고한 뒤 테이블을 삭제.
-			DeleteTimetableAlertDialogBuilder.createDialog(getSupportActivity(), 
+			DeleteTimetableAlertDialogBuilder.createDialog(getActivity(), 
 					TimetableFragment.this).show();
-			//			dialog.show(getFragmentManager(), "DeleteTimetable");
-			//			Bundle b = new Bundle();
-			//			//b.putParcelable("LessonView", v);
-			//			//b.putParcelable("Lesson", lesson);
-			//			dialog.setArguments(b);
-			//			dialog.setTargetFragment(
-			//					TimetableFragment.this, 
-			//					TimetableFragment.FRAG_TIMETABLE_DIALOG_DELETE_TIMETABLE);
-
 		}
 	};
 
@@ -1261,14 +1074,14 @@ public class TimetableFragment extends Fragment {
 
 		//2.Timetable클래스의 날짜수만큼 타이틀의 요일 표시용 LinearLayout을 더한다.
 		for(int i = 0; i < timetable.getDayNum() ; i++){
-			LayoutInflater li = getSupportActivity().getLayoutInflater();
+			LayoutInflater li = getActivity().getLayoutInflater();
 			LinearLayout dayCell = (LinearLayout) li.inflate(R.layout.view_timetable_dayrow_daycell, dayRow, false);
 
 			int gregorianDay = cal.get(Calendar.DAY_OF_WEEK);
 
 			TextView day = (TextView) dayCell.findViewById(R.id.view_timetable_dayrow_daycell_day);
 			String sDay = new String();
-			sDay = Timetable.getDayStringFromGregorianCalendar(getSupportActivity(), gregorianDay); 
+			sDay = Timetable.getDayStringFromGregorianCalendar(getActivity(), gregorianDay); 
 			day.setText(sDay);
 			day.setTextColor(ytTheme.getTimetableTextColor());
 
@@ -1294,43 +1107,43 @@ public class TimetableFragment extends Fragment {
 			if(ytTheme.getDayrowWrapperBackground() == null){
 				if(i == 0){
 					ytTheme.getDayrowDateBakcground().setViewTheme(
-							getSupportActivity(), 
+							getActivity(), 
 							date, 
 							TimetableFragment.FRAG_TIMETABLE_ROUNDRECT_RXY, 
 							true, false, false, false);
 					//					ytTheme
 					//					.getDayrowDividerBackground()
-					//					.setViewTheme(getSupportActivity(), dayCellDivider);
+					//					.setViewTheme(getActivity(), dayCellDivider);
 					ytTheme.getDayrowDayBackground().setViewTheme(
-							getSupportActivity(), 
+							getActivity(), 
 							day, 
 							TimetableFragment.FRAG_TIMETABLE_ROUNDRECT_RXY, 
 							false, false, false, true);
 				}else if(i == timetable.getDayNum() - 1){
 					ytTheme.getDayrowDateBakcground().setViewTheme(
-							getSupportActivity(), 
+							getActivity(), 
 							date, 
 							TimetableFragment.FRAG_TIMETABLE_ROUNDRECT_RXY, 
 							false, true, false, false);
 					//					ytTheme
 					//					.getDayrowDividerBackground()
-					//					.setViewTheme(getSupportActivity(), dayCellDivider);
+					//					.setViewTheme(getActivity(), dayCellDivider);
 					ytTheme.getDayrowDayBackground().setViewTheme(
-							getSupportActivity(), 
+							getActivity(), 
 							day, 
 							TimetableFragment.FRAG_TIMETABLE_ROUNDRECT_RXY, 
 							false, false, true, false);
 				}else{
 					ytTheme.getDayrowDateBakcground().setViewTheme(
-							getSupportActivity(), 
+							getActivity(), 
 							date, 
 							TimetableFragment.FRAG_TIMETABLE_ROUNDRECT_RXY, 
 							false, false, false, false);
 					//					ytTheme
 					//					.getDayrowDividerBackground()
-					//					.setViewTheme(getSupportActivity(), dayCellDivider);
+					//					.setViewTheme(getActivity(), dayCellDivider);
 					ytTheme.getDayrowDayBackground().setViewTheme(
-							getSupportActivity(), 
+							getActivity(), 
 							day, 
 							TimetableFragment.FRAG_TIMETABLE_ROUNDRECT_RXY, 
 							false, false, false, false);
@@ -1338,7 +1151,7 @@ public class TimetableFragment extends Fragment {
 			}else{
 				//				dayCellDivider.setBackgroundColor(Color.TRANSPARENT);
 				ytTheme.getDayrowWrapperBackground().setViewTheme(
-						getSupportActivity(), dayRowOverlap, 
+						getActivity(), dayRowOverlap, 
 						FRAG_TIMETABLE_ROUNDRECT_RXY, 
 						true, true, true, true);
 			}
@@ -1354,53 +1167,6 @@ public class TimetableFragment extends Fragment {
 		//addDayRowDivider();
 
 	}
-
-
-	/*private void addDayRowDivider(){
-
-		for(int i = 0; i < dayRow.getChildCount(); i++){
-			if(dayRow.getChildAt(i) instanceof LinearLayout){
-				final int index = i;
-				ViewTreeObserver vto = dayRow.getViewTreeObserver();
-				vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-
-				    @SuppressLint("NewApi")
-					@Override
-				    public void onGlobalLayout() {
-				    	LinearLayout dayCell = (LinearLayout) dayRow.getChildAt(index);
-
-				    	LinearLayout divider = 
-				    			new LinearLayout(TimetableFragment.this.getSupportActivity());
-				    	divider.setOrientation(LinearLayout.VERTICAL);
-				    	divider.setBackgroundColor(Color.RED);
-				    	FrameLayout.LayoutParams dividerParams = 
-				    			new FrameLayout.LayoutParams(2, FrameLayout.LayoutParams.FILL_PARENT);
-				    	dividerParams.leftMargin = dayCell.getRight() - 1;
-				    	dividerParams.height = dayCell.getHeight();
-				    	dividerParams.width = 2;
-				    	divider.setLayoutParams(dividerParams);
-				    	dayRowDividerWrapper.addView(divider);
-				    	MyLog.d("dayRowDivider", "Position : " + 
-				    	dayCell.getRight() + ", height : " + divider.getHeight() + 
-				    	"dayCell Height : " + dayCell.getHeight());
-
-
-				    	ViewTreeObserver obs = dayRow.getViewTreeObserver();
-
-				        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-				            obs.removeOnGlobalLayoutListener(this);
-				        } else {
-				            obs.removeGlobalOnLayoutListener(this);
-				        }
-				    }
-
-				});
-
-			}
-		}
-
-	}*/
-
 
 	private void createTimetableBody(){
 		//MyLog.d("cellWidth", "Body, cellWidth : " + cellWidth);
@@ -1456,17 +1222,6 @@ public class TimetableFragment extends Fragment {
 			addTimetableRow(i);
 		}
 		grid.invalidate();
-
-//		ytTheme.getGridBackground().setViewTheme(getSupportActivity(), grid);
-		//		Drawable gridBackgroundDrawable = 
-		//				BackgroundDrawableCreator.getTiledRoundedRectBitmapDrawable(
-		//						getSupportActivity(), Shader.TileMode.REPEAT, Shader.TileMode.REPEAT,
-		//						FRAG_TIMETABLE_ROUNDRECT_RXY, ytTheme.getGridBackground());
-		//		gridBackgroundDrawable.setAlpha(ytTheme.getImageAlpha());
-		//		grid.setBackgroundDrawable(gridBackgroundDrawable);
-//		rootView.invalidate();
-		//grid overlap이 grid height와 같지 않게 된다. 뭐지? 버그인가?
-		//	RelativeLayout.LayoutParams gridOverlapParams = (RelativeLayout.LayoutParams) gridOverlapLayout.getLayoutParams();
 	}
 
 	public void refreshLessonViews(){
@@ -1484,7 +1239,7 @@ public class TimetableFragment extends Fragment {
 		//Resources res = getResources();
 		int cellMargin = Math.round(res.getDimension(R.dimen.fragment_timetable_cell_margin));
 		int bodyPadding = Math.round(res.getDimension(R.dimen.fragment_timetable_body_padding));
-		LinearLayout row = new LinearLayout(getSupportActivity());
+		LinearLayout row = new LinearLayout(getActivity());
 		LinearLayout.LayoutParams rowParams = 
 				new LinearLayout.LayoutParams(
 						android.view.ViewGroup.LayoutParams.FILL_PARENT, 
@@ -1510,21 +1265,14 @@ public class TimetableFragment extends Fragment {
 			View cell = null;
 			if(timetable.getPeriodUnit() == 30
 					|| timetable.getPeriodUnit() == 45){
-				cell = View.inflate(this.getSupportActivity(),
+				cell = View.inflate(this.getActivity(),
 						R.layout.view_timetable_timecell_half_square, null);
 			}else{
-				cell = View.inflate(this.getSupportActivity(),
+				cell = View.inflate(this.getActivity(),
 						R.layout.view_timetable_timecell, null);
 			}
 		
-			ytTheme.getTimecellBackgroundShape().setViewTheme(getSupportActivity(), cell);
-			//			Drawable cellBackground =
-			//					res.getDrawable(ytTheme.getTimecellBackgroundShape());
-			//			cellBackground.setAlpha(ytTheme.getShapeAlpha());
-			//			cell.setBackgroundDrawable(cellBackground);
-			//			GradientDrawable gd = (GradientDrawable) cell.getBackground();
-			//			gd.setColor(Color.WHITE);
-			//			cell.setBackgroundDrawable(gd);
+			ytTheme.getTimecellBackgroundShape().setViewTheme(getActivity(), cell);
 
 			cell.setTag(new CellTag(j, period));
 			LinearLayout.LayoutParams cellParams = 
@@ -1540,15 +1288,15 @@ public class TimetableFragment extends Fragment {
 
 		if(ytTheme.getGridBackground() != null){
 			if(period == 0){
-				ytTheme.getGridBackground().setViewTheme(getSupportActivity(), 
+				ytTheme.getGridBackground().setViewTheme(getActivity(), 
 						row, FRAG_TIMETABLE_ROUNDRECT_RXY, 
 						true, true, false, false);
 			}else if(period == timetable.getPeriodNum() - 1){
-				ytTheme.getGridBackground().setViewTheme(getSupportActivity(), 
+				ytTheme.getGridBackground().setViewTheme(getActivity(), 
 						row, FRAG_TIMETABLE_ROUNDRECT_RXY, 
 						false, false, true, true);
 			}else{
-				ytTheme.getGridBackground().setViewTheme(getSupportActivity(), 
+				ytTheme.getGridBackground().setViewTheme(getActivity(), 
 						row, FRAG_TIMETABLE_ROUNDRECT_RXY, 
 						false, false, false, false);
 			}
@@ -1558,23 +1306,6 @@ public class TimetableFragment extends Fragment {
 		//timecell들을 추가한다.
 		grid.addView(row);
 	}
-
-	/*private View.OnClickListener cellOnClickListener = new View.OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-			MyLog.d("TouchSystemCheck", "touched : " + "cellOnClickListener");
-			// TODO Auto-generated method stub
-			dismissOverlapMarker();
-
-			CellTag tag = (CellTag) v.getTag();
-			int day = tag.day;
-			int period = tag.period;
-			markSelectedCells(day,day,period,period+1);
-			addSelectPeriodModeButtons(day,day,period,period+1);
-		}
-	};
-	 */	
 
 	/**
 	 * @param period
@@ -1586,7 +1317,7 @@ public class TimetableFragment extends Fragment {
 		//Resources res = getResources();
 		//2-2.타임라인용 셀(=교시 표시용 셀)을 만든다.
 		TextView timelineCell = (TextView) 
-				View.inflate(getSupportActivity(),
+				View.inflate(getActivity(),
 						R.layout.view_timetable_timeline_cell,
 						null);
 		LinearLayout.LayoutParams timelineCellParams = 
@@ -1627,13 +1358,13 @@ public class TimetableFragment extends Fragment {
 					if(period == timetable.getPeriodNum()){
 						//period only exists one
 						ytTheme.getTimelineBackground_1().setViewTheme(
-								getSupportActivity(), timelineCell, 
+								getActivity(), timelineCell, 
 								FRAG_TIMETABLE_ROUNDRECT_RXY, 
 								true, true, true, true);
 					}else{
 						//first period.
 						ytTheme.getTimelineBackground_1().setViewTheme(
-								getSupportActivity(), timelineCell, 
+								getActivity(), timelineCell, 
 								FRAG_TIMETABLE_ROUNDRECT_RXY, 
 								true, true, false, false);
 					}
@@ -1642,12 +1373,12 @@ public class TimetableFragment extends Fragment {
 					if(period == timetable.getPeriodNum()){
 						//final period - rb lb roundrect
 						ytTheme.getTimelineBackground_1().setViewTheme(
-								getSupportActivity(), timelineCell, 
+								getActivity(), timelineCell, 
 								FRAG_TIMETABLE_ROUNDRECT_RXY, 
 								false, false, true, true);
 					}else{
 						ytTheme.getTimelineBackground_1().setViewTheme(
-								getSupportActivity(), timelineCell, 
+								getActivity(), timelineCell, 
 								FRAG_TIMETABLE_ROUNDRECT_RXY, 
 								false, false, false, false);
 					}
@@ -1656,42 +1387,30 @@ public class TimetableFragment extends Fragment {
 				if(period == timetable.getPeriodNum()){
 					//final period - rb lb roundrect
 					ytTheme.getTimelineBackground_2().setViewTheme(
-							getSupportActivity(), timelineCell, 
+							getActivity(), timelineCell, 
 							FRAG_TIMETABLE_ROUNDRECT_RXY, 
 							false, false, true, true);
 				}else{
 					ytTheme.getTimelineBackground_2().setViewTheme(
-							getSupportActivity(), timelineCell, 
+							getActivity(), timelineCell, 
 							FRAG_TIMETABLE_ROUNDRECT_RXY, 
 							false, false, false, false);
 				}
 			}
 		}else{
-//			ytTheme.getTimelineWrapperBackground().setViewTheme(getSupportActivity(), 
-//					timelineWrapper, FRAG_TIMETABLE_ROUNDRECT_RXY, 
-//					false, false, false, false,
-//					true, false, true, false);
-//			ytTheme.getTimelineWrapperBackground().setViewTheme(getSupportActivity(), 
-//					timelineUpperRound, FRAG_TIMETABLE_ROUNDRECT_RXY, 
-//					true, true, false, false,
-//					true, true, true, false);
-//			ytTheme.getTimelineWrapperBackground().setViewTheme(getSupportActivity(), 
-//					timelineBottomRound, FRAG_TIMETABLE_ROUNDRECT_RXY, 
-//					false, false, true, true,
-//					true, false, true, true);
 			//temporary code
 			if(period % 2 == 1){
 				if(period == 1){
 					if(period == timetable.getPeriodNum()){
 						//period only exists one
 						ytTheme.getTimelineWrapperBackground().setViewTheme(
-								getSupportActivity(), timelineCell, 
+								getActivity(), timelineCell, 
 								FRAG_TIMETABLE_ROUNDRECT_RXY, 
 								true, true, true, true);
 					}else{
 						//first period.
 						ytTheme.getTimelineWrapperBackground().setViewTheme(
-								getSupportActivity(), timelineCell, 
+								getActivity(), timelineCell, 
 								FRAG_TIMETABLE_ROUNDRECT_RXY, 
 								true, true, false, false,
 								true, true, true, false);
@@ -1701,13 +1420,13 @@ public class TimetableFragment extends Fragment {
 					if(period == timetable.getPeriodNum()){
 						//final period - rb lb roundrect
 						ytTheme.getTimelineWrapperBackground().setViewTheme(
-								getSupportActivity(), timelineCell, 
+								getActivity(), timelineCell, 
 								FRAG_TIMETABLE_ROUNDRECT_RXY, 
 								false, false, true, true,
 								true, false, true, true);
 					}else{
 						ytTheme.getTimelineWrapperBackground().setViewTheme(
-								getSupportActivity(), timelineCell, 
+								getActivity(), timelineCell, 
 								FRAG_TIMETABLE_ROUNDRECT_RXY, 
 								false, false, false, false,
 								true, false, true, false);
@@ -1717,38 +1436,19 @@ public class TimetableFragment extends Fragment {
 				if(period == timetable.getPeriodNum()){
 					//final period - rb lb roundrect
 					ytTheme.getTimelineWrapperBackground().setViewTheme(
-							getSupportActivity(), timelineCell, 
+							getActivity(), timelineCell, 
 							FRAG_TIMETABLE_ROUNDRECT_RXY, 
 							false, false, true, true,
 							true, false, true, true);
 				}else{
 					ytTheme.getTimelineWrapperBackground().setViewTheme(
-							getSupportActivity(), timelineCell, 
+							getActivity(), timelineCell, 
 							FRAG_TIMETABLE_ROUNDRECT_RXY, 
 							false, false, false, false,
 							true, false, true, false);
 				}
 			}
 		}
-		//		float[] corners = new float[]{0,0,0,0,0,0,0,0};
-		//		if(period == 1){
-		//			corners = new float[]{12f,12f,12f,12f,0,0,0,0};
-		//			//교시가 하나밖에 없을때
-		//			if(period == timetable.getPeriodNum()){
-		//				corners = new float[]{12f,12f,12f,12f,12f,12f,12f,12f};
-		//			}
-		//			//			timelineCell.setPadding(0, top, 5, 0);
-		//		}else if(period == timetable.getPeriodNum()){
-		//			corners = new float[]{0,0,0,0,12f,12f,12f,12f};
-		//		}
-		//
-		//		Drawable timelineCellBackgroundDrawable = 
-		//				BackgroundDrawableCreator.getTiledRoundedRectBitmapDrawable(
-		//						getSupportActivity(),
-		//						Shader.TileMode.REPEAT, Shader.TileMode.REPEAT, 
-		//						corners, resId);
-		//		timelineCellBackgroundDrawable.setAlpha(ytTheme.getImageAlpha());
-		//		timelineCell.setBackgroundDrawable(timelineCellBackgroundDrawable);
 
 		if(timetable.getColumnType() == Timetable.ColumnTypes.BY_PERIOD){
 			//String s_period = res.getString(R.string.fragment_timetable_timeline_period);
@@ -1796,7 +1496,6 @@ public class TimetableFragment extends Fragment {
 	private void createTimetableTail(){}
 
 	private void clearAndAddLessonViews(int lessonViewVisibility){
-		MyLog.d("clearTimetableLessons", "timetable size : " + timetable.getLessonList().size() + ", timetable : " + timetable);
 		//1.현재 화면에 나온 레슨뷰를 모두 삭제후
 		for(int i = 0 ; i < gridOverlapLayout.getChildCount() ; i++){
 			for(int j = 0; j < timetable.getLessonList().size() ; j++){
@@ -1817,7 +1516,6 @@ public class TimetableFragment extends Fragment {
 	}
 
 	private void clearLessonViews(){
-		MyLog.d("clearTimetableLessons", "timetable size : " + timetable.getLessonList().size() + ", timetable : " + timetable);
 		//1.현재 화면에 나온 레슨뷰를 모두 삭제후
 		for(int i = 0 ; i < gridOverlapLayout.getChildCount() ; i++){
 			for(int j = 0; j < timetable.getLessonList().size() ; j++){
@@ -1842,9 +1540,8 @@ public class TimetableFragment extends Fragment {
 
 		@Override
 		public boolean onLongClick(View v) {
-			// TODO Auto-generated method stub
 			MyLog.d("TouchSystemCheck", "touched : " + "overlapOnLongClickListener");
-			if(isEditLessonLengthMode == true){
+			if(isEditLessonLengthMode){
 				//만약 edit lesson length버튼을 터치해 수업뷰 길이 조정하는 상태면 롱클릭을 받지 않는다.
 				return false;
 			}
@@ -1860,24 +1557,16 @@ public class TimetableFragment extends Fragment {
 			//또한 이전의 Long Click때 발생한 뷰들은 초기화.
 			dismissOverlapMarker(true);
 
-			if(isSelectPeriodMode == false){
+			if(!isSelectPeriodMode){
 				isSelectPeriodMode = true;
 				int longClickedDay = getDayIndexFromTouchedPosition(touchedDownPositionX);
 				int longClickedPeriod = (int)getPeriodFromTouchedPosition(touchedDownPositionY);
-				MyLog.d("TouchSystemCheck", "selectPeriodMode set to true" +
-						", long clicked day : " + longClickedDay + 
-						", longClickedPeriod : " + longClickedPeriod);
-				markSelectedCells(longClickedDay, longClickedDay, 
+				markSelectedCells(longClickedDay, longClickedDay,
 						longClickedPeriod, longClickedPeriod + 1);
-
-				//
-				//				MyLog.d("longClick", "day : " + longClickedDay + ", period : " + longClickedPeriod);
-				//
-				//				markSelectedCells(longClickedDay, longClickedPeriod, longClickedPeriod);
 			}
 			//스크롤뷰의 interceptTouchEvent를 블로킹해두지 않으면 selectPeriodMode가 활성화된 와중에 드래그를 스크롤뷰가 빼앗아가버려 event가 Cancel된다.
 			tableScroll.requestDisallowInterceptTouchEvent(true);
-			vibratePhone(getSupportActivity(), LONGCLICK_VIBRATE_TIME);
+			vibratePhone(getActivity(), LONGCLICK_VIBRATE_TIME);
 
 			MyLog.d("longClick", "lessonList Size : " + timetable.getLessonList().size());
 			return false;
@@ -1901,10 +1590,10 @@ public class TimetableFragment extends Fragment {
 				touchedDownPositionY = event.getY();
 
 				//edit lesson length버튼이 터치되었을때는 버튼들을 없애버리면 안된다.
-				if(isEditLessonLengthMode == false){
+				if(!isEditLessonLengthMode){
 					//dismissOverlapMarker();
 				}
-				if(isSelectPeriodMode == true){
+				if(isSelectPeriodMode){
 					//만약 터치다운인데 select period mode가 true라면?
 					//init!
 					isSelectPeriodMode = false;
@@ -1916,23 +1605,9 @@ public class TimetableFragment extends Fragment {
 
 			//2.period select모드가 아니라면 아무것도 하지 않는다. 여기서 touchedDownPosition을 초기화하면 안됨.
 			//롱클릭 발생-ACTION_DOWN은 호출 안되고 곧바로 ACTION_MOVE 호출, 이 순서를 타게 되면 망함
-			//			if(selectPeriodMode == false){
-			//				if(event.getAction() == MotionEvent.ACTION_CANCEL ||
-			//						event.getAction() == MotionEvent.ACTION_UP){
-			//					touchedDownPositionX = -1;
-			//					touchedDownPositionY = -1;
-			//				}
-			//				return false;
-			//			}
 
 			if(event.getAction() == MotionEvent.ACTION_MOVE){
-				if(isSelectPeriodMode == true){
-					//					if(touchedDownPositionX == -1 || touchedDownPositionY == -1){
-					//						//이 경우 select period mode가 발동하고 사용자가 up을 한 뒤,
-					//						//markButtonEditLength를 터치해서 움직이는 경우라고 판단한다.
-					//						touchedDownPositionX = event.getX();
-					//						touchedDownPositionY = event.getY();
-					//					}
+				if(isSelectPeriodMode){
 					boolean result = handleSelectPeriodModeOnTouchMove(event);
 
 					//새로 add된 레슨뷰들에 가려져버린 currentTimeMarker가 제일 위에 올라와야함.
@@ -1940,12 +1615,12 @@ public class TimetableFragment extends Fragment {
 
 					return result; 
 
-				}else if(isEditLessonLengthMode == true){
+				}else if(isEditLessonLengthMode){
 					boolean result = handleEditLessonLengthModeOnTouchMove(event);
 					//새로 add된 레슨뷰들에 가려져버린 currentTimeMarker가 제일 위에 올라와야함.
 					currentTimeMarker.bringToFront();
 					return result;
-				}else if(isDraggingLessonMode == true){
+				}else if(isDraggingLessonMode){
 					boolean result = handleDragLessonModeOnTouchMove(event);
 					return result;
 				}
@@ -1953,7 +1628,7 @@ public class TimetableFragment extends Fragment {
 			}else if(event.getAction() == MotionEvent.ACTION_CANCEL ||
 					event.getAction() == MotionEvent.ACTION_UP){
 
-				if(isSelectPeriodMode == true){
+				if(isSelectPeriodMode){
 
 					boolean result = handleSelectPeriodModeOnTouchUp(event);
 					MyLog.d("TouchSystemCheck", "selectPeriodmode false");
@@ -1961,7 +1636,7 @@ public class TimetableFragment extends Fragment {
 					currentTimeMarker.bringToFront();
 					return result;
 
-				}else if(isEditLessonLengthMode == true){
+				}else if(isEditLessonLengthMode){
 					//손가락을 움직여 edit lesson length버튼 바깥으로 터치좌표가 나가면
 					//editlessonlengthontouch리스너가 콜링되지 않는다. 
 					//따라서 up 관련 처리는 여기서 모두 해준다.
@@ -1972,16 +1647,6 @@ public class TimetableFragment extends Fragment {
 					//selectPeriodMode는 활성화되는데 touch down은 활성화가 안 되어 이상해진다.
 					//그래서 롱클릭리스너를 잠시 빼버린 후 0.05s의 딜레이를 주어 long click호출이 꼬이지 않도록
 					//처리해준다.
-					//					gridOverlapLayout.setOnLongClickListener(null);
-					//					MyLog.d("TouchSystemCheck", 
-					//							"handler requested gridoverlaplayout not to long click for 0.05s");
-					//					new Handler().postDelayed(new Runnable(){
-					//						@Override
-					//						public void run() {
-					//							MyLog.d("TouchSystemCheck", "longclick block ended!");
-					//							gridOverlapLayout.setOnLongClickListener(overlapOnLongClickListener);
-					//						}		
-					//					}, 500);
 					blockGridOverlapLongClick();
 					MyLog.d("LessonEditLength", "isLessonEditLengthMode = false");	
 					boolean result = handleEditLessonLengthModeOnTouchUp(event);
@@ -1989,7 +1654,7 @@ public class TimetableFragment extends Fragment {
 					currentTimeMarker.bringToFront();
 
 					return result;
-				}else if(isDraggingLessonMode == true){
+				}else if(isDraggingLessonMode){
 					boolean result = handleDragLessonModeOnTouchUp(event);
 					tableScroll.requestDisallowInterceptTouchEvent(false);
 					return result;
@@ -2012,24 +1677,12 @@ public class TimetableFragment extends Fragment {
 						gridOverlapLayout.cancelLongPress();
 
 						if(markSelectedRangeLayout.getVisibility() == View.VISIBLE ||
-								isLessonEditButtonsShowing == true){
+								isLessonEditButtonsShowing){
 							MyLog.d("dismissOverlapMarkers", "isSelectPeriodMode : " + isSelectPeriodMode);
 							//							blockGridOverlapLongClick();
 							dismissOverlapMarker(true);
 							return true;
 						}
-
-
-
-						//						//****아주아주 짧게 buttonEditLength를 클릭하고 떼버리면, 
-						//						//selectPeriodMode는 true, touchedDownPositionX,Y가 설정된채로
-						//						//markEditLength의 터치리스너의 ACTION_CANCELED는 호출되면서
-						//						//overlapOnTouchListener가 호출되지 않는 문제가 있다.
-						//						//그래서 짧은 터치가 호출되었다면 초기화.
-						//						isSelectPeriodMode = false;
-						//						isMarkButtonEditLengthTouched = false;
-						//						touchedDownPositionX = -1;
-						//						touchedDownPositionY = -1;
 
 						//2.이후 제대로 다시 처리.
 						boolean result = handleSelectPeriodModeOnTouchUp(event);
@@ -2232,11 +1885,6 @@ public class TimetableFragment extends Fragment {
 			endDayIndex = timetable.getDayNum() - 1;
 		}
 
-		MyLog.d("overlapOnTouch", 
-				"startDay : " + startDayIndex + ", endDay : " + endDayIndex + 
-				", startPeriod : " + startPeriod + ", endPeriod : " + endPeriod
-				);
-
 		//1.롱클릭 이후 선택된 부분을 위해 이용한 변수들 초기화 및 수업시간정보(PeriodInfo)용 데이터 정리.
 		isSelectPeriodMode = false;
 		isMarkButtonEditLengthTouched = false;
@@ -2245,12 +1893,12 @@ public class TimetableFragment extends Fragment {
 
 
 		//2.현재 시간표에 저장된 수업들의 시간과 겹치는지 여부를 체크하여 겹칠경우 다이얼로그 안 띄우고 경고 토스트 띄운후 리턴.
-		if(checkSelectedRangeAvaliable(startDayIndex, endDayIndex, startPeriod, endPeriod) == false){
+		if(!checkSelectedRangeAvaliable(startDayIndex, endDayIndex, startPeriod, endPeriod)){
 			String warn = res.getString(R.string.fragment_timetable_warning_lessonAlreadyExists);
 			isSelectPeriodMode = false;
 			dismissOverlapMarker(true);
 			Toast.makeText(
-					getSupportActivity(), 
+					getActivity(), 
 					warn,
 					Toast.LENGTH_LONG)
 					.show();
@@ -2261,18 +1909,6 @@ public class TimetableFragment extends Fragment {
 		//O - 3을 진행한 후 timetable에 LessonToAdd를 timetable에 ADD
 		//X - 선택부분 없앤다. 전부 없었던 일로...
 
-		//showDialog(DIALOG_SELECT_PERIOD_FINISHED);
-
-		//3.timetable에서 lessonList의 마지막 레슨(즉, PeriodInfo리스트가 비어있는 Lesson)을 받아와 현재 입력받은 period정보를 삽입.
-
-		//				lessonToAddAndEdit.setPeriodInfo(new PeriodInfo(
-		//						longClickedDay, 
-		//						timetable.getStartHourOfPeriod(start),
-		//						timetable.getStartMinOfPeriod(start),
-		//						timetable.getEndHourOfPeriod(end),
-		//						timetable.getEndMinOfPeriod(end)
-		//						)
-		//						);
 		markSelectedCells(startDayIndex, endDayIndex, startPeriod, endPeriod);
 		addSelectPeriodModeButtons(startDayIndex, endDayIndex, startPeriod, endPeriod);
 		//3.스크롤뷰 intercept 터치이벤트 다시 활성화.
@@ -2287,14 +1923,6 @@ public class TimetableFragment extends Fragment {
 		//		int endDay = getDayIndexFromTouchedPosition(event.getX());
 		float f_endPeriod = getPeriodByFloatFromTouchedPosition(event.getY());
 		float rounded_endPeriod = Math.round(f_endPeriod * 2f) / 2f;
-		//		if(startDay < 0){
-		//			selectPeriodMode = false;
-		//			touchedDownPositionX = -1;
-		//			touchedDownPositionY = -1;
-		//
-		//			tableScroll.requestDisallowInterceptTouchEvent(false);
-		//			return false;
-		//		}
 		//startDay와 endDay의 정렬!
 		MyLog.d("LessonEditLength", "before/ start p : " + f_startPeriod 
 				+ ", end p : " + f_endPeriod);
@@ -2312,11 +1940,11 @@ public class TimetableFragment extends Fragment {
 				continue;
 			}
 			if(Lesson.checkLessonCollideWith(
-					tmpLesson.getParentTimetable(), 
-					tmpLesson.getDay(), 
+					tmpLesson.getParentTimetable(),
+					tmpLesson.getDay(),
 					tmpLesson.getLessonStartPeriodByFloat(),
-					tmpLesson.getLessonEndPeriodByFloat(), 
-					timetable, lessonToEditLength.getDay(), f_startPeriod, f_endPeriod) == true){
+					tmpLesson.getLessonEndPeriodByFloat(),
+					timetable, lessonToEditLength.getDay(), f_startPeriod, f_endPeriod)){
 //				endPeriod = (int) tmpLesson.getLessonStartPeriodByFloat();
 				MyLog.d("LessonEditLength", "Lesson Collides, start : " + 
 						f_startPeriod + ", endPeriod : " + f_endPeriod);
@@ -2359,8 +1987,8 @@ public class TimetableFragment extends Fragment {
 
 	private boolean handleEditLessonLengthModeOnTouchUp(MotionEvent event){
 //		TimetableDataManager.writeDatasToExternalStorage();
-//		YTAppWidgetProvider_2x4.onTimetableDataChanged(getSupportActivity());
-//		YTAppWidgetProvider_4x4.onTimetableDataChanged(getSupportActivity());
+//		YTAppWidgetProvider_2x4.onTimetableDataChanged(getActivity());
+//		YTAppWidgetProvider_4x4.onTimetableDataChanged(getActivity());
 		return true;
 	}
 
@@ -2467,11 +2095,11 @@ public class TimetableFragment extends Fragment {
 			Lesson l = timetable.getLessonList().get(i);
 			if(l == longClickedLesson)
 				continue;
-			if(Lesson.checkLessonCollideWith(longClickedLesson, l) == true){
+			if(Lesson.checkLessonCollideWith(longClickedLesson, l)){
 				longClickedLesson.setPeriodInfo(tmpPInfo);
 				String warn = res.getString(R.string.fragment_timetable_warning_lessonAlreadyExists);
 				Toast.makeText(
-						getSupportActivity(), 
+						getActivity(), 
 						warn, 
 						Toast.LENGTH_LONG
 						).show();
@@ -2492,14 +2120,14 @@ public class TimetableFragment extends Fragment {
 		//current time marker위로 뷰를 놓으면 가려져버림. 
 		currentTimeMarker.bringToFront();
 
-		TimetableActivity ta = (TimetableActivity) getSupportActivity();
+		TimetableActivity ta = (TimetableActivity) getActivity();
 		ta.getViewPager().requestDisallowInterceptTouchEvent(false);
 //		TimetableDataManager.writeDatasToExternalStorage();
-		YTAlarmManager.cancelLessonAlarm(getSupportActivity(), longClickedLesson);
+		YTAlarmManager.cancelLessonAlarm(getActivity(), longClickedLesson);
 		if(timetable.getLessonAlarmTime() != Timetable.LESSON_ALARM_NONE){
-			YTAlarmManager.cancelLessonAlarm(getSupportActivity(), longClickedLesson);
+			YTAlarmManager.cancelLessonAlarm(getActivity(), longClickedLesson);
 			YTAlarmManager.startLessonAlarm(
-					getSupportActivity(), longClickedLesson, timetable.getLessonAlarmTime());
+					getActivity(), longClickedLesson, timetable.getLessonAlarmTime());
 		}
 		longClickedLesson = null;
 		return true;
@@ -2525,7 +2153,7 @@ public class TimetableFragment extends Fragment {
 
 		for(int i = 0; i < timetable.getLessonList().size() ; i++){
 			Lesson l = timetable.getLessonList().get(i);
-			if(Lesson.checkLessonCollideWith(tmp, l) == true){
+			if(Lesson.checkLessonCollideWith(tmp, l)){
 				//만약 클릭한부분 수업이 충돌하면
 				return;
 			}
@@ -2545,12 +2173,12 @@ public class TimetableFragment extends Fragment {
 	}
 	
 	private void startSettingActivity(boolean showTimeSettingDialog, boolean showDaySettingDialog){
-//		Intent intent = new Intent(getSupportActivity(), TimetableSettingFragment.class);
-        Intent intent = new Intent(getSupportActivity(), TimetableSettingInfoActivity.class);
+//		Intent intent = new Intent(getActivity(), TimetableSettingFragment.class);
+        Intent intent = new Intent(getActivity(), TimetableSettingInfoActivity.class);
 		intent.putExtra("ShowTimeSettingDialog", showTimeSettingDialog);
         intent.putExtra("ShowDaySettingDialog", showDaySettingDialog);
 		intent.putExtra("TimetablePageIndex", getMyIndexInViewPager());
-		getSupportActivity().startActivityForResult(intent, RequestCodes.CALL_ACTIVITY_EDIT_TIMETABLE_SETTING);
+		getActivity().startActivityForResult(intent, RequestCodes.CALL_ACTIVITY_EDIT_TIMETABLE_SETTING);
 	}
 
 
@@ -2570,31 +2198,9 @@ public class TimetableFragment extends Fragment {
 		MyLog.d("getDayFromTouchedPosition", "day index : " + index);
 
 		return index;		//timeline offset때문에 인덱스+1
-
-		//		if(timetable.getStartDay() == GregorianCalendar.MONDAY){
-		//			int day = (int) (x / cellWidth) - 1;
-		//			MyLog.d("leftIndex", "start mon, day : " + day);
-		//			return day;
-		//		}
-		//		else{
-		//			int rawDay = (int) (x / cellWidth) - 1;
-		//			MyLog.d("leftIndex", "start not mon, rawDay : " + rawDay);
-		//			if(rawDay == -1){
-		//
-		//				return rawDay;
-		//			}
-		//			int day = ( ( rawDay ) + timetable.getStartDay());
-		//			if(day >= 7){
-		//				day -= 7;
-		//			}
-		//			MyLog.d("leftIndex", "start not mon, day : " + day);
-		//			return day;
-		//		}
 	}
 
 	private float getPeriodFromTouchedPosition(float y){
-		MyLog.d("getPeriodFromTouchedPosition", "y : " + y + 
-				", cellHeight : " + cellHeight + ", rowHeight : " + rowHeight);
 		float res = ( (int)(y / rowHeight)) >= timetable.getPeriodNum() ?
 				timetable.getPeriodNum() - 1 : ( (int) ( y / rowHeight ));
 		if(res < 0){
@@ -2618,9 +2224,7 @@ public class TimetableFragment extends Fragment {
 			float startPeriod, float endPeriod) {
 
 		for(int i = startDay ; i <= endDay ; i++){
-			if(checkSelectedRangeAvaliableVertical(
-					i, startPeriod, endPeriod) 
-					== false){
+			if (!checkSelectedRangeAvaliableVertical(i, startPeriod, endPeriod)) {
 				return false;
 			}
 		}
@@ -2639,12 +2243,7 @@ public class TimetableFragment extends Fragment {
 			if(day != pDayIdx)
 				continue;
 
-			MyLog.d("checkSelectedRangeAvaliable", 
-					"tmp.getLessonStartPeriodByFloat() : " + tmp.getLessonStartPeriodByFloat()
-					+ ", startPeriod : " + startPeriod + 
-					", tmp.getLessonEndPeriodByFloat()" + tmp.getLessonEndPeriodByFloat() 
-					+ ", endPeriod : " + endPeriod);
-			if( ( tmp.getLessonStartPeriodByFloat() >= startPeriod 
+			if( ( tmp.getLessonStartPeriodByFloat() >= startPeriod
 					&& tmp.getLessonStartPeriodByFloat() < endPeriod ) ||
 					( tmp.getLessonEndPeriodByFloat() > startPeriod
 							&& tmp.getLessonEndPeriodByFloat() <= endPeriod) ||
@@ -2661,29 +2260,7 @@ public class TimetableFragment extends Fragment {
 		}
 		return true;
 	}
-	/*private boolean checkSelectedRangeAvaliableHorizontal(int period, int startDay, int endDay){
-		MyLog.d("checkSelectedRangeHorizontal", 
-				"Period : " + period + ", startDay : " + startDay + ", endDay : " + endDay);
-		for(int i = 0; i < timetable.getLessonList().size() ; i++){
-			Lesson tmp = timetable.getLessonList().get(i);
 
-			PeriodInfo p = tmp.getLessonInfo();
-			int pDayIdx = timetable.getDayIndexFromGregorianCalendarDay(p.getDay());
-
-			for(int j = startDay ; j <= endDay ; j++){
-				if(j != pDayIdx)
-					continue;
-				if( ( tmp.getLessonStartPeriodByFloat() - period) * ( tmp.getLessonStartPeriodByFloat() - period) <= 0
-						|| ( tmp.getLessonEndPeriodByFloat() - period ) * ( tmp.getLessonEndPeriodByFloat() - period) <= 0 )
-				{
-					//겹침.
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-	 */
 	/**
 	 * 
 	 * @param startDayIndex
@@ -2732,62 +2309,19 @@ public class TimetableFragment extends Fragment {
 			endP = timetable.getPeriodNum();
 		}
 
-		MyLog.d("markSelectedCells", "startD : " + startD + ", endD : " + endD + ", startP : " + startP + ", endP : " + endP);
-
-		//3.롱클릭된 셀부터 드래그 종료된 셀까지의 사각형을 그려 overlapLayout에다 임시로 겹쳐줌. 
+		//3.롱클릭된 셀부터 드래그 종료된 셀까지의 사각형을 그려 overlapLayout에다 임시로 겹쳐줌.
 		//ACTION_UP이 호출되면 이 임시 레이아웃을 overlapLayout에서 삭제해줘야함.
-
-		//		View lt_cell = grid.findViewWithTag(new CellTag(startDay, startPeriod));
-		//		View rb_cell = grid.findViewWithTag(new CellTag(endDay, endPeriod - 1));		//1을 빼주는 이유는 celltag가 start period를 기준으로 설정되어서.
-		//		View lt_cell_parent_row = (View) lt_cell.getParent();
-		//		View rb_cell_parent_row = (View) rb_cell.getParent();
-		//		float cellMargin = res.getDimension(R.dimen.fragment_timetable_cell_margin);
-		//
-		//		int markWidth = rb_cell.getRight()- lt_cell.getLeft();
-		//		int markHeight = (int) (( rb_cell_parent_row.getBottom() - cellMargin ) - ( lt_cell_parent_row.getTop() + cellMargin ));  
-
-		//		Drawable selectedBD = 
-		//				res.getDrawable(ytTheme.getSelectedRangeBackground());
-		//		selectedBD.setAlpha(ytTheme.getMarkRangeAlpha());
-		//		markSelectedRangeLayout.setBackgroundDrawable(selectedBD);
 
 		//needed????
 		ytTheme.getSelectedRangeBackground().setViewTheme(
-				getSupportActivity(), markSelectedRangeLayout);
+				getActivity(), markSelectedRangeLayout);
 		int[] wh = getGridOverlapViewWH(startDayIndex, endDayIndex, startPeriod, endPeriod);
 		MyLog.d("markSelectedCells", "width : " + wh[0] + ", height : " + wh[1]);
 		FrameLayout.LayoutParams params = 
 				(FrameLayout.LayoutParams) markSelectedRangeLayout.getLayoutParams();
 		params.gravity = Gravity.LEFT | Gravity.TOP;
-		//params.width = (int) cellWidth * (endD - startD + 1);
-		//params.height = (int) (cellHeight * (endP - startP));
 		params.width = wh[0];
 		params.height = wh[1];
-
-
-
-		Log.e("params.height", params.height + ", end : " + endP + ", start : " + startP);
-
-		//		int leftIndex;
-		//		if(timetable.getStartDay() == GregorianCalendar.MONDAY)
-		//			leftIndex = day;
-		//		else{
-		//			leftIndex = day + (7 - timetable.getStartDay());
-		//			if(leftIndex >= 7){
-		//				leftIndex -= 7;
-		//			}
-		//		}
-
-		//만약 타임라인부분이 터치됬으면 return -1
-		float timelineOffset =  res.getDimension(R.dimen.fragment_timetable_timeline_width) + 
-				res.getDimension(R.dimen.fragment_timetable_body_padding);				
-		//float cellWidthIncludeMargin = cellWidth + res.getDimension(R.dimen.fragment_timetable_cell_margin) * 2;				
-
-		//		int cellLeft = lt_cell.getLeft();
-		//		//int cellTop = lt_cell.getTop();
-		//
-		//		int left = Math.round(timelineOffset + cellLeft);
-		//		int top = Math.round(lt_cell_parent_row.getTop());
 		int[] tl = this.getGridOverlapViewTLMargin(startD, startP);
 
 		//MyLog.d("MarkView Left", "cellLeft : " + cellLeft);
@@ -2828,19 +2362,11 @@ public class TimetableFragment extends Fragment {
 		//4.이제 좌우에 버튼 추가.
 		//4-1. markButtonOK
 		//		markButtonOK.setText("E");
-		//btnOK.setWidth(markSelectedRangeLayout.getWidth() / 3);
-		//btnOK.setHeight(markSelectedRangeLayout.getWidth() / 3);
-		FrameLayout.LayoutParams btnOKParams = 
+		FrameLayout.LayoutParams btnOKParams =
 				(FrameLayout.LayoutParams) markButtonOK.getLayoutParams();
 		btnOKParams.gravity = Gravity.LEFT | Gravity.TOP;
 		btnOKParams.width = btnWidth;
 		btnOKParams.height = btnHeight;
-		//버튼 절반 겹치도록
-		//		btnOKParams.leftMargin = (int) (
-		//				((FrameLayout.LayoutParams)
-		//						markSelectedRangeLayout.getLayoutParams()).leftMargin - ( ( cellWidth / 2)  / 2 )) ;
-		//		btnOKParams.topMargin = (int) (((FrameLayout.LayoutParams)
-		//				markSelectedRangeLayout.getLayoutParams()).topMargin - ( ( cellWidth / 2)  / 2 )) ;
 		//버튼이 완전히 왼쪽에 오도록
 		btnOKParams.leftMargin = ((FrameLayout.LayoutParams)
 				markSelectedRangeLayout.getLayoutParams()).leftMargin - btnWidth ;
@@ -2851,12 +2377,6 @@ public class TimetableFragment extends Fragment {
 			btnOKParams.topMargin = (((FrameLayout.LayoutParams)
 					markSelectedRangeLayout.getLayoutParams()).topMargin) ;
 		}
-		//		if(lessonLongClickedDay == timetable.getEndDay()){
-		//			btnOKParams.leftMargin = (int) (
-		//					((FrameLayout.LayoutParams)
-		//							markSelectedRangeLayout.getLayoutParams()).leftMargin) ;
-		//		}
-
 		markButtonOK.setLayoutParams(btnOKParams);
 
 		//4-3.paste
@@ -2872,12 +2392,6 @@ public class TimetableFragment extends Fragment {
 			btnCancelParams.gravity = Gravity.LEFT | Gravity.TOP;
 			btnCancelParams.width = btnWidth;
 			btnCancelParams.height = btnHeight;
-			//		btnCancelParams.leftMargin = (int) (
-			//				((FrameLayout.LayoutParams)
-			//						markSelectedRangeLayout.getLayoutParams()).leftMargin + cellWidth - ( ( cellWidth / 2)  / 2 )) ;
-			//		btnCancelParams.topMargin = (int) (
-			//				((FrameLayout.LayoutParams)
-			//						markSelectedRangeLayout.getLayoutParams()).topMargin - ( ( cellWidth / 2)  / 2 )) ;
 			btnCancelParams.leftMargin = (int) (
 					((FrameLayout.LayoutParams)
 							markSelectedRangeLayout.getLayoutParams()).leftMargin + 
@@ -2898,8 +2412,6 @@ public class TimetableFragment extends Fragment {
 			}
 			markButtonCancel.setLayoutParams(btnCancelParams);
 
-
-
 			//2.add paste button
 			pasteLessonToMark.setVisibility(View.VISIBLE);
 			pasteLessonToMark.bringToFront();
@@ -2910,18 +2422,11 @@ public class TimetableFragment extends Fragment {
 							)
 					);
 
-			//			pasteLessonToMark.setText("P");
-			FrameLayout.LayoutParams btnPasteParams = 
+			FrameLayout.LayoutParams btnPasteParams =
 					(FrameLayout.LayoutParams) pasteLessonToMark.getLayoutParams();
 			btnPasteParams.gravity = Gravity.LEFT | Gravity.TOP;
 			btnPasteParams.width = btnWidth;
 			btnPasteParams.height = btnHeight;
-			//		btnCancelParams.leftMargin = (int) (
-			//				((FrameLayout.LayoutParams)
-			//						v.getLayoutParams()).leftMargin + cellWidth - ( ( cellWidth / 2)  / 2 )) ;
-			//		btnCancelParams.topMargin = (int) (
-			//				((FrameLayout.LayoutParams)
-			//						v.getLayoutParams()).topMargin - ( ( cellWidth / 2)  / 2 )) ;
 			btnPasteParams.leftMargin = ((FrameLayout.LayoutParams)
 					markSelectedRangeLayout.getLayoutParams()).leftMargin - ( btnWidth  ) ;
 			btnPasteParams.topMargin = ((FrameLayout.LayoutParams)
@@ -2932,11 +2437,6 @@ public class TimetableFragment extends Fragment {
 						markSelectedRangeLayout.getLayoutParams()).topMargin +
 						markSelectedRangeLayout.getLayoutParams().height - (btnHeight) ;
 			}
-			//		if(tmpLesson.getLessonInfo().getDay() == timetable.getEndDay()){
-			//			btnCopyParams.leftMargin = (int) (
-			//					((FrameLayout.LayoutParams)
-			//							v.getLayoutParams()).leftMargin + cellWidth - btnCopyParams.width) ;
-			//		}
 			pasteLessonToMark.setLayoutParams(btnPasteParams);
 		}
 
@@ -2946,15 +2446,6 @@ public class TimetableFragment extends Fragment {
 		btnEditLengthParams.gravity = Gravity.LEFT | Gravity.TOP;
 		btnEditLengthParams.width = btnWidth;
 		btnEditLengthParams.height = btnHeight;
-		//			btnEditLengthParams.leftMargin = (int) (
-		//					((FrameLayout.LayoutParams)
-		//							attatchedView.getLayoutParams()).leftMargin + cellWidth - ( ( cellWidth / 2)  / 2 )) ;
-		//			btnEditLengthParams.topMargin = (int) (
-		//					((FrameLayout.LayoutParams)
-		//							attatchedView.getLayoutParams()).topMargin - ( ( cellWidth / 2)  / 2 )) ;
-		//		btnEditLengthParams.leftMargin = (int) (
-		//				((FrameLayout.LayoutParams)
-		//						markSelectedRangeLayout.getLayoutParams()).leftMargin + cellWidth  ) ;
 		btnEditLengthParams.leftMargin = (int) (
 				((FrameLayout.LayoutParams)
 						markSelectedRangeLayout.getLayoutParams()).leftMargin + 
@@ -2967,13 +2458,6 @@ public class TimetableFragment extends Fragment {
 					markSelectedRangeLayout.getLayoutParams()).topMargin 
 					+ markSelectedRangeLayout.getLayoutParams().height - btnHeight ;
 		}
-		//		if(startDay == timetable.getDayIndexFromGregorianCalendarDay(timetable.getEndDay()) ||
-		//				endDay == timetable.getDayIndexFromGregorianCalendarDay(timetable.getEndDay())){
-		//			btnEditLengthParams.leftMargin = (int) (
-		//					((FrameLayout.LayoutParams)
-		//							markSelectedRangeLayout.getLayoutParams()).leftMargin 
-		//							+ cellWidth - btnEditLengthParams.width) ;
-		//		}
 		if(startDayIndex == timetable.getDayIndexFromGregorianCalendarDay(timetable.getEndDay()) ||
 				endDayIndex == timetable.getDayIndexFromGregorianCalendarDay(timetable.getEndDay())){
 			btnEditLengthParams.leftMargin = (int) (
@@ -2990,7 +2474,7 @@ public class TimetableFragment extends Fragment {
 
 	private void dismissOverlapMarker(boolean dismissSelectedRangeLayout){
 		isLessonEditButtonsShowing = false;
-		if(dismissSelectedRangeLayout == true)
+		if(dismissSelectedRangeLayout)
 			markSelectedRangeLayout.setVisibility(View.GONE);
 		markButtonOK.setVisibility(View.GONE);
 		markButtonCancel.setVisibility(View.GONE);
@@ -3003,18 +2487,6 @@ public class TimetableFragment extends Fragment {
 		lessonEditLength.setVisibility(View.GONE);
 	}
 
-//	private View.OnClickListener onTimelineClickedListener = new View.OnClickListener() {
-//		
-//		@Override
-//		public void onClick(View v) {
-//			// TODO Auto-generated method stub
-//			Intent intent = new Intent(getSupportActivity(), TimetableSettingPagerActivity.class);
-//			intent.putExtra("ShowTimeSettingDialog", true);
-//			intent.putExtra("TimetablePageIndex", getMyIndexInViewPager());
-//			startActivityForResult(intent, RequestCodes.CALL_ACTIVITY_EDIT_TIMETABLE_SETTING);
-//		}
-//	};
-	
 	private class MarkOKOnClickListener implements View.OnClickListener{
 		private int startDayIndex;
 		private int endDayIndex;
@@ -3027,15 +2499,13 @@ public class TimetableFragment extends Fragment {
 			this.endDayIndex = endDayIndex;
 			this.startPeriod = startPeriod2;
 			this.endPeriod = endPeriod2;
-			MyLog.d("MarkOKOnClick", "startPeriod : " + startPeriod + " ,endPeriod : " + endPeriod);
 		}
 
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
 			//			LessonEditDialogFragment dialog = new LessonEditDialogFragment();
 			String s = getString(R.string.fragment_timetable_oneditlesson_toast);
-			Toast.makeText(getSupportActivity(), s, Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(), s, Toast.LENGTH_LONG).show();
 
 			LessonEditDialogBuilder builder = new LessonEditDialogBuilder(
 					TimetableFragment.this.getActivity(), TimetableFragment.this);
@@ -3051,24 +2521,13 @@ public class TimetableFragment extends Fragment {
 			b.putFloat("EndPeriod", endPeriod);
             b.putInt("TimetablePageIndex", myPageIndex);
 			builder.createDialog(null, b, "Add").show();
-
-			//			dialog.setArguments(b);
-
-
-			//			dialog.setTargetFragment(
-			//					TimetableFragment.this, 
-			//					TimetableFragment.FRAG_TIMETABLE_DIALOG_ADD_LESSON
-			//					);
-
 		}
-
 	}
 
 	View.OnClickListener markCancelOnClick = new View.OnClickListener() {
 
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
 			dismissOverlapMarker(true);
 		}
 	};
@@ -3085,23 +2544,18 @@ public class TimetableFragment extends Fragment {
 			this.startDay = startDay;
 			this.endDay = endDay;
 			this.startPeriod = startPeriod2;
-			//			this.endPeriod = endPeriod2;	//don't use endperiod
 		}
 
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
 			for(int i = startDay ; i <= endDay ; i++){
 				//				Lesson pastedLesson = pasteLesson(i, startPeriod, endPeriod);
 				Lesson pastedLesson = pasteLesson(i, startPeriod);
 				if(timetable.getLessonAlarmTime() != Timetable.LESSON_ALARM_NONE){
 					YTAlarmManager.startLessonAlarm(
-							getSupportActivity(), pastedLesson, timetable.getLessonAlarmTime());
+							getActivity(), pastedLesson, timetable.getLessonAlarmTime());
 				}
 			}
-			//			MyLog.d("FileThreadSafeTest", "Lessons pasted, size : " + timetable.getLessonList().size());
-//			TimetableDataManager.writeDatasToExternalStorage();
-			MyLog.d("FileThreadSafeTest", "Lessons pasted, size : " + timetable.getLessonList().size());
 			lessonCopied = null;
 		}
 
@@ -3123,8 +2577,7 @@ public class TimetableFragment extends Fragment {
 					);
 			for(int i = 0; i < timetable.getLessonList().size() ; i++){
 				Lesson tmp = timetable.getLessonList().get(i);
-				if(Lesson.checkLessonCollideWith(tmp, lessonToPaste)
-						== true){
+				if(Lesson.checkLessonCollideWith(tmp, lessonToPaste)){
 					_endPeriod = tmp.getLessonStartPeriodByFloat();
 					lessonToPaste.setPeriodInfo(
 							new PeriodInfo(
@@ -3139,7 +2592,7 @@ public class TimetableFragment extends Fragment {
 				}
 			}
 
-			if(timetable.addLesson(lessonToPaste) == false){
+			if(!timetable.addLesson(lessonToPaste)){
 				MyLog.d("pasteLesson", "lesson to paste NULL!");
 				return null;
 			}
@@ -3161,44 +2614,22 @@ public class TimetableFragment extends Fragment {
 		}
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
 			Lesson lesson = (Lesson) lessonView.getTag();
 			
 			String s = getString(R.string.fragment_timetable_oneditlesson_toast);
-			Toast.makeText(getSupportActivity(), s, Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(), s, Toast.LENGTH_LONG).show();
 			//lessonViewToEdit = v;
 			//lessonToAddAndEdit = lesson;
 
-			//			LessonEditDialogFragment dialog = new LessonEditDialogFragment();
 			LessonEditDialogBuilder builder =
 					new LessonEditDialogBuilder(
 							TimetableFragment.this.getActivity(), TimetableFragment.this);
             Bundle bundle = new Bundle();
             bundle.putInt("TimetablePageIndex", myPageIndex);
 			builder.createDialog(lesson, bundle, "Edit").show();
-
-			//			dialog.show(getFragmentManager(), "Edit");
-			//			Bundle b = new Bundle();
-			//b.putParcelable("LessonView", v);
-			//b.putParcelable("Lesson", lesson);
-
-			//			int lessonIndex = -1;
-			//			for(int i = 0; i < timetable.getLessonList().size() ; i++){
-			//				Lesson tmp = timetable.getLessonList().get(i);
-			//				if(tmp.equals(lesson)){
-			//					lessonIndex = i;
-			//					break;
-			//				}
-			//			}
-			//			b.putInt("LessonIndex", lessonIndex);
-			//			dialog.setArguments(b);
-
-			//			dialog.setTargetFragment(TimetableFragment.this, 
-			//					TimetableFragment.FRAG_TIMETABLE_DIALOG_EDIT_LESSON);
-
 		}
-
 	}
+
 	private class LessonRemoveOnClick implements View.OnClickListener{
 		View lessonView;
 		public LessonRemoveOnClick(View lessonView){
@@ -3213,7 +2644,7 @@ public class TimetableFragment extends Fragment {
 			gridOverlapLayout.removeView(lessonView);
 //			TimetableDataManager.writeDatasToExternalStorage();
 
-			YTAlarmManager.cancelLessonAlarm(getSupportActivity(), tmpLesson);
+			YTAlarmManager.cancelLessonAlarm(getActivity(), tmpLesson);
 
 			dismissOverlapMarker(true);
 		}
@@ -3224,9 +2655,7 @@ public class TimetableFragment extends Fragment {
 
 		@Override
 		public void onClick(View v) {
-			MyLog.d("TouchSystemCheck", "touched : " + "lessonOnClick");
-			// TODO Auto-generated method stub
-			if(isEditLessonLengthMode == true || isSelectPeriodMode == true){
+			if(isEditLessonLengthMode || isSelectPeriodMode){
 				return;
 			}
 			dismissOverlapMarker(true);
@@ -3264,18 +2693,11 @@ public class TimetableFragment extends Fragment {
 		//4.이제 좌우에 버튼 추가.
 		//4-1. lessonEditOK
 		//		lessonEditOK.setText("E");
-		//btnOK.setWidth(markSelectedRangeLayout.getWidth() / 3);
-		//btnOK.setHeight(markSelectedRangeLayout.getWidth() / 3);
-		FrameLayout.LayoutParams btnOKParams = 
+		FrameLayout.LayoutParams btnOKParams =
 				(FrameLayout.LayoutParams) lessonEditOK.getLayoutParams();
 		btnOKParams.gravity = Gravity.LEFT | Gravity.TOP;
 		btnOKParams.width = btnWidth;
 		btnOKParams.height = btnHeight;
-		//			btnOKParams.leftMargin = (int) (
-		//					((FrameLayout.LayoutParams)
-		//							v.getLayoutParams()).leftMargin - ( ( cellWidth / 2)  / 2 )) ;
-		//			btnOKParams.topMargin = (int) (((FrameLayout.LayoutParams)
-		//					v.getLayoutParams()).topMargin - ( ( cellWidth / 2)  / 2 )) ;
 		btnOKParams.leftMargin = ((FrameLayout.LayoutParams)
 				attatchedView.getLayoutParams()).leftMargin - btnWidth ;
 		btnOKParams.topMargin = ((FrameLayout.LayoutParams)
@@ -3286,11 +2708,6 @@ public class TimetableFragment extends Fragment {
 			btnOKParams.topMargin = (((FrameLayout.LayoutParams)
 					attatchedView.getLayoutParams()).topMargin) ;
 		}
-		//			if(attatchedLesson.getLessonInfo().getDay() == timetable.getEndDay()){
-		//				btnOKParams.leftMargin = (int) (
-		//						((FrameLayout.LayoutParams)
-		//								v.getLayoutParams()).leftMargin) ;
-		//			}
 
 		lessonEditOK.setLayoutParams(btnOKParams);
 
@@ -3301,12 +2718,6 @@ public class TimetableFragment extends Fragment {
 		btnCancelParams.gravity = Gravity.LEFT | Gravity.TOP;
 		btnCancelParams.width = btnWidth;
 		btnCancelParams.height = btnHeight;
-		//			btnCancelParams.leftMargin = (int) (
-		//					((FrameLayout.LayoutParams)
-		//							v.getLayoutParams()).leftMargin + cellWidth - ( ( cellWidth / 2)  / 2 )) ;
-		//			btnCancelParams.topMargin = (int) (
-		//					((FrameLayout.LayoutParams)
-		//							v.getLayoutParams()).topMargin - ( ( cellWidth / 2)  / 2 )) ;
 		btnCancelParams.leftMargin = (int) (
 				((FrameLayout.LayoutParams)
 						attatchedView.getLayoutParams()).leftMargin + cellWidth  ) ;
@@ -3329,16 +2740,8 @@ public class TimetableFragment extends Fragment {
 		FrameLayout.LayoutParams btnCopyParams = 
 				(FrameLayout.LayoutParams) lessonCopy.getLayoutParams();
 		btnCopyParams.gravity = Gravity.LEFT | Gravity.TOP;
-		//btnCopyParams.width = (int) cellWidth / 2 ;
-		//btnCopyParams.height = (int) cellWidth / 2;
 		btnCopyParams.width = btnWidth;
 		btnCopyParams.height = btnHeight;
-		//			btnCancelParams.leftMargin = (int) (
-		//					((FrameLayout.LayoutParams)
-		//							attatchedView.getLayoutParams()).leftMargin + cellWidth - ( ( cellWidth / 2)  / 2 )) ;
-		//			btnCancelParams.topMargin = (int) (
-		//					((FrameLayout.LayoutParams)
-		//							attatchedView.getLayoutParams()).topMargin - ( ( cellWidth / 2)  / 2 )) ;
 		btnCopyParams.leftMargin = ((FrameLayout.LayoutParams)
 				attatchedView.getLayoutParams()).leftMargin - ( btnWidth  ) ;
 		btnCopyParams.topMargin = ((FrameLayout.LayoutParams)
@@ -3347,11 +2750,6 @@ public class TimetableFragment extends Fragment {
 			btnCopyParams.topMargin = ((FrameLayout.LayoutParams)
 					attatchedView.getLayoutParams()).topMargin + attatchedView.getLayoutParams().height - btnHeight ;
 		}
-		//			if(attatchedLesson.getLessonInfo().getDay() == timetable.getEndDay()){
-		//				btnCopyParams.leftMargin = (int) (
-		//						((FrameLayout.LayoutParams)
-		//								attatchedView.getLayoutParams()).leftMargin + cellWidth - btnCopyParams.width) ;
-		//			}
 		lessonCopy.setLayoutParams(btnCopyParams);
 		lessonCopy.setGravity(Gravity.CENTER);
 
@@ -3363,12 +2761,6 @@ public class TimetableFragment extends Fragment {
 		btnEditLengthParams.gravity = Gravity.LEFT | Gravity.TOP;
 		btnEditLengthParams.width = btnWidth;
 		btnEditLengthParams.height = btnHeight;
-		//			btnEditLengthParams.leftMargin = (int) (
-		//					((FrameLayout.LayoutParams)
-		//							attatchedView.getLayoutParams()).leftMargin + cellWidth - ( ( cellWidth / 2)  / 2 )) ;
-		//			btnEditLengthParams.topMargin = (int) (
-		//					((FrameLayout.LayoutParams)
-		//							attatchedView.getLayoutParams()).topMargin - ( ( cellWidth / 2)  / 2 )) ;
 		btnEditLengthParams.leftMargin = (int) (
 				((FrameLayout.LayoutParams)
 						attatchedView.getLayoutParams()).leftMargin + cellWidth  ) ;
@@ -3401,16 +2793,6 @@ public class TimetableFragment extends Fragment {
 
 	private int[] getGridOverlapViewWH(int startDay, int endDay, float startPeriod, float endPeriod){
 		int[] wh = new int[2];
-		//
-		//		View lt_cell = grid.findViewWithTag(new CellTag(startDay, startPeriod));
-		//		View rb_cell = grid.findViewWithTag(new CellTag(endDay, endPeriod - 1));		//1을 빼주는 이유는 celltag가 start period를 기준으로 설정되어서.
-		//		View lt_cell_parent_row = (View) lt_cell.getParent();
-		//		View rb_cell_parent_row = (View) rb_cell.getParent();
-		//		float cellMargin = res.getDimension(R.dimen.fragment_timetable_cell_margin);
-		//
-		//		int markWidth = rb_cell.getRight()- lt_cell.getLeft();
-		//		int markHeight = (int) (( rb_cell_parent_row.getBottom() - cellMargin ) 
-		//		- ( lt_cell_parent_row.getTop() + cellMargin ));
 		int intStartPeriod = (int)startPeriod;
 		int intEndPeriod = (int)endPeriod;
 		
@@ -3449,12 +2831,6 @@ public class TimetableFragment extends Fragment {
 		if(intEndPeriod == 0){
 			wh[1] = (int) (endOffsetToPlus - startOffsetToMinus - cellMargin);
 		}
-		MyLog.d("getLessonViewWHFromLesson", "rb_cell_right : " + rb_cell_right 
-				+ "lt_cell_left : " + lt_cell_left
-				+ "rb_cell_parent_bottom : " + rb_cell_parent_bottom 
-				+ "lt_cell_parent_top : " + lt_cell_parent_top
-				+ "wh[0] : " + wh[0]
-						+ "wh[1] : " + wh[1]);
 		return wh;
 	}
 
@@ -3522,10 +2898,9 @@ public class TimetableFragment extends Fragment {
 		}
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
 			lessonCopied = (Lesson) lessonView.getTag();
 			String nt = res.getString(R.string.fragment_timetable_notice_lessoncopied);
-			Toast.makeText(getSupportActivity(), nt, Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), nt, Toast.LENGTH_SHORT).show();
 
 			dismissOverlapMarker(true);
 		}
@@ -3542,13 +2917,8 @@ public class TimetableFragment extends Fragment {
 		}
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
-			// TODO Auto-generated method stub
-			MyLog.d("TouchSystemCheck", "touched : " + "LessonEditLengthTouchListener");
 			switch(event.getAction()){
 			case MotionEvent.ACTION_DOWN : 
-				//				touchedDownX = event.getX();
-				//				touchedDownY = event.getY();
-				//				lessonViewDefaultHeight = lessonView.getHeight();
 				tableScroll.requestDisallowInterceptTouchEvent(true);
 
 				isEditLessonLengthMode = true;
@@ -3562,8 +2932,6 @@ public class TimetableFragment extends Fragment {
 			case MotionEvent.ACTION_MOVE : 
 			case MotionEvent.ACTION_UP : 
 			case MotionEvent.ACTION_CANCEL : 
-				//				isEditLessonLengthMode = false;
-				//				MyLog.d("LessonEditLength", "isLessonEditLengthMode = false");
 			}
 			return false;
 		}
@@ -3578,13 +2946,8 @@ public class TimetableFragment extends Fragment {
 		//		}
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
-			// TODO Auto-generated method stub
-			MyLog.d("TouchSystemCheck", "touched : " + "MarkButtonEditLengthTouchListener, event : " + event.getAction());
 			switch(event.getAction()){
 			case MotionEvent.ACTION_DOWN : 
-				//				touchedDownX = event.getX();
-				//				touchedDownY = event.getY();
-				//				lessonViewDefaultHeight = lessonView.getHeight();
 				if(markSelectedRangeLayout.getVisibility() == View.INVISIBLE ||
 				markSelectedRangeLayout.getVisibility() == View.GONE){
 					dismissOverlapMarker(true);
@@ -3621,22 +2984,6 @@ public class TimetableFragment extends Fragment {
 		if(requestCode == TimetableFragment.FRAG_TIMETABLE_DIALOG_EDIT_LESSON ||
 				requestCode == TimetableFragment.FRAG_TIMETABLE_DIALOG_ADD_LESSON){
 			if(resultCode == android.app.Activity.RESULT_OK){
-				//				int index = data.getIntExtra("LessonIndex", -1);
-				//				Lesson editedLesson = timetable.getLessonList().get(index);
-				//				View lessonViewToEdit = gridOverlapLayout.findViewWithTag(editedLesson);
-				//
-				//				if(lessonViewToEdit != null)
-				//					gridOverlapLayout.removeView(lessonViewToEdit);
-				//
-				//				//Lesson lesson = (Lesson) data.getParcelableExtra("LessonOut");
-				//				//Lesson lesson = data.getExtras().getParcelable("LessonOut");
-				//				View lessonView = createLessonViewFromLesson(editedLesson);			
-				//
-				//				gridOverlapLayout.addView(lessonView);
-				//
-				//				for(int i = 0; i < timetable.getLessonList().size() ; i++)
-				//					Log.e("onActivityResult", timetable.getLessonList().get(i).toString());
-
 				for(int i = 0; i < timetable.getLessonList().size() ; i++){
 					Lesson l = timetable.getLessonList().get(i);
 					View lessonView = gridOverlapLayout.findViewWithTag(l);
@@ -3653,12 +3000,12 @@ public class TimetableFragment extends Fragment {
 				currentTimeMarker.bringToFront();
 
 //				TimetableDataManager.writeDatasToExternalStorage();
-				YTAlarmManager.cancelTimetableAlarm(getSupportActivity(), timetable);
+				YTAlarmManager.cancelTimetableAlarm(getActivity(), timetable);
 				if(timetable.getLessonAlarmTime() != Timetable.LESSON_ALARM_NONE){
-					YTAlarmManager.startTimetableAlarm(getSupportActivity(), timetable);
+					YTAlarmManager.startTimetableAlarm(getActivity(), timetable);
 				}
-//				YTAppWidgetProvider_2x4.onTimetableDataChanged(getSupportActivity());
-//				YTAppWidgetProvider_4x4.onTimetableDataChanged(getSupportActivity());
+//				YTAppWidgetProvider_2x4.onTimetableDataChanged(getActivity());
+//				YTAppWidgetProvider_4x4.onTimetableDataChanged(getActivity());
 
 			}else if(resultCode == android.app.Activity.RESULT_CANCELED){
 				for(int i = 0; i < timetable.getLessonList().size() ; i++)
@@ -3668,14 +3015,14 @@ public class TimetableFragment extends Fragment {
 		}else if(requestCode == TimetableFragment.FRAG_TIMETABLE_DIALOG_DELETE_TIMETABLE){
 			if(resultCode == android.app.Activity.RESULT_OK){
 
-				TimetableActivity ta = (TimetableActivity) getSupportActivity();
+				TimetableActivity ta = (TimetableActivity) getActivity();
 				int position =  ta.getViewPager().getCurrentItem();
 				TimetableDataManager.deleteTimetableBackgroundPhotoIfExists(
-						getSupportActivity(), 
+						getActivity(), 
 						timetable);
 				ta.removePageAt(position);
 				TimetableDataManager.writeDatasToExternalStorage();
-				YTAlarmManager.cancelTimetableAlarm(getSupportActivity(), timetable);
+				YTAlarmManager.cancelTimetableAlarm(getActivity(), timetable);
 			}else if(resultCode == android.app.Activity.RESULT_CANCELED){
 
 			}
@@ -3685,7 +3032,7 @@ public class TimetableFragment extends Fragment {
 	}
 
 	public View createLessonViewFromLesson(Lesson lesson){
-		View lessonView= View.inflate(getSupportActivity(), R.layout.view_timetable_lessonview, null);
+		View lessonView= View.inflate(getActivity(), R.layout.view_timetable_lessonview, null);
 		//grid.setclip
 		TextView textSubject = (
 				(TextView)lessonView.findViewById(R.id.view_timetable_lessoninfo_subject)
@@ -3781,29 +3128,6 @@ public class TimetableFragment extends Fragment {
 		params.width = wh[0];
 		params.height = wh[1];
 
-
-
-		/*FrameLayout.LayoutParams params = 
-				new FrameLayout.LayoutParams(android.view.ViewGroup.LayoutParams.FILL_PARENT, android.view.ViewGroup.LayoutParams.FILL_PARENT);
-		params.gravity = Gravity.LEFT | Gravity.TOP;
-		params.width = (int) cellWidth;
-		params.height = (int) (cellHeight * (lesson.getPeriodLengthByFloat()));
-		Log.e("params.height", params.height + 
-				", end : " + lesson.getLessonEndPeriodByFloat() + 
-				", start : " + lesson.getLessonStartPeriodByFloat()
-				);*/
-
-
-		/*//만약 타임라인부분이 터치됬으면 return -1
-		float timelineOffset =  res.getDimension(R.dimen.fragment_timetable_timeline_width)
-				+ res.getDimension(R.dimen.fragment_timetable_body_padding)
-				+ res.getDimension(R.dimen.fragment_timetable_cell_margin);
-		int left = (int) (timelineOffset + dayIdx * cellWidth);
-
-		MyLog.d("LessonView Left", left+"");
-		params.leftMargin = left;
-		params.topMargin = (int) ( ( lesson.getLessonStartPeriodByFloat()) * cellHeight );*/
-
 		int[] tl = getLessonViewTLMarginFromLesson(lesson);
 		if(tl == null){
 			return null;
@@ -3816,7 +3140,7 @@ public class TimetableFragment extends Fragment {
 
 		ytTheme.getLessonViewBackgroundShape().setColor(lesson.getColor());
 		ytTheme.getLessonViewBackgroundShape().setViewTheme(
-				getSupportActivity(), lessonView);
+				getActivity(), lessonView);
 
 		lessonView.setOnClickListener(lessonOnClick);
 		lessonView.setOnLongClickListener(lessonViewOnLongClickListener);

@@ -47,7 +47,6 @@
     <string name="timetable_setting_warning_tableinit_on_timeoffsetchange">若更改时间设置，时间表将会重置</string>
     <string name="timetable_setting_theme_select_theme_prompt">主题背景</string>
     <string name="timetable_setting_theme_select_theme_title">选择主题</string>
-    <string name="timetable_setting_theme_select_language_prompt">语言(Language)</string>
     <string name="timetable_setting_info_shop">商店</string>
     <string name="timetable_setting_info_yooii_info">Timetable Kit 信息</string>
     <string name="timetable_setting_info_rate">给 Timetable Kit 打分</string>
@@ -60,7 +59,7 @@
     <string name="timetable_setting_info_version">软件版本</string>
     <string name="tab_timetablesetting">细节设置</string>
     <string name="tab_timetabletheme">主题背景</string>
-    <string name="tab_alarmandtheme">通知\\主题背景</string>
+    <string name="tab_alarmandtheme">通知 / 主题背景</string>
     <string name="tab_info">商店 / 信息</string>
     <string name="notice">闹钟!</string>
     <string name="unlock_full_version">购买完整版!</string>
@@ -266,4 +265,8 @@
     <string name="quit_ad_dialog_title_text">确定退出吗？</string>
     <string name="store_buy_full_version">购买完整版!</string>
     <string name="minute_short">分钟</string>
+
+    <!-- Permissions -->
+    <string name="permission_granted">已获得授权。</string>
+    <string name="permission_not_granted">未允许。</string>
 </resources>

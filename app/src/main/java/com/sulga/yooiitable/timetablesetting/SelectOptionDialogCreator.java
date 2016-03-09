@@ -1,20 +1,23 @@
 package com.sulga.yooiitable.timetablesetting;
 
-import java.util.*;
-
-import org.holoeverywhere.app.*;
-import org.holoeverywhere.widget.ArrayAdapter;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
+import android.view.ContextThemeWrapper;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.sulga.yooiitable.R;
-import com.sulga.yooiitable.data.*;
-import com.sulga.yooiitable.mylog.*;
-import com.sulga.yooiitable.theme.*;
+import com.sulga.yooiitable.data.TimetableDataManager;
+import com.sulga.yooiitable.mylog.MyLog;
+import com.sulga.yooiitable.theme.YTTimetableTheme;
 import com.sulga.yooiitable.theme.YTTimetableTheme.ThemeType;
 
-import android.content.*;
-import android.view.*;
-import android.widget.*;
-import android.widget.TextView;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SelectOptionDialogCreator {
 
@@ -25,7 +28,7 @@ public class SelectOptionDialogCreator {
 			String[] itemNames,
 			final OnSelectOptionDialogItemSelectedListener listener){
 		AlertDialog.Builder selectOptionDialog = new AlertDialog.Builder(
-				new ContextThemeWrapper(context, R.style.Holo_Theme_Dialog));
+				new ContextThemeWrapper(context, android.R.style.Theme_Dialog));
 
 		ArrayList<String> itemNameList = new ArrayList<String>();
 		for(int i = 0; i < itemNames.length ; i++){
@@ -36,7 +39,7 @@ public class SelectOptionDialogCreator {
 
 		selectOptionDialog.setTitle(title);
 
-		ArrayAdapter<String> adt = new ArrayAdapter<String>(
+		ArrayAdapter<String> adt = new ArrayAdapter<>(
 				context, android.R.layout.select_dialog_item, itemNameList);
 		selectOptionDialog.setAdapter(adt, new DialogInterface.OnClickListener() {
 			@Override
@@ -54,13 +57,13 @@ public class SelectOptionDialogCreator {
 			String[] itemNames, ThemeType[] values,
 			final OnSelectOptionDialogItemSelectedListener listener){
 		AlertDialog.Builder selectOptionDialog = new AlertDialog.Builder(
-				new ContextThemeWrapper(context, R.style.Holo_Theme_Dialog));
+				new ContextThemeWrapper(context, android.R.style.Theme_Dialog));
 
-		ArrayList<ThemeAdapterItem> itemList = new ArrayList<ThemeAdapterItem>();
+		ArrayList<ThemeAdapterItem> itemList = new ArrayList<>();
 		for(int i = 0; i < itemNames.length ; i++){
 			//set isLocked Logic through Theme...
 			boolean isLocked = false;
-			if(TimetableDataManager.getCurrentFullVersionState(context) == false){
+			if(!TimetableDataManager.getCurrentFullVersionState(context)){
 				for(int j = 0; j < YTTimetableTheme.lockedThemes.length ; j++){
 					YTTimetableTheme.ThemeType type = YTTimetableTheme.lockedThemes[j];
 					MyLog.d("ThemeTypes", "type : " + type + ", values[i] : " + values[i]);
@@ -137,7 +140,7 @@ public class SelectOptionDialogCreator {
 					.findViewById(R.id.item_theme_spinner_text);
 			ImageView lockImg = (ImageView)convertView
 					.findViewById(R.id.item_theme_spinner_img); 
-			if(tai.isLocked == false){
+			if(!tai.isLocked){
 				lockImg.setVisibility(View.GONE);
 			}else{
 				lockImg.setVisibility(View.VISIBLE);

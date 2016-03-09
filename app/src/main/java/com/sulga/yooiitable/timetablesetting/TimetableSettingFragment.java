@@ -1,51 +1,34 @@
 package com.sulga.yooiitable.timetablesetting;
 
+import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
-import com.flurry.android.FlurryAgent;
 import com.sulga.yooiitable.R;
 import com.sulga.yooiitable.alarm.YTAlarmManager;
-import com.sulga.yooiitable.constants.FlurryConstants;
 import com.sulga.yooiitable.data.Lesson;
 import com.sulga.yooiitable.data.Timetable;
 import com.sulga.yooiitable.data.Timetable.ColumnTypes;
 import com.sulga.yooiitable.data.TimetableDataManager;
 import com.sulga.yooiitable.mylog.MyLog;
-import com.sulga.yooiitable.theme.YTTimetableTheme;
-import com.sulga.yooiitable.theme.YTTimetableTheme.ThemeType;
-import com.sulga.yooiitable.timetableinfo.TimetableSettingInfoActivity;
 import com.sulga.yooiitable.timetablesetting.tabpageviews.dialogs.SettingDayDialogCreator;
 import com.sulga.yooiitable.timetablesetting.tabpageviews.dialogs.SettingPeriodDialogCreator;
-import com.sulga.yooiitable.timetablesetting.tabpageviews.dialogs.SettingTimeDialogCreator;
 import com.sulga.yooiitable.timetablesetting.tabpageviews.dialogs.TimeIntervalPickerDialogBuilder;
 import com.sulga.yooiitable.timetablesetting.utils.TimetableSettingStringManager;
 import com.sulga.yooiitable.utils.AlertDialogCreator;
-import com.sulga.yooiitable.utils.ToastMaker;
-import com.yooiistudios.common.ad.AdUtils;
-
-import org.holoeverywhere.LayoutInflater;
-import org.holoeverywhere.app.AlertDialog;
-import org.holoeverywhere.app.Dialog;
-import org.holoeverywhere.app.Fragment;
-import org.holoeverywhere.app.TimePickerDialog;
-import org.holoeverywhere.widget.NumberPicker;
-import org.holoeverywhere.widget.TimePicker;
-import org.holoeverywhere.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Map;
 
 public class TimetableSettingFragment extends Fragment {
 	public static String BUNDLE_PAGE_INDEX_KEY = "TimetablePageIndex";
@@ -56,8 +39,6 @@ public class TimetableSettingFragment extends Fragment {
 	private int timetablePageIndex;	//you MUST set getActivity()
 	private Timetable timetable;
 
-//	private View ;
-	
 	LinearLayout settingsDayWrapper;
 	LinearLayout settingsPeriodWrapper;
 	LinearLayout settingsStartTimeWrapper;
@@ -187,7 +168,6 @@ public class TimetableSettingFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 final int def_startDayIdx = TimetableSettingStringManager.
                         getIntegerItemIndexOfArray(tt_startDay, startDays);
                 final int def_endDayIdx = TimetableSettingStringManager.
@@ -204,7 +184,6 @@ public class TimetableSettingFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 int defColumnTypeIdx = TimetableSettingStringManager
                         .getColumnTypeItemIndexOfArray(tt_columnType, columnTypes);
                 int defColumnNumIdx = -1;
@@ -231,12 +210,11 @@ public class TimetableSettingFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 final Calendar c = Calendar.getInstance();
                 c.set(Calendar.HOUR_OF_DAY, tt_startHour);
                 c.set(Calendar.MINUTE, tt_startMin);
-                TimePickerDialog timeDialog = new TimePickerDialog(
-                        TimetableSettingFragment.this.getSupportActivity(),
+
+                TimePickerDialog timeDialog = new TimePickerDialog(getActivity(),
                         new OnStartTimeSetListener(tt_startHour, tt_startMin),
                         c.get(Calendar.HOUR_OF_DAY),
                         c.get(Calendar.MINUTE),
@@ -249,7 +227,7 @@ public class TimetableSettingFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String title = getResources().getString(R.string.timetable_setting_select_timeoffset);
-                Dialog dialog = TimeIntervalPickerDialogBuilder.build(getSupportActivity(),
+                Dialog dialog = TimeIntervalPickerDialogBuilder.build(getActivity(),
                         title,
                         tt_timeOffset,
                         tt_columnNum,
@@ -257,15 +235,15 @@ public class TimetableSettingFragment extends Fragment {
                             @Override
                             public void onTimeIntervalPicked(int pickedNumber) {
                                 String warnTitle =
-                                        TimetableSettingFragment.this.getSupportActivity()
+                                        TimetableSettingFragment.this.getActivity()
                                                 .getResources().getString(R.string.notice);
                                 String warnMessage =
-                                        TimetableSettingFragment.this.getSupportActivity()
+                                        TimetableSettingFragment.this.getActivity()
                                                 .getResources().getString(R.string.timetable_setting_warning_tableinit_on_starttimechange);
                                 AlertDialogCreator.getClearTimetableAlertDialog(
                                         warnTitle,
                                         warnMessage,
-                                        TimetableSettingFragment.this.getSupportActivity(),
+                                        TimetableSettingFragment.this.getActivity(),
                                         new OnTimeIntervalChangedAlertDialogOKOnClick(pickedNumber),
                                         new OnStartTimeChangedAlertDialogCancelOnClick()
                                 ).show();
@@ -276,10 +254,7 @@ public class TimetableSettingFragment extends Fragment {
             }
         });
 
-//        if(showTimeSettingDialog == true){
-//            showTimeSettingDialogOnStart();
-//        }
-        if(showDaySettingDialog == true) {
+        if(showDaySettingDialog) {
             showDaySettingDialogOnStart();
         }
         return contentView;
@@ -293,18 +268,16 @@ public class TimetableSettingFragment extends Fragment {
         }
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            // TODO Auto-generated method stub
-
             String warnTitle =
-                    TimetableSettingFragment.this.getSupportActivity()
+                    TimetableSettingFragment.this.getActivity()
                             .getResources().getString(R.string.notice);
             String warnMessage =
-                    TimetableSettingFragment.this.getSupportActivity()
+                    TimetableSettingFragment.this.getActivity()
                             .getResources().getString(R.string.timetable_setting_warning_tableinit_on_starttimechange);
             AlertDialogCreator.getClearTimetableAlertDialog(
                     warnTitle,
                     warnMessage,
-                    TimetableSettingFragment.this.getSupportActivity(),
+                    TimetableSettingFragment.this.getActivity(),
                     new OnStartTimeChangedAlertDialogOKOnClick(hourOfDay, minute),
                     new OnStartTimeChangedAlertDialogCancelOnClick()
             ).show();
@@ -358,22 +331,6 @@ public class TimetableSettingFragment extends Fragment {
             dialog.dismiss();
         }
     }
-//	private void showTimeSettingDialogOnStart(){
-//		int defStartTimeIdx = TimetableSettingStringManager
-//				.getIntegerItemIndexOfArray(tt_startHour, startTimes);
-//		int defTimeOffsetIdx = TimetableSettingStringManager.
-//				getIntegerItemIndexOfArray(tt_timeOffset, timeOffsets);
-//		if(defStartTimeIdx == -1){
-//			defStartTimeIdx = 0;
-//		}
-//		if(defTimeOffsetIdx == -1){
-//			defTimeOffsetIdx = 0;
-//		}
-//		SettingTimeDialogCreator.createDialog(getActivity(),
-//				startTimeStrings, startTimes, defStartTimeIdx,
-//				timeOffsetStrings, timeOffsets, defTimeOffsetIdx,
-//				onSettingsTimeEndListener).show();
-//	}
 
     private void showDaySettingDialogOnStart(){
         int def_startDayIdx = TimetableSettingStringManager.
@@ -452,17 +409,13 @@ public class TimetableSettingFragment extends Fragment {
 
 		@Override
 		public void onSettingsEnd(int startDay, int endDay, String startString, String endString) {
-			// TODO Auto-generated method stub
 			tt_startDay = startDay;
 			tt_endDay = endDay;
-			
-//			int startDayIdx = timetable.getDayIndexFromGregorianCalendarDay(tt_startDay);
-//			int endDayIdx = timetable.getDayIndexFromGregorianCalendarDay(tt_endDay);
 			
 			saveOption();
 			for(int i = timetable.getLessonList().size() - 1; i >= 0 ; i--){
 				Lesson l = timetable.getLessonList().get(i);
-				if(timetable.doesTimetableIncludesGregorianDay(l.getDay()) == false){
+				if(!timetable.doesTimetableIncludesGregorianDay(l.getDay())){
 					//if lesson overflows timetable day size
 					YTAlarmManager.cancelLessonAlarm(getActivity(), l);
 					timetable.onRemoveLesson(l);
@@ -477,7 +430,6 @@ public class TimetableSettingFragment extends Fragment {
 
 		@Override
 		public void onSettingsEnd(ColumnTypes columnType, int columnNum) {
-			// TODO Auto-generated method stub
 			tt_columnType = columnType;
 			tt_columnNum = columnNum;
 			
@@ -491,20 +443,4 @@ public class TimetableSettingFragment extends Fragment {
 		}
 	};
 	private boolean clearTimetable = false;
-//	SettingTimeDialogCreator.OnSettingTimeEndListener onSettingsTimeEndListener = new SettingTimeDialogCreator.OnSettingTimeEndListener() {
-//
-//		@Override
-//		public void onSettingsEnd(boolean willClearTimetable, int startTime,
-//				int timeOffset) {
-//			// TODO Auto-generated method stub
-//			clearTimetable = willClearTimetable;
-//			tt_startTime = startTime;
-//			tt_timeOffset = timeOffset;
-//			saveOption();
-//			String timeStr =
-//					startTime < 10 ?
-//							"0" + Integer.toString(startTime) + " : 00" : Integer.toString(startTime) + " : 00";
-//			settingsTimeText.setText(timeStr + " / " + Integer.toString(tt_timeOffset) + "Min");
-//		}
-//	};
 }

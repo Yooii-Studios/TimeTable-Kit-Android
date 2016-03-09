@@ -1,22 +1,24 @@
 package com.sulga.yooiitable.timetableinfo.activity;
 
-import org.holoeverywhere.app.*;
-import org.holoeverywhere.widget.*;
-
-import android.content.*;
-import android.content.pm.*;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.net.*;
-import android.os.*;
-import android.view.*;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ListView;
+import android.widget.TextView;
 
-import com.actionbarsherlock.view.MenuItem;
-import com.flurry.android.*;
+import com.flurry.android.FlurryAgent;
 import com.sulga.yooiitable.R;
-import com.sulga.yooiitable.constants.*;
+import com.sulga.yooiitable.constants.FlurryConstants;
+import com.sulga.yooiitable.constants.YTUrls;
 
 
-public class YTInfoActivity extends Activity {
+public class YTInfoActivity extends AppCompatActivity {
 	ListView creditListView;
 
 	//Menu m_menu;

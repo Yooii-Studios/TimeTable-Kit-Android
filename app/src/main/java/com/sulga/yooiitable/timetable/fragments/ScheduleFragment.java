@@ -1,35 +1,48 @@
 package com.sulga.yooiitable.timetable.fragments;
 
-import java.text.*;
-import java.util.*;
+import android.content.Context;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.view.Display;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
-import org.holoeverywhere.LayoutInflater;
-import org.holoeverywhere.app.*;
-import org.holoeverywhere.widget.Button;
-import org.holoeverywhere.widget.FrameLayout;
-import org.holoeverywhere.widget.LinearLayout;
-import org.holoeverywhere.widget.TextView;
-import org.holoeverywhere.widget.ViewPager;
-
-import android.content.*;
-import android.graphics.*;
-import android.os.*;
-import android.support.v4.view.*;
-import android.view.*;
-import android.view.animation.*;
-import android.widget.*;
-
-import com.actionbarsherlock.app.*;
 import com.sulga.yooiitable.R;
-import com.sulga.yooiitable.alarm.*;
-import com.sulga.yooiitable.data.*;
-import com.sulga.yooiitable.google.calendar.*;
-import com.sulga.yooiitable.mylog.*;
-import com.sulga.yooiitable.theme.parts.*;
-import com.sulga.yooiitable.timetable.*;
-import com.sulga.yooiitable.timetable.fragments.dialogbuilders.*;
-import com.sulga.yooiitable.utils.*;
+import com.sulga.yooiitable.alarm.YTAlarmManager;
+import com.sulga.yooiitable.data.Schedule;
+import com.sulga.yooiitable.data.TimeInfo;
+import com.sulga.yooiitable.data.Timetable;
+import com.sulga.yooiitable.data.TimetableDataManager;
+import com.sulga.yooiitable.mylog.MyLog;
+import com.sulga.yooiitable.theme.parts.YTRoundRectThemePart;
+import com.sulga.yooiitable.theme.parts.YTShapeRoundRectThemePart;
+import com.sulga.yooiitable.timetable.TimetableActivity;
+import com.sulga.yooiitable.timetable.fragments.dialogbuilders.DeleteScheduleAlertDialogBuilder;
+import com.sulga.yooiitable.timetable.fragments.dialogbuilders.ScheduleEditDialogBuilder;
+import com.sulga.yooiitable.utils.FixTileModeBug;
 import com.yooiistudios.common.ad.AdUtils;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class ScheduleFragment extends Fragment {
 	public static final int MAX_SCHEDULE_COUNT_FREE_VERSION = 5;
@@ -45,7 +58,7 @@ public class ScheduleFragment extends Fragment {
 	private ScrollView scheduleListScroll;
 
 	private Button addSchedule;
-	private Button syncSchedule;
+//	private Button syncSchedule; // 민수에게 문의 결과 구현중 막혀서 더이상 쓰지 않음
 
 	private Timetable mainTimetable;
 
@@ -55,30 +68,14 @@ public class ScheduleFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		scheduleView = inflater.inflate(R.layout.fragment_schedule, container, false);
 		FixTileModeBug.fixBackgroundRepeat(scheduleView);
-		//		actionBar = this.getSupportActionBar();
-		//		setupActionBar();
 
-		//scheduleListView = (ListView) scheduleView.findViewById(R.id.fragment_schedule_listview);
 		scheduleListWrapper = (LinearLayout)
 				scheduleView.findViewById(R.id.fragment_schedule_listwrapper);
 		scheduleListScroll = (ScrollView)
 				scheduleView.findViewById(R.id.fragment_schedule_listscroll);
 
-		/*if(getArguments() != null)
-			schedules = getArguments().getParcelableArrayList("Schedules");
-		if(schedules == null)
-			schedules = new ArrayList<Schedule>();*/
-		//		scheduleMap = TimetableDataManager.getInstance().getSchedules();
 		mainTimetable = TimetableDataManager.getMainTimetable();
-//				final int sc = scheduleCounts;
-//		MyLog.d("ScheduleFragment", "Schedule count : " + sc);
 
-		//scheduleAdapter = new ScheduleAdapter(getActivity(), R.layout.listitem_schedules_a_day, mainTimetable.getLessonList(), schedules);
-		//scheduleListView.setAdapter(scheduleAdapter);
-
-		//scheduleListScroll = (ScrollView) scheduleView.findViewById(R.id.fragment_schedule_listscroll);
-		//scheduleListWrapper = (LinearLayout) scheduleView.findViewById(R.id.fragment_schedule_listwrapper);
-		//noItemHere = (TextView) scheduleView.findViewById(R.id.fragment_schedule_text_list_no_item);
 		addSchedule = (Button) scheduleView.findViewById(R.id.fragment_schedule_additem);
 		addSchedule.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -92,33 +89,34 @@ public class ScheduleFragment extends Fragment {
 						scheduleCounts++;
 					}
 				}
-				if(TimetableDataManager.getCurrentFullVersionState(getSupportActivity()) == false 
+				if(!TimetableDataManager.getCurrentFullVersionState(getActivity())
 						&& scheduleCounts >= MAX_SCHEDULE_COUNT_FREE_VERSION){
-					String message = getSupportActivity().getResources().getString(R.string.unlock_full_version);
-//					ToastMaker.popupUnlockFullVersionToast(getSupportActivity(),
+					String message = getActivity().getResources().getString(R.string.unlock_full_version);
+//					ToastMaker.popupUnlockFullVersionToast(getActivity(),
 //                            ToastMaker.UNLOCK_FULL_VERSION_TOAST_OVERFLOW_SCHEDULENUM,
 //                            false);
-                    AdUtils.showInHouseStoreAd(getSupportActivity(),
+                    AdUtils.showInHouseStoreAd(getActivity(),
                             getString(R.string.unlock_full_version_schedule_overflow));
 					return;
 				}
 				ScheduleEditDialogBuilder builder = new ScheduleEditDialogBuilder();
-				builder.createDialog(getSupportActivity(), null, ScheduleFragment.this).show();
+				builder.createDialog(getActivity(), null, ScheduleFragment.this).show();
 
 				MyLog.d("ScheduleFragment", mainTimetable.getLessonList().toString());
 			}
 		});
 
+		/*
 		syncSchedule = (Button) scheduleView.findViewById(R.id.fragment_schedule_sync);
 		syncSchedule.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				GCAccountManager syncManager = GCAccountManager.getInstance();
-				syncManager.showAccountSelectDialog(ScheduleFragment.this.getSupportActivity());
+				syncManager.showAccountSelectDialog(ScheduleFragment.this.getActivity());
 			}
 		});
+		*/
 		scheduleListWrapper.removeAllViews();
 		createScheduleListView(TimetableDataManager.getSchedules());
 
@@ -137,72 +135,7 @@ public class ScheduleFragment extends Fragment {
 		MyLog.d("ScheduleFragment", "onStop");
 	}
 
-
-	/*public void addScheduleView(Schedule s){
-		Calendar c = GregorianCalendar.getInstance();
-		c.set(Calendar.YEAR, s.getScheduleYear());
-		c.set(Calendar.MONTH, s.getScheduleMonth());
-		c.set(Calendar.DAY_OF_MONTH, s.getScheduleDay());
-		c.set(Calendar.HOUR_OF_DAY, s.getScheduleHour());
-		c.set(Calendar.MINUTE, s.getScheduleMin());		
-
-		Activity av = getActivity();
-		RelativeLayout listItem = (RelativeLayout) View.inflate(av, R.layout.listitem_schedule, null);
-
-
-		TextView attatchedLessonName = (TextView) listItem.findViewById(R.id.listitem_schedule_attatchedlesson);
-		TextView scheduleName = (TextView)listItem.findViewById(R.id.listitem_schedule_schedulename);
-		TextView scheduleDate = (TextView)listItem.findViewById(R.id.listitem_schedule_date);
-		TextView scheduleTime = (TextView)listItem.findViewById(R.id.listitem_schedule_time);
-
-		//1.부모 레슨 네임 설정
-		if(s.getParentLessonIndex() != Schedule.PARENT_LESSON_NONE){
-			ArrayList<Lesson> lessonList = mainTimetable.getLessonList();
-			attatchedLessonName.setText(lessonList.get(s.getParentLessonIndex()).getLessonName());
-		}else
-			attatchedLessonName.setVisibility(View.INVISIBLE);
-		if(s.getParentLesson() != null){
-			attatchedLessonName.setText(s.getParentLesson().getLessonName());
-		}else
-			attatchedLessonName.setVisibility(View.INVISIBLE);
-		//2.스케쥴이름 설정
-		scheduleName.setText(s.getScheduleName());
-		//3.스케쥴 날짜 설정
-		SimpleDateFormat sdfDate = new SimpleDateFormat("MMMMM dd(EEE), yyyy");		
-		String date = sdfDate.format(c.getTime());
-		//date = s.getScheduleMonth() + "월 " + s.getScheduleDay() + "일, " + s.getScheduleYear();
-		scheduleDate.setText(date);
-		//4.스케쥴 시간 설정
-		SimpleDateFormat sdfTime = new SimpleDateFormat("HH : mm");
-		String time = sdfTime.format(c.getTime());
-		//time = s.getScheduleHour() + " : " + s.getScheduleMin();
-		scheduleTime.setText(time);
-
-		scheduleListWrapper.addView(listItem);
-
-		scheduleListScroll.post(new Runnable() {
-		    @Override
-		    public void run() {
-		        scheduleListScroll.fullScroll(ScrollView.FOCUS_DOWN);
-		    }
-		});
-
-		MyLog.d("AddSchedule", "item count : " + ( scheduleListWrapper.getChildCount() - 1 ) );
-	}*/
-
 	public void refresh(){
-		/*scheduleListWrapper.removeViews(1, scheduleListWrapper.getChildCount() - 1);
-		if(schedules.size() == 0)
-			noItemHere.setVisibility(View.VISIBLE);
-		else
-			noItemHere.setVisibility(View.INVISIBLE);
-
-
-		for(int i = 0; i < schedules.size() ; i++){
-			addScheduleView(schedules.get(i));
-		}*/
-		//scheduleAdapter.notifyDataSetChanged();
-		//scheduleListView.invalidate();
         if(scheduleListWrapper == null)
             return;
 		scheduleListWrapper.removeAllViews();
@@ -210,13 +143,6 @@ public class ScheduleFragment extends Fragment {
 		scheduleListWrapper.invalidate();
 		MyLog.d("ScheduleFragment", "Refreshed!");
 	}
-
-	//	public void refresh(boolean enableView){
-	//		scheduleListWrapper.removeAllViews();
-	//		createScheduleListView(TimetableDataManager.getSchedules());
-	//
-	//		enableDisableViewGroup(scheduleListScroll, true);
-	//	}
 
 	private void createScheduleListView(HashMap<String, ArrayList<Schedule>> scheduleMap){
 
@@ -255,23 +181,6 @@ public class ScheduleFragment extends Fragment {
 			String key = entry.getKey();
 			ArrayList<Schedule> sl = entry.getValue();
 
-			//			ArrayList<TimeInfo> tl = new ArrayList<TimeInfo>();
-			//			tl.addAll(sl);
-			//			if(key.equals(todayKey)){
-			//				//'오늘'의 스케쥴 정보의 경우 수업 + 스케쥴 표시이므로...	
-			//				//1.수업을 더한다.
-			//				for(int i = 0 ; i < lessonList.size() ; i++){
-			//					if(lessonList.get(i).getDay() == cal.get(GregorianCalendar.DAY_OF_WEEK)){
-			//						tl.add(lessonList.get(i));
-			//					}
-			//				}
-			//				//2.스케쥴을 더한다.
-			//				tl.addAll(sl);
-			//
-			//			}else{
-			//				tl.addAll(sl);
-			//			}
-
 			if(sl.size() == 0)
 				continue;
 
@@ -295,15 +204,11 @@ public class ScheduleFragment extends Fragment {
 			for(int i = 0; i < sl.size() ; i++){
 				addScheduleView(sl.get(i), key);
 			}
-			//			//4 - 이제 뷰를 만든다.
-			//			scheduleListWrapper.addView(
-			//					createTimeInfoView(sl, key)
-			//					);
 		}
 	}
 
 	private void addTodayLineView(){
-		LayoutInflater inflater = getSupportActivity().getLayoutInflater();
+		LayoutInflater inflater = getActivity().getLayoutInflater();
 
 		LinearLayout todayLine = (LinearLayout) inflater.inflate(
 				R.layout.view_schedule_todayline,
@@ -312,32 +217,21 @@ public class ScheduleFragment extends Fragment {
 				);
 		TextView todayLineText = 
 				(TextView) todayLine.findViewById(R.id.view_schedule_todayline_todaytext);
-		//		Resources res = getSupportActivity().getResources();
-		//		float roundRectCorner = res.getDimension(R.dimen.view_schedule_corners);
 		YTRoundRectThemePart todayThemePart = new YTShapeRoundRectThemePart(
 				12.0f,
 				255, Color.parseColor("#1f1f1f"),
 				Color.parseColor("#d2d0c6"), 1 
 				);
-		todayThemePart.setViewTheme(getSupportActivity(), todayLineText);
+		todayThemePart.setViewTheme(getActivity(), todayLineText);
 		scheduleListWrapper.addView(todayLine);
 	}
 
 
 	//	private final static String SCHEDULE_ITEMS_WRAPPER = "SCHEDULE_ITEMS_WRAPPER";
 	private void addScheduleView(Schedule s, String dateKey){
-		LayoutInflater inflater = getSupportActivity().getLayoutInflater();
-		//			if(t instanceof Lesson){
-		//				//	android.support.v4.view.ViewPager lessonViewPager = 
-		//				//		(android.support.v4.view.ViewPager) inflater.inflate(R.layout.item_lesson_viewpager, subViewWrapper, false);
-		//				View lessonView = getLessonItemView(inflater, subViewWrapper, t);
-		//				subViewWrapper.addView(lessonView);
-		//
-		//			}else 
-		//			if(t instanceof Schedule){
+		LayoutInflater inflater = getActivity().getLayoutInflater();
 
-		//LinearLayout wrapper = (LinearLayout) inflater.inflate(R.layout.item_schedule_viewpager, subViewWrapper, false);
-		final ViewPager scheduleViewPager = 
+		final ViewPager scheduleViewPager =
 				(ViewPager) inflater.inflate(
 						R.layout.view_schedule_viewpager, 
 						scheduleListWrapper, 
@@ -364,29 +258,9 @@ public class ScheduleFragment extends Fragment {
 		});
 		scheduleViewPager.setCurrentItem(0);
 		scheduleViewPager.setTag(s);
-		//View scheduleView = getScheduleItemView(inflater, subViewWrapper, t);
-		//r.getBackground().setColorFilter(Color.CYAN, Mode.SRC_ATOP);
-		//		item.setTag(dateKey);
 		scheduleListWrapper.addView(scheduleViewPager);
 		return;
 	}
-
-	//	private class ScheduleTag{
-	//		private Schedule s;
-	//		private String key;
-	//		public ScheduleTag(String key, Schedule s){
-	//			this.s = s;
-	//			this.key = key;
-	//		}
-	//
-	//		public boolean equals(ScheduleTag st){
-	//			if(key.equals(st.key) &&
-	//					s.equals(st.s))
-	//				return true;
-	//
-	//			return false;
-	//		}
-	//	}
 
 	public void startAddAndEditScheduleAnimation(final Schedule s){
 		scheduleListWrapper.post(new Runnable(){
@@ -427,19 +301,14 @@ public class ScheduleFragment extends Fragment {
 
 			@Override
 			public void onAnimationStart(Animation animation) {
-				// TODO Auto-generated method stub
-
 			}
 
 			@Override
 			public void onAnimationRepeat(Animation animation) {
-				// TODO Auto-generated method stub
-
 			}
 
 			@Override
 			public void onAnimationEnd(Animation animation) {
-				// TODO Auto-generated method stub
 				backgroundForAnim.setVisibility(View.INVISIBLE);
 			}
 		});
@@ -448,56 +317,28 @@ public class ScheduleFragment extends Fragment {
 	}
 
 	private View getScheduleView(Schedule s){
-		//		String key = TimetableDataManager.makeKeyFromSchedule(s);
-		//
-		//		LinearLayout schedule_a_day = (LinearLayout) scheduleListWrapper.findViewWithTag(key);
-		//		LinearLayout wrapper = (LinearLayout) schedule_a_day.findViewWithTag(SCHEDULE_ITEMS_WRAPPER);
 		View v = scheduleListWrapper.findViewWithTag(s);
 		return v;
 	}
 
-	//	private View getLessonItemView(LayoutInflater inflater, ViewGroup subViewWrapper, TimeInfo t){
-	//		RelativeLayout r = (RelativeLayout) inflater.inflate(R.layout.item_lesson, subViewWrapper, false);
-	//		TextView lessonNameText = (TextView) r.findViewById(R.id.item_lesson_lessonname);
-	//		TextView lessonWhereText = (TextView) r.findViewById(R.id.item_lesson_lessonwhere);
-	//		TextView lessonWhenText = (TextView) r.findViewById(R.id.item_lesson_time);
-	//
-	//		Lesson l = (Lesson)t;
-	//		lessonNameText.setText(l.getLessonName());
-	//		lessonWhereText.setText(l.getLessonWhere());
-	//
-	//		int startHour = l.getLessonInfo().getStartHour();
-	//		int startMin = l.getLessonInfo().getStartMin();
-	//		String sH = startHour < 10 ? "0"+startHour : Integer.toString(startHour);
-	//		String sM = startMin < 10 ? "0"+startMin : Integer.toString(startMin);
-	//
-	//		lessonWhenText.setText(sH + " : " + sM);
-	//
-	//		return r;
-	//	}
-
-
-	private View getScheduleItemView(LayoutInflater inflater, 
+	private View getScheduleItemView(LayoutInflater inflater,
 			ViewGroup wrapper, 
 			final Schedule s){
-		View root = (FrameLayout) inflater.inflate(
-				R.layout.view_schedule, wrapper, false);
+		View root = inflater.inflate(R.layout.view_schedule, wrapper, false);
 
 		TextView monthText = (TextView) root.findViewById(R.id.view_schedule_dateview_monthtext);
 		TextView dateText = (TextView) root.findViewById(R.id.view_schedule_dateview_datetext);
-		//		Typeface robotoThin = Typefaces.get(getSupportActivity(), "roboto_thin.ttf");
-		//		dateText.setTypeface(robotoThin);
 		TextView dayText = (TextView) root.findViewById(R.id.view_schedule_dateview_daytext);
 		TextView ddayText = (TextView) root.findViewById(R.id.view_schedule_contentsview_dday_text);
 
-		//		Resources res = getSupportActivity().getResources();
+		//		Resources res = getActivity().getResources();
 		float roundRectCorner = 8.0f;
 		YTRoundRectThemePart monthThemePart = new YTShapeRoundRectThemePart(
 				roundRectCorner,
 				255, Color.parseColor("#d2d0c6"),
 				0, 0
 				);
-		monthThemePart.setViewTheme(getSupportActivity(), monthText,
+		monthThemePart.setViewTheme(getActivity(), monthText,
 				roundRectCorner,
 				true, true, false, false);
 
@@ -506,7 +347,7 @@ public class ScheduleFragment extends Fragment {
 				255, Color.parseColor("#bababa"),
 				0, 0
 				);
-		dayThemePart.setViewTheme(getSupportActivity(), 
+		dayThemePart.setViewTheme(getActivity(), 
 				dayText, 
 				roundRectCorner, 
 				false, false, true, true);
@@ -549,38 +390,21 @@ public class ScheduleFragment extends Fragment {
 		TextView parentLesson = (TextView) 
 				root.findViewById(R.id.view_schedule_contentsview_class_text);
 		parentLesson.setText("");
-		//		TextView scheduleTime = (TextView) root.findViewById(R.id.item_schedule_time);
 
 		scheduleName.setText(s.getScheduleName());
 		if(s.getParentLesson() != null){
 			parentLesson.setText(s.getParentLesson().getLessonName());
 		}
 
-		//		int startHour = s.getStartHour();
-		//		int startMin =s.getStartMin();
-		//		String sH = startHour < 10 ? "0"+startHour : Integer.toString(startHour);
-		//		String sM = startMin < 10 ? "0"+startMin : Integer.toString(startMin);
-		//
-		//		scheduleTime.setText(sH + " : " + sM);
-
 		root.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				//				Intent intent = new Intent(ScheduleFragment.this.getActivity(), EditScheduleActivity.class);
 				ScheduleEditDialogBuilder builder = new ScheduleEditDialogBuilder();
 				builder
-				.createDialog(getSupportActivity(), s, ScheduleFragment.this)
+				.createDialog(getActivity(), s, ScheduleFragment.this)
 				.show();
-
-				//				String scheduleKey = TimetableDataManager.makeKeyFromSchedule(s);
-				//				intent.putExtra("ScheduleKey", scheduleKey);
-				//				intent.putExtra("ScheduleIndex", TimetableDataManager.
-				//						getInstance().getIndexOfSchedule(s));
-				//intent.putExtra("MainTimetableIndex", mainTimetableIndex);
-
-				//				ScheduleFragment.this.getActivity().startActivityForResult(intent, RequestCodes.CALL_ACTIVITY_EDIT_SCHEDULE_ACTIVITY);
 			}
 		});
 
@@ -614,7 +438,7 @@ public class ScheduleFragment extends Fragment {
 				v = getScheduleItemView(inflater, collection, s);
 				v.setTag(SCHEDULE_ITEM_TAG);
 				v.setOnLongClickListener(new OnScheduleLongClickListener(collection));
-				((ViewPager)collection).addView(v);
+				collection.addView(v);
 				//return r;
 			}else{
 				v = (Button) inflater.inflate(
@@ -624,7 +448,7 @@ public class ScheduleFragment extends Fragment {
 						);
 				v.setOnClickListener(new OnDeleteScheduleClickListener(collection));
 
-				((ViewPager)collection).addView(v);
+				collection.addView(v);
 				//return b;
 			}
 			return v;
@@ -671,10 +495,6 @@ public class ScheduleFragment extends Fragment {
 		}
 	}
 
-
-
-
-
 	public static long calculateDDay(int targetYear, int targetMonth, int targetDate){
 		Calendar cal = Calendar.getInstance();
 
@@ -705,141 +525,6 @@ public class ScheduleFragment extends Fragment {
 	public ScrollView getScheduleScroll(){
 		return scheduleListScroll;
 	}
-	//
-	//	private void startScheduleListLayoutAnimation(
-	//			final ViewGroup schedule_a_day,
-	//			final ViewGroup scheduleWrapper, final View viewToRemove, 
-	//			final int moveYOffset, final int scheduleViewHeight, final int timeOffset){
-	//
-	//		//scheduleListWrapper.requestDisallowInterceptTouchEvent(true);
-	//
-	//		final int removedScheduleViewPosition = scheduleWrapper.indexOfChild(viewToRemove);
-	//		final int schedule_a_day_position = scheduleListWrapper.indexOfChild(schedule_a_day);
-	//
-	//		//현재 schedule_a_day 내부의 child들만 위로 올려주는중임.
-	//		int animatedCount = 0;
-	//		for(int i = removedScheduleViewPosition + 1; i < scheduleWrapper.getChildCount() ; i++){
-	//
-	//			ViewAnimationManager.moveViewVertical(
-	//					scheduleViewHeight, 
-	//					scheduleWrapper.getChildAt(i), 
-	//					timeOffset * animatedCount, 
-	//					300, true, 
-	//					true, true, 
-	//					null);
-	//
-	//			animatedCount++;
-	//		}
-	//		//float moveRate = (float)moveYOffset / (float)scheduleViewHeight * -1;
-	//
-	//		//삭제된 스케쥴 이후의 날짜(schedule_a_day) 뷰들을 위로 올려준다.
-	//		scheduleListWrapper.setClipChildren(false);
-	//		for(int i = schedule_a_day_position + 1 ; i < scheduleListWrapper.getChildCount() ; i++){
-	//			ViewGroup tmpScheduleADay = (ViewGroup) scheduleListWrapper.getChildAt(i);
-	//			tmpScheduleADay.setClipChildren(false);
-	//
-	//			View title = tmpScheduleADay.findViewById(R.id.item_timeinfo_title_background);
-	//			ViewAnimationManager.moveViewVertical(
-	//					moveYOffset, 
-	//					title, 
-	//					animatedCount * timeOffset, 
-	//					300, true, true, true, 
-	//					null);
-	//			animatedCount++;
-	//
-	//			ViewGroup wrapper = (ViewGroup) 
-	//					tmpScheduleADay.findViewWithTag(SCHEDULE_ITEMS_WRAPPER);
-	//			for(int j = 0; j < wrapper.getChildCount() ; j++){
-	//				ViewAnimationManager.moveViewVertical(
-	//						moveYOffset, 
-	//						wrapper.getChildAt(j), 
-	//						animatedCount * timeOffset, 
-	//						300, true, true, true, 
-	//						null);
-	//
-	//
-	//				//현재 각 스케쥴 뷰들이 위로 올라가면서 parent view바깥으로 벗어나 뷰가 사라져버린다.
-	//
-	//				animatedCount++;
-	//			}
-	//
-	//			//animatedCount++;
-	//		}	
-	//
-	//		new Handler().postDelayed(new Runnable(){
-	//
-	//			@Override
-	//			public void run() {
-	//				// TODO Auto-generated method stub
-	//				MyLog.d("ListAnimation", "Schedule View Refreshed! : " + System.currentTimeMillis());
-	//				//애니메이션이 끝났으므로 뷰들의 터치를 다시 활성화.
-	//				ScheduleFragment.this.refresh(true);
-	//				//enableDisableViewGroup(scheduleListScroll, true);
-	//				//				for(int i = schedule_a_day_position + 1 ; i < scheduleListWrapper.getChildCount() ; i++){
-	//				//					LinearLayout v = (LinearLayout) scheduleListWrapper.getChildAt(i);
-	//				////
-	//				////					MyLog.d("ListAnimation",
-	//				////							"Move SCHEDULE_A_DAY top : " + v.getTop()
-	//				////							+ ", moveYOffset : " + moveYOffset);
-	//				//					v.layout(
-	//				//							v.getLeft(), 
-	//				//							v.getTop() - moveYOffset,
-	//				//							v.getRight(),
-	//				//							v.getBottom() - moveYOffset
-	//				//							);
-	//				//					//v.set
-	//				//
-	//				//					//moveScheduleADayViewAfterAnimEnd(v, moveYOffset);
-	//				//
-	//				//					//					LinearLayout.LayoutParams lp = (LayoutParams) v.getLayoutParams();
-	//				//					//										
-	//				//					//					v.setLayoutParams(lp);
-	//				//					//					v.requestLayout();
-	//				//					//					MyLog.d("ListAnimation",
-	//				//					//							"Move SCHEDULE_A_DAY top : " + lp.topMargin
-	//				//					//							+ ", moveYOffset : " + moveYOffset);
-	//				//
-	//				//				}
-	//				//
-	//			}
-	//
-	//		}, (animatedCount) * timeOffset + 300);
-	//		//
-	//	}
-
-	//	public static void enableDisableViewGroup(ViewGroup viewGroup, boolean enabled) {
-	//		int childCount = viewGroup.getChildCount();
-	//
-	//		for (int i = 0; i < childCount; i++) {
-	//			View view = viewGroup.getChildAt(i);
-	//			if(enabled == false)
-	//				view.setOnTouchListener(blockOnTouchListener);
-	//			else
-	//				view.setOnTouchListener(null);
-	//
-	//			if(view instanceof ScheduleViewPager){
-	//				if(enabled == false){
-	//					((ScheduleViewPager) view).setPagingEnabled(enabled);
-	//				}else{
-	//					((ScheduleViewPager) view).setPagingEnabled(enabled);
-	//				}
-	//			}
-	//
-	//			if (view instanceof ViewGroup) {
-	//				enableDisableViewGroup((ViewGroup) view, enabled);
-	//			}
-	//		}
-	//	}
-	//
-	//	private static View.OnTouchListener blockOnTouchListener = new View.OnTouchListener() {
-	//
-	//		@Override
-	//		public boolean onTouch(View v, MotionEvent event) {
-	//			// TODO Auto-generated method stub
-	//			Log.e("ScheduleFragment", "touch blocked!!");
-	//			return true;
-	//		}
-	//	};
 
 	private class OnScheduleLongClickListener implements View.OnLongClickListener{
 		private ViewGroup collection;
@@ -847,16 +532,13 @@ public class ScheduleFragment extends Fragment {
 			this.collection = collection;
 		}
 		public boolean onLongClick(View v) {
-			// TODO Auto-generated method stub
 			final Schedule s = (Schedule) collection.getTag();
-			DeleteScheduleAlertDialogBuilder.createDialog(getSupportActivity(), new View.OnClickListener() {
+			DeleteScheduleAlertDialogBuilder.createDialog(getActivity(), new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
 					onDeleteSchedule(s);
 				}
 			}).show();
-//			Toast.makeText(getSupportActivity(), s.toString(), Toast.LENGTH_SHORT).show();
 			return true;
 		}
 	}
@@ -870,48 +552,20 @@ public class ScheduleFragment extends Fragment {
 
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			// TODO Auto-generated method stub
-			//final ScheduleTag st = (ScheduleTag) collection.getTag();
-
 			Schedule s = (Schedule) collection.getTag();
 			onDeleteSchedule(s);
-
-			//날짜 기준으로 분류한 스케쥴들을 감싼다. 제목+스케쥴뷰 래퍼
-			//			final LinearLayout schedule_a_day = (LinearLayout) 
-			//					scheduleListWrapper.findViewWithTag(TimetableDataManager.makeKeyFromSchedule(s));
-			//			//제목 아래의 스케쥴뷰 래퍼
-			//			final LinearLayout wrapper = (LinearLayout) 
-			//					schedule_a_day.findViewWithTag(SCHEDULE_ITEMS_WRAPPER);
-			//
-			//			//뷰들의 터치를 막아버린다.
-			//			enableDisableViewGroup(scheduleListScroll, false);
-			//			scheduleListScroll.requestDisallowInterceptTouchEvent(true);
-
-			//			processRemoveScheduleView(collection, s, schedule_a_day, wrapper);
-
-			//아직 wrapper.removeview가 호출되지 않았으므로 래퍼의 차일드 카운트는 1일 것이다.
-			//300ms로 약간 늦게 종료시킨다.
-			//			if(wrapper.getChildCount() == 1){
-			//				//scheduleListWrapper.removeView(schedule_a_day);
-			//				processRemoveScheduleTitleView(collection, s, schedule_a_day, wrapper);
-			//			}
-
-			//startScheduleListLayoutAnimation(scheduleListWrapper);
 		}
-
 	}
 
 	public boolean onDeleteSchedule(Schedule s){
 		if(s == null){
 			return false;
 		}
-		if(s.getGoogleCalendarEventKey().equals(Schedule.EVENT_KEY_NONE) == false)
+		if(!s.getGoogleCalendarEventKey().equals(Schedule.EVENT_KEY_NONE))
 			TimetableDataManager.getInstance().putEventIDToDeleteOnGoogleCalendar(s.getGoogleCalendarEventKey());
 		String key = TimetableDataManager.makeKeyFromSchedule(s);
 
 		TimetableDataManager.getSchedules().get(key).remove(s);
-//		TimetableDataManager.writeDatasToExternalStorage();
 		YTAlarmManager.cancelScheduleAlarm(getActivity(), s);
 
 		((TimetableActivity)ScheduleFragment.this.getActivity())
@@ -920,92 +574,4 @@ public class ScheduleFragment extends Fragment {
 		refresh();
 		return true;
 	}
-
-	//	private void processRemoveScheduleView(
-	//			final ViewGroup collection, final Schedule s,
-	//			final ViewGroup schedule_a_day, final ViewGroup wrapper){
-	//
-	//		final boolean deleteTitle = wrapper.getChildCount() == 1 ? true : false;
-	//		final String key = TimetableDataManager.makeKeyFromSchedule(s);
-	//
-	//		//Animation vanish =AnimationUtils.loadAnimation(getActivity(),R.anim.vanish);
-	//		Animation go_left = AnimationUtils.loadAnimation(getActivity(), R.anim.schedule_go_left);
-	//		collection.startAnimation(go_left);
-	//		go_left.setFillEnabled(true);
-	//		go_left.setFillAfter(true);
-	//		go_left.setAnimationListener(new Animation.AnimationListener() {
-	//			public void onAnimationStart(Animation animation) {}
-	//			public void onAnimationRepeat(Animation animation) {}
-	//			@Override
-	//			public void onAnimationEnd(Animation animation) {
-	//				// TODO Auto-generated method stub
-	//				if(s.getGoogleCalendarEventKey().equals(Schedule.EVENT_KEY_NONE) == false)
-	//					TimetableDataManager.getInstance().putEventIDToDeleteOnGoogleCalendar(s.getGoogleCalendarEventKey());
-	//
-	//				TimetableDataManager.getInstance().getSchedules().get(key).remove(s);
-	//				TimetableDataManager.writeDatasToExternalStorage();
-	//				YTAlarmManager.cancelScheduleAlarm(getActivity(), s);
-	//				//collection.setVisibility(View.INVISIBLE);
-	//				if(deleteTitle == false){
-	//					//타이틀 삭제할 필요가 없을 경우 스케쥴 리스트 레이아웃의 전체 애니메이션을 실행한다.
-	//					startScheduleListLayoutAnimation(
-	//							schedule_a_day,
-	//							wrapper, collection,
-	//							collection.getHeight(), collection.getHeight(), 100);
-	//				}
-	//				//타이틀을 삭제해야 될 경우에는 스케쥴 리스트 레이아웃 처리를 타이틀 삭제 이후로 넘긴다.
-	//			}
-	//		});		
-	//	}
-	//
-	//	private void processRemoveScheduleTitleView(
-	//			final ViewGroup collection, final Schedule s,
-	//			final ViewGroup schedule_a_day, final ViewGroup wrapper){
-	//
-	//		Animation title_go_left = 
-	//				AnimationUtils.loadAnimation(getActivity(), R.anim.schedule_title_go_left);
-	//		final View schedule_title = 
-	//				schedule_a_day.findViewById(R.id.item_timeinfo_title);
-	//		title_go_left.setFillEnabled(true);
-	//		title_go_left.setFillAfter(true);
-	//		schedule_title.startAnimation(title_go_left);
-	//		//title_go_left.get
-	//		//타이틀의 날짜표시/디데이 텍스트 두개가 왼쪽으로 사라진다.
-	//		title_go_left.setAnimationListener(new Animation.AnimationListener() {
-	//			public void onAnimationStart(Animation animation) {}
-	//			public void onAnimationRepeat(Animation animation) {}
-	//			@Override
-	//			public void onAnimationEnd(Animation animation) {
-	//				//텍스트가 사라지면 non visible
-	//				//schedule_title.setVisibility(View.INVISIBLE);
-	//				//그리고 남아있는 검은 줄 백그라운드가 사라진다.
-	//				final View schedule_title_background = 
-	//						schedule_a_day.findViewById(R.id.item_timeinfo_title_background);
-	//				Animation title_disappear = 
-	//						AnimationUtils.loadAnimation(getActivity(), R.anim.schedule_title_disappear);
-	//				title_disappear.setFillEnabled(true);
-	//				title_disappear.setFillAfter(true);
-	//				schedule_title_background.startAnimation(title_disappear);
-	//
-	//
-	//				title_disappear.setAnimationListener(new Animation.AnimationListener() {
-	//					public void onAnimationStart(Animation animation) {}
-	//					public void onAnimationRepeat(Animation animation) {}
-	//					@Override
-	//					public void onAnimationEnd(Animation animation) {
-	//						//schedule_title_background.startAnimation(title_disappear);
-	//						//schedule_title_background.setVisibility(View.INVISIBLE);
-	//						startScheduleListLayoutAnimation(
-	//								schedule_a_day,
-	//								wrapper, collection,
-	//								collection.getHeight() + schedule_title_background.getHeight(),
-	//								collection.getHeight(), 100
-	//								);
-	//					}
-	//				});
-	//
-	//			}
-	//		});
-	//
-	//	}
 }

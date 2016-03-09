@@ -12,8 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.sulga.yooiitable.R;
 import com.sulga.yooiitable.data.Lesson;
@@ -22,9 +24,6 @@ import com.sulga.yooiitable.data.Timetable;
 import com.sulga.yooiitable.data.TimetableDataManager;
 import com.sulga.yooiitable.mylog.MyLog;
 import com.sulga.yooiitable.theme.parts.YTShapeRoundRectThemePart;
-
-import org.holoeverywhere.widget.FrameLayout;
-import org.holoeverywhere.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -162,7 +161,7 @@ public class AppWidgetTableViewCreator {
 						rowParent, 
 						false);
 		timelineCell.setTag(TIMELINE_CELL_TAG);
-		TextView timelineText = 
+		TextView timelineText =
 				(TextView) timelineCell.findViewById(R.id.appwidget_view_timelinecell_text);
 		switch(timetable.getColumnType()){
 		case BY_ALPHABET:
@@ -329,7 +328,7 @@ public class AppWidgetTableViewCreator {
 		//				+ ( lessonLength - 1 ) * 2f * cellMargin + cellMargin);
 
 		//markSelectedRangeLayout.setBackgroundColor(Color.CYAN);
-		FrameLayout.LayoutParams params = 
+		FrameLayout.LayoutParams params =
 				new FrameLayout.LayoutParams(
 						android.view.ViewGroup.LayoutParams.FILL_PARENT, 
 						android.view.ViewGroup.LayoutParams.FILL_PARENT);

@@ -1,25 +1,29 @@
 package com.sulga.yooiitable.timetableinfo;
 
-import org.holoeverywhere.app.*;
-import org.holoeverywhere.app.Fragment;
-import org.holoeverywhere.widget.*;
-
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.*;
+import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.*;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 
-import com.actionbarsherlock.app.*;
-import com.actionbarsherlock.view.MenuItem;
 import com.sulga.yooiitable.R;
 import com.sulga.yooiitable.constants.RequestCodes;
 import com.sulga.yooiitable.data.Timetable;
 import com.sulga.yooiitable.data.TimetableDataManager;
+import com.sulga.yooiitable.language.YTLanguage;
+import com.sulga.yooiitable.language.YTLanguageType;
 import com.sulga.yooiitable.mylog.MyLog;
 import com.sulga.yooiitable.theme.YTTimetableTheme;
 import com.sulga.yooiitable.timetablesetting.TimetableSettingFragment;
@@ -31,8 +35,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
 
-public class TimetableSettingInfoActivity extends Activity {
+public class TimetableSettingInfoActivity extends AppCompatActivity {
+    public static final String KEY_CHANGED_LANGUAGE = "key_language_changed";
 	private static String TAG = "TimetableSettingInfoActivity";
+
 	private TimetableAppInfoFragment infoFrag;
     private TimetableSettingFragment settingFrag;
     private TimetableSettingsAlarmFragment settingAlarmFrag;
@@ -44,6 +50,9 @@ public class TimetableSettingInfoActivity extends Activity {
 
 	private ViewPager mViewPager;
 	private ActionBar mActionBar;
+
+    private int mPreviousLanguageId;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,11 +71,10 @@ public class TimetableSettingInfoActivity extends Activity {
         mActionBar = getSupportActionBar();
         mActionBar.setTitle(getString(R.string.app_name));
         setupActionBar();
-
+        savePreviousLanguage();
     }
 
-    private void setupViewPager()
-    {
+    private void setupViewPager() {
         infoFrag = new TimetableAppInfoFragment();
         //Bundles for timetable setting
         Bundle bundle = new Bundle();
@@ -128,6 +136,10 @@ public class TimetableSettingInfoActivity extends Activity {
         mActionBar.addTab(infoTab);
     }
 
+    private void savePreviousLanguage() {
+        mPreviousLanguageId = YTLanguage.getCurrentLanguageType(getApplicationContext()).getUniqueId();
+    }
+
 	public class SettingPagerAdapter extends FragmentStatePagerAdapter {
         Fragment[] fragments;
 	    public SettingPagerAdapter(FragmentManager fm, Fragment[] fragments) {
@@ -148,21 +160,6 @@ public class TimetableSettingInfoActivity extends Activity {
 	        return "OBJECT " + (position + 1);
 	    }
 	}
-
-    ///From Timetable Setting Activity, which now changed to fragment///
-
-//    public void onThemeSettingsChanged(){
-//        YTTimetableTheme.ThemeType[] themes =
-//                YTTimetableTheme.getThemeTypeValues();
-//        MyLog.d("TimetableThemeFragment", "pickTemeClickedItemPosition : "
-//                + pickThemeClickedItemPosition);
-//        timetable.setThemeType(
-//                themes[pickThemeClickedItemPosition]
-//        );
-//        //		pickThemeText.setText(
-//        //				themes[pickThemeClickedItemPosition].toString()
-//        //				);
-//    }
 
     /** 다시 액티비티로 복귀하였을때 이미지를 셋팅 */
     @Override
@@ -201,9 +198,7 @@ public class TimetableSettingInfoActivity extends Activity {
                     if (data != null) {
                         Log.i(TAG, "REQ_CROP_FROM_CAMERA && RESULT_OK");
                         try {
-                            setThemeAndRelaunchApp(
-                                    YTBitmapLoader.getPortraitCroppedImageUri(
-                                            this,
+                            setThemeAndRelaunchApp(YTBitmapLoader.getPortraitCroppedImageUri(this,
                                             timetable.getId()));
                             onThemeSettled();
                         } catch (FileNotFoundException e) {
@@ -237,25 +232,13 @@ public class TimetableSettingInfoActivity extends Activity {
 
         //settingsConfigureView.onGeneralSettingChanged();
         bitmap.recycle();
-        //timetable.getTheme().setRootBackground(resId);
-//        onThemeSettingsChanged();
-        //relaunchApplication();
     }
 
 
     public void startCropActivity(Intent data, float ratio, Uri originalPortImageUri, int requestCode) {
         Intent intent = new Intent("com.android.camera.action.CROP");
 
-        //Uri originalImageUri = data.getData();
         MyLog.d("CropActivity", "ImageToBeCropped : " + originalPortImageUri.getPath());
-		/*mImageCaptureUri = data.getData();
-        File original_file = getImageFile(mImageCaptureUri);
-
-        mImageCaptureUri = createSaveCropFile();
-        File cpoy_file = new File(mImageCaptureUri.getPath());
-
-        // SD카드에 저장된 파일을 이미지 Crop을 위해 복사한다.
-        copyFile(original_file , cpoy_file);*/
         Uri croppedImageUri = YTBitmapLoader.createPortraitCroppedImage(
                 this, originalPortImageUri, timetable.getId());
 
@@ -288,35 +271,39 @@ public class TimetableSettingInfoActivity extends Activity {
     }
 
     @Override
-    public void onBackPressed(){
-//        onThemeSettingsChanged();
+    public void onBackPressed() {
         setResultAndFinish();
     }
-    public void onThemeSettled(){
-//		setResultAndFinish();
-//        onThemeSettingsChanged();
+
+    public void onThemeSettled() {
         MyLog.d(TAG, "onThemeSettled theme : " + timetable.getThemeType());
         setResultAndFinish();
     }
 
-    public void onLanguageChanged(){
-        MyLog.d(TAG, "onLanguageChanged called");
-        Intent data = new Intent();
-        data.putExtra("TimetablePageIndex", timetablePageIndex);
-        data.putExtra("LanguageChanged", true);
-        setResult(Activity.RESULT_OK, data);
-        finish();
-        overridePendingTransition(android.R.anim.slide_in_left,
-                android.R.anim.slide_out_right);
+    public void onLanguageChanged() {
+        // UI 관련은 언어 변경 뒤 직접 수정 필요
+        mActionBar.setTitle(getString(R.string.app_name));
+        mActionBar.getTabAt(0).setText(R.string.tab_timetablesetting);
+        mActionBar.getTabAt(1).setText(R.string.tab_alarmandtheme);
+        mActionBar.getTabAt(2).setText(R.string.tab_info);
+        setupViewPager();
+
+        // 필요한 데이터 넣어서 메인 액티비티에서 활용
+        getIntent().putExtra("TimetablePageIndex", timetablePageIndex);
+
+        YTLanguageType currentLanguageType = YTLanguage.getCurrentLanguageType(getApplicationContext());
+        if (currentLanguageType.getUniqueId() != mPreviousLanguageId) {
+            getIntent().putExtra(KEY_CHANGED_LANGUAGE, true);
+            setResult(RESULT_OK, getIntent());
+        } else {
+            getIntent().putExtra(KEY_CHANGED_LANGUAGE, false);
+            setResult(RESULT_CANCELED, getIntent());
+        }
     }
 
     public void setResultAndFinish(){
-        Intent data = new Intent();
-        data.putExtra("TimetablePageIndex", timetablePageIndex);
-        setResult(Activity.RESULT_OK, data);
+        getIntent().putExtra("TimetablePageIndex", timetablePageIndex);
+        setResult(Activity.RESULT_OK, getIntent());
         finish();
-        overridePendingTransition(android.R.anim.slide_in_left,
-                android.R.anim.slide_out_right);
     }
-
 }

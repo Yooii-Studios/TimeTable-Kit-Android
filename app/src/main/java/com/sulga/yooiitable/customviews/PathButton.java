@@ -9,11 +9,10 @@
  */
 package com.sulga.yooiitable.customviews;
 
-import org.holoeverywhere.widget.*;
-
-import android.content.*;
-import android.util.*;
-import android.view.*;
+import android.content.Context;
+import android.util.AttributeSet;
+import android.view.View;
+import android.widget.Button;
 
 
 /**
@@ -22,7 +21,6 @@ import android.view.*;
  * 
  * @author KTH 단말어플리케이션개발팀 홍성훈(Email: breadval@kthcorp.com, Ext: 2923) 
  * @version 1.0
- * @tags 
  */
 public class PathButton extends Button {
 //	private float x_offset = 0;
@@ -31,11 +29,11 @@ public class PathButton extends Button {
 	private int y_offset = 0;
 	private ModeBtnClickedListener mOnModeBtnClickedListener;
 	
-	public ModeBtnClickedListener getmOnModeBtnClickedListener() {
+	public ModeBtnClickedListener getOnModeBtnClickedListener() {
 		return mOnModeBtnClickedListener;
 	}
 
-	public void setmOnModeBtnClickedListener(
+	public void setOnModeBtnClickedListener(
 			ModeBtnClickedListener mOnModeBtnClickedListener) {
 		this.mOnModeBtnClickedListener = mOnModeBtnClickedListener;
 	}

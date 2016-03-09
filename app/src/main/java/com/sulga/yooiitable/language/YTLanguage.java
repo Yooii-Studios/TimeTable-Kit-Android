@@ -1,13 +1,12 @@
 package com.sulga.yooiitable.language;
 
-import java.util.*;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 
-import org.holoeverywhere.preference.PreferenceManager;
-import org.holoeverywhere.preference.SharedPreferences;
+import com.sulga.yooiitable.mylog.MyLog;
 
-import com.sulga.yooiitable.mylog.*;
-
-import android.content.*;
+import java.util.Locale;
 
 public class YTLanguage {
 
@@ -20,9 +19,11 @@ public class YTLanguage {
 	/**
 	 * Singleton
 	 */
+	@SuppressWarnings("unused")
 	private YTLanguage(){}
 	private YTLanguage(Context context) {
-		SharedPreferences prefs = PreferenceManager.wrap(context, LANGUAGE_SHARED_PREFERENCES, Context.MODE_PRIVATE);
+		SharedPreferences prefs = context.getSharedPreferences(LANGUAGE_SHARED_PREFERENCES,
+				Context.MODE_PRIVATE);
 
 		int uniqueId = prefs
 				.getInt(LANGUAGE_MATRIX_KEY, -1);
@@ -54,9 +55,17 @@ public class YTLanguage {
 		return YTLanguage.getInstance(context).currentLanguageType; }
 
 	public static void setLanguageType(YTLanguageType newNewLanguage, Context context) {
+		// archive selection
 		YTLanguage.getInstance(context).currentLanguageType = newNewLanguage;
 		context.getSharedPreferences(LANGUAGE_SHARED_PREFERENCES, Context.MODE_PRIVATE)
-		.edit().putInt(LANGUAGE_MATRIX_KEY, newNewLanguage.getUniqueId()).commit();
-	}
+		.edit().putInt(LANGUAGE_MATRIX_KEY, newNewLanguage.getUniqueId()).apply();
 
+		// update locale
+		YTLanguageType currentLanguageType = YTLanguage.getCurrentLanguageType(context);
+		Locale locale = new Locale(currentLanguageType.getCode(), currentLanguageType.getRegion());
+		Locale.setDefault(locale);
+		Configuration config = new Configuration();
+		config.locale = locale;
+		context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
+	}
 }

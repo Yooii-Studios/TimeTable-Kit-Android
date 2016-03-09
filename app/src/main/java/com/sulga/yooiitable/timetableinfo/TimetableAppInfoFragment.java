@@ -1,19 +1,21 @@
 package com.sulga.yooiitable.timetableinfo;
 
-import java.util.*;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-import org.holoeverywhere.LayoutInflater;
-import org.holoeverywhere.app.*;
-
-import android.content.*;
-import android.net.*;
-import android.os.*;
-import android.view.*;
-
-import com.flurry.android.*;
+import com.flurry.android.FlurryAgent;
 import com.sulga.yooiitable.R;
-import com.sulga.yooiitable.constants.*;
-import com.sulga.yooiitable.timetableinfo.activity.*;
+import com.sulga.yooiitable.constants.FlurryConstants;
+import com.sulga.yooiitable.timetableinfo.activity.CreditsActivity;
+import com.sulga.yooiitable.timetableinfo.activity.StoreActivity;
+import com.sulga.yooiitable.timetableinfo.activity.YTInfoActivity;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class TimetableAppInfoFragment extends Fragment {
 	View yt_store;
@@ -33,10 +35,10 @@ public class TimetableAppInfoFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 
-				Intent intent = new Intent(TimetableAppInfoFragment.this.getSupportActivity(), StoreActivity.class);
-				TimetableAppInfoFragment.this.getSupportActivity().startActivity(intent);
+				Intent intent = new Intent(getActivity(), StoreActivity.class);
+				getActivity().startActivity(intent);
 
-				Map<String, String> info = new HashMap<String, String>();
+				Map<String, String> info = new HashMap<>();
 				info.put(FlurryConstants.STORE_CLICKTYPE_KEY, FlurryConstants.STORE_CLICKTYPE_INFOPAGE);
 				FlurryAgent.logEvent(FlurryConstants.STORE_CLICKED, info);
 			}		
@@ -47,8 +49,8 @@ public class TimetableAppInfoFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                Intent intent = new Intent(TimetableAppInfoFragment.this.getSupportActivity(), YTInfoActivity.class);
-                TimetableAppInfoFragment.this.getSupportActivity().startActivity(intent);
+                Intent intent = new Intent(getActivity(), YTInfoActivity.class);
+                getActivity().startActivity(intent);
             }
         });
 //		yt_rate = fragmentView.findViewById(R.id.view_timetable_option_appinfo_rate);
@@ -98,8 +100,8 @@ public class TimetableAppInfoFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(TimetableAppInfoFragment.this.getSupportActivity(), CreditsActivity.class);
-				TimetableAppInfoFragment.this.getSupportActivity().startActivity(intent);
+				Intent intent = new Intent(getActivity(), CreditsActivity.class);
+				getActivity().startActivity(intent);
 			}
 		});
 

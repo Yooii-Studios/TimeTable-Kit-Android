@@ -1,11 +1,10 @@
 package com.sulga.yooiitable.mylog;
 
-import org.holoeverywhere.widget.*;
+import android.content.Context;
+import android.util.Log;
+import android.widget.Toast;
 
-import android.content.*;
-import android.util.*;
-
-import com.sulga.yooiitable.constants.*;
+import com.sulga.yooiitable.constants.Devs;
 
 public class MyLog {
 

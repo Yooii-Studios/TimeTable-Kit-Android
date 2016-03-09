@@ -1,41 +1,49 @@
 package com.sulga.yooiitable.timetable;
 
-import android.accounts.AccountManager;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Parcelable;
-import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.widget.ShareActionProvider;
 import com.flurry.android.FlurryAgent;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
@@ -47,16 +55,11 @@ import com.sulga.yooiitable.constants.FixedSizes;
 import com.sulga.yooiitable.constants.FlurryConstants;
 import com.sulga.yooiitable.constants.NaverInApp;
 import com.sulga.yooiitable.constants.RequestCodes;
-import com.sulga.yooiitable.constants.YTUrls;
 import com.sulga.yooiitable.customviews.ParentViewPager;
 import com.sulga.yooiitable.customviews.animation.OnDeletePageTransformer;
 import com.sulga.yooiitable.data.Schedule;
 import com.sulga.yooiitable.data.Timetable;
 import com.sulga.yooiitable.data.TimetableDataManager;
-import com.sulga.yooiitable.google.calendar.GCAccountManager;
-import com.sulga.yooiitable.google.calendar.GCCalendarSyncManager;
-import com.sulga.yooiitable.language.YTLanguage;
-import com.sulga.yooiitable.language.YTLanguageType;
 import com.sulga.yooiitable.mylog.MyLog;
 import com.sulga.yooiitable.overlapviewer.OverlapTablesViewerActivity;
 import com.sulga.yooiitable.sharetable.BannerInfo;
@@ -67,11 +70,8 @@ import com.sulga.yooiitable.timetable.fragments.TimetableFragment;
 import com.sulga.yooiitable.timetableinfo.TimetableSettingInfoActivity;
 import com.sulga.yooiitable.timetableinfo.activity.NaverStoreActivity;
 import com.sulga.yooiitable.timetableinfo.activity.StoreActivity;
-import com.sulga.yooiitable.timetablesetting.SelectOptionDialogCreator;
 import com.sulga.yooiitable.utils.AlertDialogCreator;
-import com.sulga.yooiitable.utils.AppRater;
 import com.sulga.yooiitable.utils.DeviceUuidFactory;
-import com.sulga.yooiitable.utils.InAppBillingManager;
 import com.sulga.yooiitable.utils.LanguageInitiater;
 import com.sulga.yooiitable.utils.ToastMaker;
 import com.sulga.yooiitable.utils.UserNameFactory;
@@ -80,19 +80,8 @@ import com.sulga.yooiitable.utils.YTBitmapLoader;
 import com.viewpagerindicator.UnderlinePageIndicator;
 import com.yooiistudios.common.ad.AdUtils;
 import com.yooiistudios.common.ad.QuitAdDialogFactory;
+import com.yooiistudios.common.language.LocaleUtils;
 import com.yooiistudios.common.network.InternetConnectionManager;
-
-import org.holoeverywhere.app.Activity;
-import org.holoeverywhere.app.Dialog;
-import org.holoeverywhere.app.Fragment;
-import org.holoeverywhere.app.ProgressDialog;
-import org.holoeverywhere.widget.DrawerLayout;
-import org.holoeverywhere.widget.EditText;
-import org.holoeverywhere.widget.LinearLayout;
-import org.holoeverywhere.widget.ListView;
-import org.holoeverywhere.widget.TextView;
-import org.holoeverywhere.widget.Toast;
-import org.holoeverywhere.widget.ViewPager;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -100,18 +89,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Stack;
 
-public class TimetableActivity extends Activity{
+public class TimetableActivity extends AppCompatActivity {
 	public static final int TIMETABLE_PAGE_OFFSET = 0;	
 	public static final int TIMETABLE_MAX_LIMIT = 10;
     public static final int TIMETABLE_FREE_LIMIT = 3;
@@ -145,53 +131,36 @@ public class TimetableActivity extends Activity{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+        LocaleUtils.updateLocale(this);
+
 		setContentView(R.layout.activity_timetable_main_withdrawer);
         turnOnScreen();
 
-		MyLog.d(TAG, "onCreate Called");
-		//		Debug.startMethodTracing("TimetableFragment");
-		//validation check
-		//		AppValidationChecker.validationCheck(this);
-		//full version check, must do this when releasing
+		// TODO: 업데이트 전 구매 확인 다시 돌려놓아야 함
+		/*
         InAppBillingManager.updateFullVersionState(this, new InAppBillingManager.OnFullVersionStateUpdateFinishedListener() {
             @Override
             public void onFullVersionStateUpdateFinished(boolean isSucceed,
                     boolean isFullVersion) {
-                // TODO Auto-generated method stub
                 MyLog.d(TAG, "Update Full Version State : " + isSucceed
                         + ", Network Full version : " + isFullVersion);
-                if(isSucceed && !isFullVersion){
-                    setupAdView();
-                    dogEar.setVisibility(View.VISIBLE);
-                }else if(isSucceed && isFullVersion){
-                    removeAdView();
-                    dogEar.setVisibility(View.GONE);
-                }
-            }
+				if (isSucceed && !isFullVersion) {
+					setupAdView();
+					dogEar.setVisibility(View.VISIBLE);
+				} else if (isSucceed && isFullVersion) {
+					removeAdView();
+					dogEar.setVisibility(View.GONE);
+				}
+			}
         });
-//        AppRater.app_launched(this);
-		//temporary
-//				TimetableDataManager.saveFullVersionState(TimetableActivity.this, false);
-		//update connector count state
-		//		TimetableDataManager.getTodayDownloadedTimetable(this);
-		//		TimetableDataManager.getTodayUploadedTimetable(this);
-
-		//Update Connector count info
-		//		String uuid = new DeviceUuidFactory(this).getDeviceUuid().toString();
-		//		TimetableNetworkManager.setupDeviceIP(uuid);
-		////		TimeTableNetworkTool.getUploadInfo(uuid);
-		//		TimetableNetworkManager.updateConnectorUseInfo(uuid, this, null);
+        */
 
 		addTableProgressDialog = new ProgressDialog(this);
 		String addingTableString = getResources()
 				.getString(R.string.fragment_timetable_notice_adding_timetable);
 		addTableProgressDialog.setMessage(addingTableString);
 
-		//		initActionBar();
 		initDrawer();
-		//		TimetableDataManager.saveFullVersionState(this, true);
-		//		boolean _isFullVersion = TimetableDataManager.getCurrentFullVersionState(this);
-		//		MyLog.d("InAppBillingManager", "full version state : " + _isFullVersion);
 
 		mPager = (ParentViewPager)findViewById(R.id.activity_timetable_main_pager);
 		mAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
@@ -205,7 +174,6 @@ public class TimetableActivity extends Activity{
 
 		mPager.setCurrentItem(mAdapter.getCount() - 2);
 		mPager.setOffscreenPageLimit(3);
-		//mPager.setOnPageChangeListener(onDefaultPageChangeListener);
 
 		//페이져의 리스너는 인디케이터가 쓰고 있으므로 따로 인디케이터에 원래 페이저용 리스너 등록.
 		mIndicator = (UnderlinePageIndicator)findViewById(R.id.indicator);
@@ -222,12 +190,12 @@ public class TimetableActivity extends Activity{
                 Intent intent = new Intent(TimetableActivity.this, StoreActivity.class);
                 startActivity(intent);
 
-				Map<String, String> info = new HashMap<String, String>();
+				Map<String, String> info = new HashMap<>();
 				info.put(FlurryConstants.STORE_CLICKTYPE_KEY, FlurryConstants.STORE_CLICKTYPE_DOGEAR);
 				FlurryAgent.logEvent(FlurryConstants.STORE_CLICKED, info);
 			}
 		});
-		if(TimetableDataManager.getCurrentFullVersionState(this) == false){
+		if(!TimetableDataManager.getCurrentFullVersionState(this)){
 			//if not full version...
 			MyLog.d(TAG, "Not Full Version local");
 			setupAdView();
@@ -239,8 +207,6 @@ public class TimetableActivity extends Activity{
 			dogEar.setVisibility(View.GONE);
 		}
 
-
-
 		initFirstLaunch();
 		initConnectorBanner();
         LanguageInitiater.setActivityLanguage(this);
@@ -251,6 +217,10 @@ public class TimetableActivity extends Activity{
             initQuitAdView();
             AdUtils.showPopupAdIfSatisfied(this);
         }
+
+		// TODO: 업데이트 전 구매 확인 로직 되돌리기
+		TimetableDataManager.saveFullVersionState(TimetableActivity.this, true);
+		dogEar.setVisibility(View.GONE);
     }
 
     @Override
@@ -258,11 +228,10 @@ public class TimetableActivity extends Activity{
         super.onSaveInstanceState(outState);
     }
 
-    private void turnOnScreen()
-    {
+    private void turnOnScreen() {
         boolean wakeLock = getIntent().getBooleanExtra("WakeLock", false);
         MyLog.d(TAG, "WakeLock : " + wakeLock);
-        if(wakeLock == false)
+        if(!wakeLock)
             return;
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
                 WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
@@ -270,13 +239,13 @@ public class TimetableActivity extends Activity{
                 WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
     }
 
-    private void initActionBar(){
+    private void initActionBar() {
 		// 2) Set your display to custom next
         MyLog.d("ActionBar", "InitActionbar Called");
+
 		mActionBar = getSupportActionBar();
 		mActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 		// 3) Do any other config to the action bar
-		mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 		mActionBar.setDisplayShowHomeEnabled(true);
 		mActionBar.setDisplayHomeAsUpEnabled(true);
 		mActionBar.setDisplayShowTitleEnabled(false);
@@ -295,9 +264,6 @@ public class TimetableActivity extends Activity{
 		// Locate ListView in drawer_main.xml
 		mDrawerList = (ListView) findViewById(R.id.listview_drawer);
 		//     // Set a custom shadow that overlays the main content when the drawer
-		//        // opens
-		//        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
-		//                GravityCompat.START);
 
 		String addTable = getResources().getString(R.string.drawer_add_timetable);
 		String overlapTable = getResources().getString(R.string.drawer_overlap_timetables);
@@ -311,30 +277,26 @@ public class TimetableActivity extends Activity{
 
 		mDrawerList.setAdapter(mDrawerAdapter);
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-				R.drawable.ic_drawer, R.string.Tuesday,
-				R.string.TUE) {
+		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.Tuesday, R.string.TUE) {
 			public void onDrawerClosed(View view) {
-				// TODO Auto-generated method stub
 				super.onDrawerClosed(view);
 				processOnDrawerClosed();
 				MyLog.d("onDrawerClosed", "CLOSED");
 			}
 			public void onDrawerOpened(View drawerView) {
-				// TODO Auto-generated method stub
 				// Set the title on the action when drawer open
 				//                getSupportActionBar().setTitle(mDrawerTitle);
 				super.onDrawerOpened(drawerView);
 			}
 		};
 
-		mDrawerLayout.setDrawerListener(mDrawerToggle);
+		mDrawerLayout.addDrawerListener(mDrawerToggle);
 	}
 
 	private void initFirstLaunch(){
-		if(TimetableDataManager.getIsFirstLaunch(this) == true ){
+		if(TimetableDataManager.getIsFirstLaunch(this)){
 			StartTutorialDialogBuilder.createDialog(this).show();
-			if(TimetableDataManager.getSchedules().isEmpty() == true){
+			if(TimetableDataManager.getSchedules().isEmpty()){
 				addDefaultSchedule(); 
 			}
 		}
@@ -347,8 +309,7 @@ public class TimetableActivity extends Activity{
 		TimetableNetworkManager.getBannerInfo(uuid, name, this, new TimetableNetworkManager.OnFinishedBannerInfoAsync(){
 			@Override
 			public void onFinished(BannerInfo bi, boolean isSucceed) {
-				// TODO Auto-generated method stub
-				if(isSucceed == true){
+				if(isSucceed){
 					int currentVersion = TimetableDataManager.getConnectorBannerVersion(TimetableActivity.this);
 					MyLog.d("TimetableActivity", 
 							"current banner version : " + currentVersion 
@@ -384,7 +345,6 @@ public class TimetableActivity extends Activity{
 				InputStream in = new java.net.URL(bi.getImageUrl()).openStream();
 				mIcon11 = BitmapFactory.decodeStream(in);
 			} catch (Exception e) {
-				Log.e("Error", e.getMessage());
 				e.printStackTrace();
 			}
 			return mIcon11;
@@ -417,18 +377,17 @@ public class TimetableActivity extends Activity{
 		newSchedule.setLastUpdated(Calendar.getInstance().getTimeInMillis());
 
 		TimetableDataManager.getInstance().putSchedule(newSchedule);
-
 	}
 
 	private int getActionBarHeight() {
-		int actionBarHeight = getSupportActionBar().getHeight();
+		int actionBarHeight = 0;
+		if (getSupportActionBar() != null) {
+			actionBarHeight = getSupportActionBar().getHeight();
+		}
 		if (actionBarHeight != 0)
 			return actionBarHeight;
 		final TypedValue tv = new TypedValue();
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
-				actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
-		} else if (getTheme().resolveAttribute(com.actionbarsherlock.R.attr.actionBarSize, tv, true))
+		if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
 			actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
 		return actionBarHeight;
 	}
@@ -443,7 +402,9 @@ public class TimetableActivity extends Activity{
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
-		MyLog.d(TAG, "onConfigurationChanged");
+		// 강제로 Locale 고정 필요(풀리는 경우 방지)
+		LocaleUtils.updateLocale(this);
+
 		// Pass any configuration change to the drawer toggles
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
@@ -453,7 +414,6 @@ public class TimetableActivity extends Activity{
 		@Override
 		public void onItemClick(android.widget.AdapterView<?> parent,
 				View view, int position, long id) {
-			// TODO Auto-generated method stub
 			selectItem(position);
 		}
 	}
@@ -463,9 +423,7 @@ public class TimetableActivity extends Activity{
 		drawerSelected = position;
 		if(position == 0){
 			if( ( TimetableDataManager.getTimetables().size() >= TIMETABLE_FREE_LIMIT ) &&
-					( TimetableDataManager.getCurrentFullVersionState(this) == false ) ){
-//				ToastMaker.popupUnlockFullVersionToast(getSupportApplication(),
-//						ToastMaker.UNLOCK_FULL_VERSION_TOAST_OVERFLOW_PAGENUM, false);
+					(!TimetableDataManager.getCurrentFullVersionState(this)) ){
                 AdUtils.showInHouseStoreAd(this, getString(R.string.unlock_full_version_pagenum_overflow));
 			}else if(TimetableDataManager.getTimetables().size() >= TIMETABLE_MAX_LIMIT){
 				String warn = getString(R.string.activity_timetable_max_timetable_count);
@@ -495,24 +453,19 @@ public class TimetableActivity extends Activity{
 			return;
 		case 0 : 
 			if( ( TimetableDataManager.getTimetables().size() >= TIMETABLE_FREE_LIMIT ) &&
-					( TimetableDataManager.getCurrentFullVersionState(this) == false ) ){
+					(!TimetableDataManager.getCurrentFullVersionState(this)) ){
                 //not full version
 				return;
 			}else if(TimetableDataManager.getTimetables().size() >= TIMETABLE_MAX_LIMIT){
 				//Reached max timetable
 				return;
 			}
-			//ta.addPage(TimetableFragment.newInstance(new Timetable(5,10,60)), 1);
 
-			//				TimetableDataManager.getInstance().addTimetableAtHead(
-			//						new Timetable(Timetable.MON, Timetable.FRI, Timetable.DEFAULT_PERIOD_NUM)
-			//						);
 			addPageAt(TimetableActivity.TIMETABLE_PAGE_OFFSET, null, false);
 			TimetableDataManager.writeDatasToExternalStorage();
 			getViewPager().post(new Runnable(){
 				@Override
 				public void run() {
-					// TODO Auto-generated method stub
 					getViewPager().setCurrentItem(
 							TimetableActivity.TIMETABLE_PAGE_OFFSET,
 							false);
@@ -524,7 +477,7 @@ public class TimetableActivity extends Activity{
 			Intent overlapIntent = new Intent(
 					this, OverlapTablesViewerActivity.class);
 
-			ArrayList<Integer> checkedItems = new ArrayList<Integer>();
+			ArrayList<Integer> checkedItems = new ArrayList<>();
 			for(int i = 0; i < TimetableDataManager.getTimetables().size() ; i++){
 				checkedItems.add(i);
 			}
@@ -534,8 +487,8 @@ public class TimetableActivity extends Activity{
 			this.startActivityForResult(
 					overlapIntent, RequestCodes.CALL_ACTIVITY_OVERLAP);
 
-			Map<String, String> currentPageNumber = 
-					new HashMap<String, String>();
+			Map<String, String> currentPageNumber =
+					new HashMap<>();
 			int timetableNum = TimetableDataManager.getTimetables().size();
 			currentPageNumber.put(FlurryConstants.CURRENT_TIMETABLE_PAGE_NUM, 
 					Integer.toString(timetableNum));
@@ -561,7 +514,6 @@ public class TimetableActivity extends Activity{
 		adView.setBackgroundColor(Color.TRANSPARENT);
 		AdRequest request = new AdRequest.Builder().build();
 		
-		//		request.addTestDevice(AdRequest.TEST_EMULATOR);
 		adView.loadAd(request);
 	}
 
@@ -587,7 +539,7 @@ public class TimetableActivity extends Activity{
 
 	public void onResume(){
 		super.onResume();
-		if(TimetableDataManager.getCurrentFullVersionState(this) == true){
+		if(TimetableDataManager.getCurrentFullVersionState(this)){
 			removeAdView();
 			dogEar.setVisibility(View.GONE);
 		}
@@ -599,33 +551,20 @@ public class TimetableActivity extends Activity{
 		adView.destroy();
 		YTAppWidgetProvider_2x4.onTimetableDataChanged(this);
 		YTAppWidgetProvider_4x4.onTimetableDataChanged(this);
-		//		Debug.stopMethodTracing();
-		//		TimetableDataManager.getInstance().onDestroy();
-		//		YTAppWidgetProvider_2x4.onTimetableDataChanged(this);
-		//		YTAppWidgetProvider_4x4.onTimetableDataChanged(this);
 		super.onDestroy();
 	}
 
-	//	@Override
-	//	public boolean onKeyDown(int keyCode, KeyEvent event) {
-	//		if (keyCode == KeyEvent.KEYCODE_BACK) {
-	//			//Display confirmation here, finish() activity.
-	//			YTAppWidgetProvider_2x4.onTimetableDataChanged(getApplicationContext());
-	//			YTAppWidgetProvider_4x4.onTimetableDataChanged(getApplicationContext());
-	//			//	        return true;
-	//		}
-	//		return super.onKeyDown(keyCode, event);
-	//	}
-
 	private ShareActionProvider mShareActionProvider;
 	private Menu menu;
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		/** Create an option menu from res/menu/items.xml */
 		MyLog.d("onCreateOptionsMenu", "Called");
 
 		// 1)Inflate menu resource file.
-		getSupportMenuInflater().inflate(R.menu.actionbar_timetable_menu, menu);
+
+		getMenuInflater().inflate(R.menu.actionbar_timetable_menu, menu);
 		// 2)Initialize action bar, if not called in onCreateOptionsMenu
 		//and called in onCreate(), Custom view is not showing.
 		//strange...
@@ -643,14 +582,15 @@ public class TimetableActivity extends Activity{
 		}
 
 		// Fetch and store ShareActionProvider
-		mShareActionProvider = (ShareActionProvider) item.getActionProvider();
+		mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
 
 		/** Getting the target intent */
 		Intent intent = getShareIntent();
 
 		/** Setting a share intent */
-		if(intent!=null)
+		if (intent != null) {
 			mShareActionProvider.setShareIntent(intent);
+		}
 		mShareActionProvider.setOnShareTargetSelectedListener(new ShareActionProvider.OnShareTargetSelectedListener() {
 			@Override
 			public boolean onShareTargetSelected(ShareActionProvider actionProvider, Intent intent) {
@@ -665,7 +605,6 @@ public class TimetableActivity extends Activity{
 
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
-				// TODO Auto-generated method stub
 				if(NaverInApp.isNaverApk == false){
 					Intent intent = new Intent(TimetableActivity.this, StoreActivity.class);
 					startActivity(intent);
@@ -674,7 +613,7 @@ public class TimetableActivity extends Activity{
 					startActivity(intent);
 				}
 
-				Map<String, String> info = new HashMap<String, String>();
+				Map<String, String> info = new HashMap<>();
 				info.put(FlurryConstants.STORE_CLICKTYPE_KEY, FlurryConstants.STORE_CLICKTYPE_MENUITEM);
 				FlurryAgent.logEvent(FlurryConstants.STORE_CLICKED, info);
 				return true;
@@ -689,55 +628,11 @@ public class TimetableActivity extends Activity{
 		settingItem.setOnMenuItemClickListener(new OnSettingsMenuItemClickedListener(
 				mPager.getCurrentItem()));
 
-//		MenuItem languageItem = menu.findItem(R.id.menu_item_language);
-//		languageItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-//
-//			@Override
-//			public boolean onMenuItemClick(MenuItem item) {
-//				// TODO Auto-generated method stub
-//				String langTitle = getString(R.string.activity_setting_viewpager_languageprompt);
-//				SettingLanguageDialogCreator.showSettingsLanguageListDialog(TimetableActivity.this,
-//						langTitle,
-//						new SelectOptionDialogCreator.OnSelectOptionDialogItemSelectedListener(){
-//
-//					@Override
-//					public void onClick(int clickedItemPosition) {
-//						// TODO Auto-generated method stub
-//						onLanguageChanged(clickedItemPosition);
-//					}
-//				});
-//				return true;
-//			}
-//		});
-
-//		MenuItem sendFeedback = menu.findItem(R.id.menu_item_send_feedback);
-//		sendFeedback.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-//
-//			@Override
-//			public boolean onMenuItemClick(MenuItem item) {
-//				// TODO Auto-generated method stub
-//				String sendFeedSubject = getString(R.string.send_feedback_subject);
-//				Intent i = new Intent(Intent.ACTION_SEND);
-//				i.setType("*/*");
-//				//				i.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(crashLogFile));
-//				i.putExtra(Intent.EXTRA_EMAIL, new String[] {
-//						YTUrls.SEND_FEEDBACK_EMAIL
-//				});
-//				i.putExtra(Intent.EXTRA_SUBJECT, sendFeedSubject);
-//				//				i.putExtra(Intent.EXTRA_TEXT, "Some crash report details");
-//
-//				String mailUsTitle = getString(R.string.send_feedback_title);
-//				startActivity(createEmailOnlyChooserIntent(i, mailUsTitle));
-//				return true;
-//			}
-//		});
-
 		MenuItem rateApp = menu.findItem(R.id.menu_item_rate);
 		rateApp.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 			
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
-				// TODO Auto-generated method stub
                 Uri uri = Uri.parse("market://details?id="
 						+ getPackageName());
 				Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
@@ -767,48 +662,16 @@ public class TimetableActivity extends Activity{
 		return true;
 	}
 
-	private void refreshTextForLocaleChange(){
-		Intent intent = new Intent(TimetableActivity.this, TimetableActivity.class);
-		startActivity(intent);
-		finish();
-	}
-
-	public Intent createEmailOnlyChooserIntent(Intent source,
-			CharSequence chooserTitle) {
-		Stack<Intent> intents = new Stack<Intent>();
-		Intent i = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto",
-				YTUrls.SEND_FEEDBACK_EMAIL, null));
-		List<ResolveInfo> activities = getPackageManager()
-				.queryIntentActivities(i, 0);
-
-		for(ResolveInfo ri : activities) {
-			Intent target = new Intent(source);
-			target.setPackage(ri.activityInfo.packageName);
-			intents.add(target);
-		}
-
-		if(!intents.isEmpty()) {
-			Intent chooserIntent = Intent.createChooser(intents.remove(0),
-					chooserTitle);
-			chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS,
-					intents.toArray(new Parcelable[intents.size()]));
-
-			return chooserIntent;
-		} else {
-			return Intent.createChooser(source, chooserTitle);
-		}
-	}
-
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		MyLog.d("onOptionsItemSelected", "clicked");
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			MyLog.d("onOptionsItemSelected", "home clicked");
-			if (mDrawerLayout.isDrawerVisible(Gravity.LEFT)) {
-				mDrawerLayout.closeDrawer(Gravity.LEFT);
+			if (mDrawerLayout.isDrawerVisible(GravityCompat.START)) {
+				mDrawerLayout.closeDrawer(GravityCompat.START);
 			} else {
-				mDrawerLayout.openDrawer(Gravity.LEFT);
+				mDrawerLayout.openDrawer(GravityCompat.START);
 			}
 			break;
 		default:
@@ -840,7 +703,7 @@ public class TimetableActivity extends Activity{
 				mAdapter.getItem(mPager.getCurrentItem());
 		Bitmap bm = currentFrag.getTimetableShareImageBitmap();
 
-		OutputStream outStream = null;
+		OutputStream outStream;
 		try {
 			outStream = new FileOutputStream(getTempFile());
 			bm.compress(Bitmap.CompressFormat.PNG, 100, outStream);
@@ -858,17 +721,19 @@ public class TimetableActivity extends Activity{
 		if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
 			File directory = new File(Environment.getExternalStorageDirectory() + "/Yooiitable/");
 			directory.mkdirs();
-			File file = new File(directory ,"shareImage.png");
-			try  {
+			File file = new File(directory, "shareImage.png");
+			try {
 				file.createNewFile();
-			}  catch (IOException e) {}
+			} catch (IOException e) {
+			}
 
 			return file;
-		} else  {
+		} else {
 			return null;
 		}
-	} 
-	private class TitleTextViewOnClickListener implements View.OnClickListener{
+	}
+
+	private class TitleTextViewOnClickListener implements View.OnClickListener {
 		private String title="";
 
 		private String editTextInitial="";
@@ -877,7 +742,6 @@ public class TimetableActivity extends Activity{
 		}
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
 			final int currentPage = mPager.getCurrentItem();
 
 			if(currentPage == mAdapter.getCount() - 1){
@@ -891,7 +755,7 @@ public class TimetableActivity extends Activity{
 			}
 
 			Dialog dialog = AlertDialogCreator.getSimpleEditTextAlertDialog(
-					getSupportActionBarContext(), 
+					v.getContext(),
 					InputType.TYPE_CLASS_TEXT,
 					null,
 					timetable.getTitle(), 
@@ -900,11 +764,9 @@ public class TimetableActivity extends Activity{
 
 						@Override
 						public void onClick(EditText editText, Dialog d) {
-							// TODO Auto-generated method stub
 							String title = editText.getText().toString();
 							timetable.setTitle(title);
 							mActionBarTitle.setText(title);
-							//					TimetableDataManager.writeDatasToExternalStorage();
 							d.dismiss();
 						}
 					},
@@ -912,15 +774,13 @@ public class TimetableActivity extends Activity{
 
 						@Override
 						public void onClick(EditText editText, Dialog d) {
-							// TODO Auto-generated method stub
 							d.dismiss();
 						}
 					});
 			dialog.show();
-
 		}
-
 	}
+
 	public MyFragmentPagerAdapter getPagerAdapter(){
 		return mAdapter;
 	}
@@ -944,7 +804,6 @@ public class TimetableActivity extends Activity{
 			mAdapter.addPage(TimetableFragment.newInstance());
 		}
 		mAdapter.addPage(ScheduleFragment.newInstance());
-		//		mAdapter.addPage(AddTableFragment.newInstance(),0,false);
 	}
 
 	public boolean refreshTimetablePage(int pageIndex){
@@ -961,54 +820,35 @@ public class TimetableActivity extends Activity{
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data){
-		//this.onActivityResult(requestCode, resultCode, data)
-		if(requestCode == RequestCodes.CALL_ACTIVITY_EDIT_TIMETABLE_SETTING)
-            if (resultCode == android.app.Activity.RESULT_OK) {
-                MyLog.d("onActivityResult", "EDIT_TIMETABLE_END!!!!!");
-                int currentPage = data.getIntExtra("TimetablePageIndex", -1);
-                MyLog.d(TAG, "Current Page : " + currentPage);
-                mPager.setAdapter(null);
-                mPager.setAdapter(mAdapter);
-                if (currentPage < 0) {
-                    mPager.setCurrentItem(mAdapter.getCount() - 2);
-                } else {
-                    mPager.setCurrentItem(currentPage);
-                }
-                //MUCH FASTER WAY, 150106
-//                TimetableFragment currentPageFrag = (TimetableFragment) mAdapter.getItem(currentPage);
-//                currentPageFrag.refreshTimetable();
+        super.onActivityResult(requestCode, resultCode, data);
 
-				boolean languageChanged = data.getBooleanExtra("LanguageChanged", false);
-				if(languageChanged == true){
-                    MyLog.d(TAG, "LanguageChanged!");
-					refreshTextForLocaleChange();
+		if(requestCode == RequestCodes.CALL_ACTIVITY_EDIT_TIMETABLE_SETTING) {
+			if (resultCode == RESULT_OK) {
+				boolean hasLanguageChanged = data.getBooleanExtra(
+                        TimetableSettingInfoActivity.KEY_CHANGED_LANGUAGE, false);
+				if (hasLanguageChanged) {
+					recreate();
+				} else {
+					int currentPage = data.getIntExtra("TimetablePageIndex", -1);
+					mPager.setAdapter(null);
+					mPager.setAdapter(mAdapter);
+					if (currentPage < 0) {
+						mPager.setCurrentItem(mAdapter.getCount() - 2);
+					} else {
+						mPager.setCurrentItem(currentPage);
+					}
 				}
+			}
+		} else if (requestCode == RequestCodes.CALL_ACTIVITY_SHOW_ALL) {
+            if (resultCode == RESULT_OK) {
+                int idx = data.getIntExtra(
+                        "SelectedTimetableIndex", mPager.getChildCount() - 1);
+                mPager.setCurrentItem(idx + TIMETABLE_PAGE_OFFSET);
             }
-		//		else if(requestCode == RequestCodes.CALL_ACTIVITY_EDIT_SCHEDULE_ACTIVITY || 
-		//				requestCode == RequestCodes.CALL_ACTIVITY_ADD_SCHEDULE_ACTIVITY){
-		//			if(resultCode == Activity.RESULT_OK){
-		//				//Schedule s = data.getParcelableExtra("Schedule");
-		//				final ScheduleFragment sf = (ScheduleFragment)mAdapter.getItem(mPager.getCurrentItem());
-		//				//sf.refresh();
-		//
-		//				mAdapter.notifyDataSetChanged();
-		//
-		//				String scheduleKey = data.getStringExtra("ScheduleKey");
-		//				int scheduleIndex = data.getIntExtra("ScheduleIndex", -1);
-		//				final Schedule s = TimetableDataManager.getInstance().getScheduleListFromKey(scheduleKey).get(scheduleIndex);
-		//
-		//				sf.getView().post(new Runnable(){
-		//
-		//					@Override
-		//					public void run() {
-		//						// TODO Auto-generated method stub
-		//						sf.startAddAndEditScheduleAnimation(s);
-		//					}
-		//
-		//				});
-		//			}
-		//		}
-		else if(requestCode == RequestCodes.GCACCOUNT_REQUEST_CODE_PICK_ACCOUNT){
+        }
+        // 민수에게 문의 결과 없어진 기능. 코드는 남겨두자
+        /*
+        else if (requestCode == RequestCodes.GCACCOUNT_REQUEST_CODE_PICK_ACCOUNT) {
 			if (resultCode == RESULT_OK) {
 				String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
 				//AccountUtils.setAccountName(this, accountName);
@@ -1019,29 +859,17 @@ public class TimetableActivity extends Activity{
 			} else if (resultCode == RESULT_CANCELED) {
 				String warn = getResources()
 						.getString(R.string.warning_gc_sync_must_have_google_account);
-				Toast.makeText(
-						this, 
-						//						"구글 계정이 있어야 싱크가 가능합니다.", 
-						warn,
-						Toast.LENGTH_SHORT).
-						show();
-				//finish();
+				Toast.makeText(this, warn, Toast.LENGTH_SHORT).show();
 			}
 			return;
-		}else if (requestCode == RequestCodes.GCACCOUNT_REQUEST_CODE_RECOVER_PLAY_SERVICES){
+		} else if (requestCode == RequestCodes.GCACCOUNT_REQUEST_CODE_RECOVER_PLAY_SERVICES) {
 			String warn = getResources()
 					.getString(R.string.warning_gc_sync_must_have_latest_google_play);
 			if (resultCode == RESULT_CANCELED) {
-				Toast.makeText(
-						this, 
-						//						"싱크를 위해 최신버전의 구글 플레이 서비스가 설치되어 있어야 합니다.",
-						warn,
-						Toast.LENGTH_SHORT)
-						.show();
-				//finish();
+				Toast.makeText(this, warn, Toast.LENGTH_SHORT).show();
 			}
-		}else if(requestCode == RequestCodes.GCACCOUNT_REQUEST_CODE_AUTHORIZATION){
-			if(resultCode == RESULT_OK){
+		} else if (requestCode == RequestCodes.GCACCOUNT_REQUEST_CODE_AUTHORIZATION) {
+			if (resultCode == RESULT_OK) {
 				String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
 				String loading = getResources().getString(R.string.loading);
 				String startingConnection = getResources().getString(R.string.starting_connection);
@@ -1049,29 +877,18 @@ public class TimetableActivity extends Activity{
 				progressDialog.setTitle(loading);
 				progressDialog.setMessage(startingConnection);
 				progressDialog.setCancelable(false);
-				//progressDialog.setMax(3);
 				progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 				progressDialog.show();
 
 				GCCalendarSyncManager.startSync(this, accountName, progressDialog);
-			}else if(resultCode == RESULT_CANCELED){
+			} else if (resultCode == RESULT_CANCELED) {
 				String cancelled = getResources().getString(R.string.cancelled);
-				Toast.makeText(
-						this, 
-						//						"접근 권한을 허용하셔야 싱크가 가능합니다.",
-						cancelled,
-						Toast.LENGTH_LONG)
-						.show();
+				Toast.makeText(this, cancelled, Toast.LENGTH_LONG).show();
 			}
-		}else if(requestCode == RequestCodes.CALL_ACTIVITY_SHOW_ALL){
-			if(resultCode == RESULT_OK){
-				int idx = data.getIntExtra(
-						"SelectedTimetableIndex", mPager.getChildCount() - 1);
-				mPager.setCurrentItem(idx + TIMETABLE_PAGE_OFFSET);
-			}
-		}
-		super.onActivityResult(requestCode, resultCode, data);
-	}
+        }
+        */
+    }
+
 	private boolean removingPage = false;
 	private int removingPosition = -1;
 	public void removePageAt(int position){
@@ -1094,7 +911,6 @@ public class TimetableActivity extends Activity{
 
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				ViewPagerFakeDragger.goToRightPage(
 						TimetableActivity.this, true, 
 						new OnDeletePageTransformer(), 
@@ -1113,12 +929,12 @@ public class TimetableActivity extends Activity{
 	}
 
 	private void showAddTableProgressDialog(){
-		if(addTableProgressDialog.isShowing() == false){
+		if(!addTableProgressDialog.isShowing()){
 			addTableProgressDialog.show();
 		}
 	}
 	private void hideAddTableProgressDialog(){
-		if(addTableProgressDialog.isShowing() == true){
+		if(addTableProgressDialog.isShowing()){
 			addTableProgressDialog.dismiss();
 		}
 	}
@@ -1135,7 +951,7 @@ public class TimetableActivity extends Activity{
 		}
 		TimetableDataManager.writeDatasToExternalStorage();
 
-		if(goToRightPage == true){
+		if(goToRightPage){
 			ViewPagerFakeDragger.goToRightPage(
 					this, true,
 					null,
@@ -1143,7 +959,7 @@ public class TimetableActivity extends Activity{
 					, ViewPagerFakeDragger.SLOW_DELAY_MILLIS);
 			mIndicator.setOnPageChangeListener(onAddPageChangeListener);
 		}
-		if(goToRightPage == false){
+		if(!goToRightPage){
 			mAdapter.addPage(TimetableFragment.newInstance(), TIMETABLE_PAGE_OFFSET, true);
 		}else{
 			mAdapter.addPage(TimetableFragment.newInstance(), TIMETABLE_PAGE_OFFSET, false);
@@ -1151,7 +967,6 @@ public class TimetableActivity extends Activity{
 		mPager.post(new Runnable(){
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				//				mPager.setCurrentItem(tmpCurrPage + 1);
 				hideAddTableProgressDialog();
 			}
@@ -1165,7 +980,7 @@ public class TimetableActivity extends Activity{
 		public MyFragmentPagerAdapter(FragmentManager fm) { 
 			super(fm);  
 			this.fm = fm;
-			this.fragments = new ArrayList<Fragment>();
+			this.fragments = new ArrayList<>();
 		}
 		@Override  
 		public Fragment getItem(int index) {  
@@ -1192,7 +1007,7 @@ public class TimetableActivity extends Activity{
 			fragments.add(position, fragment);
             clearCache();
 			mPager.setAdapter(this);
-			if(keepCurrentPage == true)
+			if(keepCurrentPage)
 				mPager.setCurrentItem(currPage + 1);
 			//			mPager.setCurrentItem(position);
 			//notifyDataSetChanged();
@@ -1237,14 +1052,14 @@ public class TimetableActivity extends Activity{
 		OnSettingsMenuItemClickedListener(int pageIndex){
 			this.pageIndex = pageIndex;
 		}
+
 		@Override
 		public boolean onMenuItemClick(MenuItem item) {
-			// TODO Auto-generated method stub
 			Intent act = new Intent(TimetableActivity.this, TimetableSettingInfoActivity.class);
 			act.putExtra("TimetablePageIndex", pageIndex);
 			startActivityForResult(act, RequestCodes.CALL_ACTIVITY_EDIT_TIMETABLE_SETTING);
 
-			Map<String, String> info = new HashMap<String, String>();
+			Map<String, String> info = new HashMap<>();
 			info.put(FlurryConstants.SETTING_CLICKTYPE_KEY, 
 					FlurryConstants.SETTING_CLICKTYPE_MENUITEM);
 			FlurryAgent.logEvent(FlurryConstants.SETTING_CLICKED);
@@ -1256,7 +1071,6 @@ public class TimetableActivity extends Activity{
 
 		@Override
 		public void onPageSelected(int position) {
-			// TODO Auto-generated method stub
 			if(position == mAdapter.getCount() - 1){
 				((ScheduleFragment)mAdapter.getItem(position)).refresh();
 				MyLog.d("onPageChangeListener", "Schedule page refreshed!");
@@ -1272,15 +1086,11 @@ public class TimetableActivity extends Activity{
 
 		@Override
 		public void onPageScrolled(int arg0, float arg1, int arg2) {
-			// TODO Auto-generated method stub
-
 		}
 
 		@Override
 		public void onPageScrollStateChanged(int state) {
-			// TODO Auto-generated method stub
-			if( state == android.support.v4.view.ViewPager.SCROLL_STATE_IDLE &&
-					removingPage == true){
+			if( state == android.support.v4.view.ViewPager.SCROLL_STATE_IDLE && removingPage){
 
 				//페이지 삭제를 위해 한 페이지 오른쪽으로 이동해져있는 상태.
 				//데이터 삭
@@ -1293,15 +1103,6 @@ public class TimetableActivity extends Activity{
 						mAdapter.removePage(removingPosition);
 				MyLog.d("RemovePage", "removed Page : " + removingPosition);
 
-				//					mPager.post(new Runnable(){
-				//						@Override
-				//						public void run() {
-				//							// TODO Auto-generated method stub
-				//							mPager.setCurrentItem(pageIdx);
-				//							
-				//							removingPosition = -1;
-				//						}						
-				//					});		
 				mPager.setCurrentItem(pageIdx);
 				removingPosition = -1;
 				removingPage = false;
@@ -1310,13 +1111,9 @@ public class TimetableActivity extends Activity{
 				mIndicator.post(new Runnable(){
 					@Override
 					public void run() {
-						// TODO Auto-generated method stub
 						mPager.disablePaging(false);
 					}
 				});
-
-				//				TimetableDataManager.writeDatasToExternalStorage();
-				//removingPosition = -1;
 			}
 		}
 	};
@@ -1325,7 +1122,6 @@ public class TimetableActivity extends Activity{
 
 		@Override
 		public void onPageSelected(int position) {
-			// TODO Auto-generated method stub
 			if(position == mAdapter.getCount() - 1){
 				((ScheduleFragment)mAdapter.getItem(position)).refresh();
 				MyLog.d("onPageChangeListener", "Schedule page refreshed!");
@@ -1342,13 +1138,11 @@ public class TimetableActivity extends Activity{
 
 		@Override
 		public void onPageScrolled(int arg0, float arg1, int arg2) {
-			// TODO Auto-generated method stub
 
 		}
 
 		@Override
 		public void onPageScrollStateChanged(int state) {
-			// TODO Auto-generated method stub
 			if( state == android.support.v4.view.ViewPager.SCROLL_STATE_IDLE){
 				mPager.setPageTransformer(true, null);
 				mIndicator.notifyDataSetChanged();
@@ -1356,40 +1150,10 @@ public class TimetableActivity extends Activity{
 
 					@Override
 					public void run() {
-						// TODO Auto-generated method stub
-
 						mPager.disablePaging(false);
 					}
 
 				});
-
-				//				//페이지 삭제를 위해 한 페이지 오른쪽으로 이동해져있는 상태.
-				//				//데이터 삭
-				//				Timetable timetableToRemove =
-				//						TimetableDataManager.getInstance().getTimetableAtPage(removingPosition);
-				//				TimetableDataManager.getTimetables().remove(timetableToRemove);				
-				//
-				//
-				//				final int pageIdx = 
-				//						mAdapter.removePage(removingPosition);
-				//				MyLog.d("RemovePage", "removed Page : " + removingPosition);
-				//
-				//				//					mPager.post(new Runnable(){
-				//				//						@Override
-				//				//						public void run() {
-				//				//							// TODO Auto-generated method stub
-				//				//							mPager.setCurrentItem(pageIdx);
-				//				//							
-				//				//							removingPosition = -1;
-				//				//						}						
-				//				//					});		
-				//				mPager.setCurrentItem(pageIdx);
-				//				removingPosition = -1;
-				//				removingPage = false;
-				//				mPager.setPageTransformer(true, null);
-				//				
-				//				TimetableDataManager.getInstance().writeDatasToExternalStorage();
-				//				//removingPosition = -1;
 			}
 		}
 	};
@@ -1398,7 +1162,6 @@ public class TimetableActivity extends Activity{
 
 		@Override
 		public void onPageSelected(int position) {
-			// TODO Auto-generated method stub
 			if(position == mAdapter.getCount() - 1){
 				((ScheduleFragment)mAdapter.getItem(position)).refresh();
 				MyLog.d("onPageChangeListener", "Schedule page refreshed!");
@@ -1414,34 +1177,18 @@ public class TimetableActivity extends Activity{
 
 		@Override
 		public void onPageScrolled(int arg0, float arg1, int arg2) {
-			// TODO Auto-generated method stub
 		}
 
 		@Override
 		public void onPageScrollStateChanged(int state) {
-			// TODO Auto-generated method stub
 		}
 	};
 
 	void setActionBarTitle(int position){
         if(mActionBarTitle == null)
             return;
-		//		MenuItem titleItem = menu.findItem(R.id.menu_title);
 
-		//		if(position == 0){
-		//			String addTableTitle = getResources()
-		//					.getString(R.string.fragment_to_addtable_title);
-		//
-		//			mActionBarTitle.setText(addTableTitle);
-		//			mActionBarTitle.setClickable(false);
-		//
-		//			MenuItem item = menu.findItem(R.id.menu_item_share);
-		//			item.setVisible(false);
-		//			MenuItem settingItem = menu.findItem(R.id.menu_item_settings);
-		//			settingItem.setVisible(false);
-		//			//			mActionBar.setText(addTableTitle);
-		//		}else
-		if(position >= TIMETABLE_PAGE_OFFSET && 
+		if(position >= TIMETABLE_PAGE_OFFSET &&
 				( position != mAdapter.getCount() - 1 ) ){
             MyLog.d(TAG, "ActionBar : " + mActionBarTitle);
 			//add table fragment
@@ -1456,8 +1203,6 @@ public class TimetableActivity extends Activity{
 			settingItem.setVisible(true);
 			settingItem.setOnMenuItemClickListener(new OnSettingsMenuItemClickedListener(
 					mPager.getCurrentItem()));
-			//			mActionBar.setTitle(
-			//					TimetableDataManager.getTimetables().get(position - 1).getTitle());
 		}else if( ( position == (mAdapter.getCount() - 1) ) ){
 			String scheduleTitle = getResources().getString(R.string.fragment_schedule_title);
 			mActionBarTitle.setText(
@@ -1467,10 +1212,8 @@ public class TimetableActivity extends Activity{
 			item.setVisible(false);
 			MenuItem settingItem = menu.findItem(R.id.menu_item_settings);
 			settingItem.setVisible(false);
-			//			mActionBar.setTitle(scheduleTitle);
 		}
 	}
-
 
 	class DrawerItem{
 		int icon;
@@ -1507,6 +1250,7 @@ public class TimetableActivity extends Activity{
 			return position;
 		}
 
+		@SuppressLint("ViewHolder")
 		public View getView(int position, View convertView, ViewGroup parent) {
 			// Declare Variables
 			TextView text;
@@ -1514,8 +1258,9 @@ public class TimetableActivity extends Activity{
 
 			inflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			View itemView = inflater.inflate(R.layout.item_drawer, parent,
-					false);
+
+			View itemView = inflater.inflate(R.layout.item_drawer, parent,false);
+
 			// Locate the TextViews in drawer_list_item.xml
 			text = (TextView) itemView.findViewById(R.id.item_drawer_text); 
 			// Locate the ImageView in drawer_list_item.xml
@@ -1526,7 +1271,7 @@ public class TimetableActivity extends Activity{
 			imgIcon.setImageResource(items[position].icon); 
 			int ic_wh = (int) TimetableActivity.this.getResources()
 					.getDimension(R.dimen.drawer_icon_wh);
-			LinearLayout.LayoutParams param = (LayoutParams) 
+			LinearLayout.LayoutParams param = (LayoutParams)
 					imgIcon.getLayoutParams();
 			param.width = ic_wh;
 			param.height = ic_wh;
@@ -1541,7 +1286,7 @@ public class TimetableActivity extends Activity{
 
 		public BitmapWorkerTask(ImageView imageView) {
 			// Use a WeakReference to ensure the ImageView can be garbage collected
-			imageViewReference = new WeakReference<ImageView>(imageView);
+			imageViewReference = new WeakReference<>(imageView);
 		}
 		// Decode image in background.
 		@Override
@@ -1568,7 +1313,7 @@ public class TimetableActivity extends Activity{
 
 		public BitmapWorkerTaskFromPhoto(ImageView imageView) {
 			// Use a WeakReference to ensure the ImageView can be garbage collected
-			imageViewReference = new WeakReference<ImageView>(imageView);
+			imageViewReference = new WeakReference<>(imageView);
 		}
 
 		// Decode image in background.
@@ -1584,7 +1329,6 @@ public class TimetableActivity extends Activity{
 								tableId)
 						);
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			return null;
@@ -1616,7 +1360,7 @@ public class TimetableActivity extends Activity{
 
     @Override
     public void onBackPressed() {
-        if ((TimetableDataManager.getCurrentFullVersionState(this) == false) &&
+        if ((!TimetableDataManager.getCurrentFullVersionState(this)) &&
                 InternetConnectionManager.isNetworkAvailable(this)) {
             AlertDialog adDialog = QuitAdDialogFactory.makeDialog(TimetableActivity.this,
                     quitAdView);

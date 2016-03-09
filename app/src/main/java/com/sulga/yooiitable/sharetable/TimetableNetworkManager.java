@@ -1,20 +1,23 @@
 package com.sulga.yooiitable.sharetable;
 
-import java.util.*;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.os.AsyncTask;
+import android.widget.Toast;
 
-import org.holoeverywhere.widget.*;
-
-import android.content.*;
-import android.os.*;
-
-import com.flurry.android.*;
+import com.flurry.android.FlurryAgent;
 import com.sulga.yooiitable.R;
-import com.sulga.yooiitable.constants.*;
-import com.sulga.yooiitable.data.*;
-import com.sulga.yooiitable.mylog.*;
+import com.sulga.yooiitable.constants.ConnectorConstants;
+import com.sulga.yooiitable.constants.FlurryConstants;
+import com.sulga.yooiitable.data.Timetable;
+import com.sulga.yooiitable.data.TimetableDataManager;
+import com.sulga.yooiitable.mylog.MyLog;
 import com.sulga.yooiitable.sharetable.TimeTableNetworkTool.DownloadTimetableResult;
-import com.sulga.yooiitable.timetable.fragments.*;
-import com.sulga.yooiitable.utils.*;
+import com.sulga.yooiitable.timetable.fragments.TimetableFragment;
+import com.sulga.yooiitable.utils.DataToByteArrayConverter;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class TimetableNetworkManager {
 
@@ -92,7 +95,7 @@ public class TimetableNetworkManager {
 					// TODO Auto-generated method stub
 					UploadAsyncTask.this.cancel(false);
 					String cancelled = parentFrag.getString(R.string.cancelled);
-					Toast.makeText(parentFrag.getSupportActivity(), cancelled, Toast.LENGTH_SHORT)
+					Toast.makeText(parentFrag.getActivity(), cancelled, Toast.LENGTH_SHORT)
 					.show();
 
 					Map<String, String> info = new HashMap<String, String>();
@@ -117,7 +120,7 @@ public class TimetableNetworkManager {
 			//			dataInputBox.setText("");
 			boolean isSucceed = false;
 			parentFrag.dismissProgressDialog();
-			Context ctx = parentFrag.getSupportActivity();
+			Context ctx = parentFrag.getActivity();
 			String warn = ctx.getResources().getString(
 					R.string.connector_result_failed);
 			if(ret == ConnectorConstants.RESULT_SUCCESS){
@@ -142,7 +145,7 @@ public class TimetableNetworkManager {
 				warn = ctx.getResources().getString(
 						R.string.connector_result_failed);
 			}
-			Toast.makeText(parentFrag.getSupportActivity(), 
+			Toast.makeText(parentFrag.getActivity(),
 					warn,
 					Toast.LENGTH_LONG).show();
 			parentFrag.onUploadDataFinished(isSucceed);
@@ -177,9 +180,9 @@ public class TimetableNetworkManager {
 					// TODO Auto-generated method stub
 					DownloadAsyncTask.this.cancel(false);
 					String cancelled = parentFrag.getString(R.string.cancelled);
-					Toast.makeText(parentFrag.getSupportActivity(), cancelled, Toast.LENGTH_SHORT)
+					Toast.makeText(parentFrag.getActivity(), cancelled, Toast.LENGTH_SHORT)
 					.show();
-					Map<String, String> info = new HashMap<String, String>();
+					Map<String, String> info = new HashMap<>();
 					info.put(FlurryConstants.DOWNLOAD_INFO_RESULT_KEY, 
 							FlurryConstants.DOWNLOAD_RESULT_CANCELLED);
 					FlurryAgent.logEvent(FlurryConstants.DOWNLOAD_ACTION, info);
@@ -203,7 +206,7 @@ public class TimetableNetworkManager {
 			parentFrag.dismissProgressDialog();
 
 			String warn = null;
-			Context ctx = parentFrag.getSupportActivity();
+			Context ctx = parentFrag.getActivity();
 			if(timetableData.resultCode == ConnectorConstants.RESULT_SUCCESS){
 				//succeed in download = no need to show toast.
 			}else if(timetableData.resultCode == ConnectorConstants.RESULT_NETWORK_ERROR){
@@ -229,7 +232,7 @@ public class TimetableNetworkManager {
 						R.string.connector_result_failed);
 			}
 			if(warn != null){
-				Toast.makeText(parentFrag.getSupportActivity(), 
+				Toast.makeText(parentFrag.getActivity(),
 						warn,
 						Toast.LENGTH_LONG).show();
 			}
@@ -388,11 +391,11 @@ public class TimetableNetworkManager {
 	}
 
 	public interface OnFinishedBannerInfoAsync{
-		public void onFinished(BannerInfo bi, boolean isSucceed);
+		void onFinished(BannerInfo bi, boolean isSucceed);
 	}
 	
 	public interface OnFinishedConnectorAsync{
-		public void onFinished(ConnectorState cs, boolean isSucceed);
+		void onFinished(ConnectorState cs, boolean isSucceed);
 	}
 
 }

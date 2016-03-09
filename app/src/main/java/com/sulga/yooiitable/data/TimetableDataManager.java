@@ -1,6 +1,7 @@
 package com.sulga.yooiitable.data;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
@@ -9,10 +10,6 @@ import android.os.Environment;
 import com.sulga.yooiitable.mylog.MyLog;
 import com.sulga.yooiitable.timetable.TimetableActivity;
 import com.sulga.yooiitable.utils.YTBitmapLoader;
-
-import org.holoeverywhere.preference.PreferenceManager;
-import org.holoeverywhere.preference.SharedPreferences;
-import org.holoeverywhere.preference.SharedPreferences.Editor;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,7 +33,7 @@ public class TimetableDataManager {
 	private static final String SCHEDULE_KEY_TOKEN =  "/";
 
 	private TimetableDataManager(){
-		if(readDatasFromExternalStorage() == false){
+		if(!readDatasFromExternalStorage()){
 			makeDefaultTimetableDatas();
 			//			writeDatasToExternalStorage(timetables, scheduleMap, eventIDsToDeleteInGoogleCalendar);			
 			writeDatasToExternalStorage();
@@ -273,11 +270,9 @@ public class TimetableDataManager {
 	//	
 	//				MyLog.d("file write path", file.getAbsolutePath());
 	//			} catch (IOException e) {
-	//				// TODO Auto-generated catch block
 	//				e.printStackTrace();
 	//			}
 	//		} catch (FileNotFoundException e) {
-	//			// TODO Auto-generated catch block
 	//			e.printStackTrace();
 	//		} finally {
 	//			//Close the ObjectOutputStream
@@ -300,9 +295,6 @@ public class TimetableDataManager {
 	//	}
 	/**
 	 * 
-	 * @param t	: timetable list
-	 * @param s : schedule map
-	 * @param eventIDsToDeleteOnGC : string list
 	 * 만약 null값이 전달되면 file에 저장된 값을 읽어봐 write
 	 */
 	public synchronized static void writeDatasToExternalStorage(){
@@ -396,7 +388,7 @@ public class TimetableDataManager {
 		MyLog.d("TimetableDataManager", "dir from root : " + root.getAbsolutePath() + ", file from Environment : " + file.getAbsolutePath());
 		if(timetables != null)
 			MyLog.d("FileThreadSafeTest", "readData : 1. make new data / lesson size : " + getMainTimetable().getLessonList().size() );
-		if(file.exists() == false){
+		if(!file.exists()){
 			//파일이 존재하지 않으면...
 			return false;
 		}
@@ -437,14 +429,11 @@ public class TimetableDataManager {
 					e.printStackTrace();
 				}
 			} catch (StreamCorruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally{
 			try {
@@ -467,60 +456,53 @@ public class TimetableDataManager {
 	}
 
 	public static boolean getIsFirstLaunch(Context context){
-		SharedPreferences prefs = PreferenceManager.wrap(context, "prefs", Context.MODE_PRIVATE);
-		//	    SharedPreferences prefs = activity.getSharedPreferences("prefs", Context.MODE_PRIVATE);   
+		SharedPreferences prefs = context.getSharedPreferences("prefs", Context.MODE_PRIVATE);
 		boolean isFirstLaunch = prefs.getBoolean("isFirstLaunch", true);
-		if(isFirstLaunch == true){
+		if(isFirstLaunch){
 			//Automatically set this value into false.
-			Editor edit = prefs.edit();
+			SharedPreferences.Editor edit = prefs.edit();
 			edit.putBoolean("isFirstLaunch", false);
-			edit.commit();
+			edit.apply();
 		}
 		return isFirstLaunch;
 	}
 
 	public static boolean getIsFirstConnectorLaunch(Context context){
-		SharedPreferences prefs = PreferenceManager.wrap(context, "prefs", Context.MODE_PRIVATE);
-		//	    SharedPreferences prefs = activity.getSharedPreferences("prefs", Context.MODE_PRIVATE);   
+		SharedPreferences prefs = context.getSharedPreferences("prefs", Context.MODE_PRIVATE);
 		boolean isFirstLaunch = prefs.getBoolean("isFirstConnectorLaunch", true);
-		if(isFirstLaunch == true){
+		if(isFirstLaunch){
 			//Automatically set this value into false.
-			Editor edit = prefs.edit();
+			SharedPreferences.Editor edit = prefs.edit();
 			edit.putBoolean("isFirstConnectorLaunch", false);
-			edit.commit();
+			edit.apply();
 		}
 		return isFirstLaunch;
 	}
 	
 	public static String getNaverPaymentSeq(Context context){
-		SharedPreferences prefs = PreferenceManager.wrap(context, "prefs", Context.MODE_PRIVATE);
-		//	    SharedPreferences prefs = activity.getSharedPreferences("prefs", Context.MODE_PRIVATE);   
-		String paymentSeq = prefs.getString("naverPaymentSeq", null);
-		return paymentSeq;
+		SharedPreferences prefs = context.getSharedPreferences("prefs", Context.MODE_PRIVATE);
+		return prefs.getString("naverPaymentSeq", null);
 	}
 
 	public static void saveNaverPaymentSeq(Context context, String paymentSeq){
-		SharedPreferences prefs = PreferenceManager.wrap(context, "prefs", Context.MODE_PRIVATE);
+		SharedPreferences prefs = context.getSharedPreferences("prefs", Context.MODE_PRIVATE);
 		//	    SharedPreferences prefs = activity.getSharedPreferences("prefs", Context.MODE_PRIVATE);   
-		Editor edit = prefs.edit();
+		SharedPreferences.Editor edit = prefs.edit();
 		edit.putString("naverPaymentSeq", paymentSeq);
-		edit.commit();
+		edit.apply();
 	}
 
 
-	public static boolean getCurrentFullVersionState(Context context) 
-	{
-		SharedPreferences prefs = PreferenceManager.wrap(context, "prefs", Context.MODE_PRIVATE);
-		//	    SharedPreferences prefs = activity.getSharedPreferences("prefs", Context.MODE_PRIVATE);        
+	public static boolean getCurrentFullVersionState(Context context) {
+		SharedPreferences prefs = context.getSharedPreferences("prefs", Context.MODE_PRIVATE);
 		return prefs.getBoolean("isFullVersion", false);
 	}
 
-	public static void saveFullVersionState(Context context, Boolean isFullVersion) 
-	{
-		SharedPreferences prefs = PreferenceManager.wrap(context, "prefs", Context.MODE_PRIVATE);
-		Editor edit = prefs.edit();
-		edit.putBoolean("isFullVersion", isFullVersion);        
-		edit.commit();
+	public static void saveFullVersionState(Context context, Boolean isFullVersion) {
+		SharedPreferences prefs = context.getSharedPreferences("prefs", Context.MODE_PRIVATE);
+		SharedPreferences.Editor edit = prefs.edit();
+		edit.putBoolean("isFullVersion", isFullVersion);
+		edit.apply();
 	}
 
 	/**
@@ -532,13 +514,7 @@ public class TimetableDataManager {
 	 * @return cnt
 	 */
 	public static int getTodayUploadAvailCount(Context context){
-		SharedPreferences prefs = PreferenceManager.wrap(context, "shareCount", Context.MODE_PRIVATE);
-
-		//		Calendar c = GregorianCalendar.getInstance();
-		//		int year = c.get(GregorianCalendar.YEAR);
-		//		int month = c.get(GregorianCalendar.MONTH);
-		//		int day = c.get(GregorianCalendar.DAY_OF_MONTH);
-		//		String key = "uploadtable" + Integer.toString(year) + Integer.toString(month) + Integer.toString(day);
+		SharedPreferences prefs = context.getSharedPreferences("shareCount", Context.MODE_PRIVATE);
 		String key = "availu";
 		int cnt = prefs.getInt(key, 10);
 		MyLog.d("ShareCount", "key : " + key + ", uploaded table cnt : " + cnt);
@@ -551,17 +527,12 @@ public class TimetableDataManager {
 	 * @param context
 	 */
 	public static void setTodayUploadAvailCount(Context context, int cnt){
-		SharedPreferences prefs = PreferenceManager.wrap(context, "shareCount", Context.MODE_PRIVATE);
-		Editor edit = prefs.edit();
-		//		Calendar c = GregorianCalendar.getInstance();
-		//		int year = c.get(GregorianCalendar.YEAR);
-		//		int month = c.get(GregorianCalendar.MONTH);
-		//		int day = c.get(GregorianCalendar.DAY_OF_MONTH);
-		//		String key = "downloadtable" + Integer.toString(year) + Integer.toString(month) + Integer.toString(day);
+		SharedPreferences prefs = context.getSharedPreferences("shareCount", Context.MODE_PRIVATE);
+		SharedPreferences.Editor edit = prefs.edit();
 		String key = "availu";
 		MyLog.d("ShareCount", "key : " + key + ", downloaded table added, now : " + cnt);
 		edit.putInt(key, cnt);
-		edit.commit();
+		edit.apply();
 	}
 
 	/**
@@ -573,13 +544,7 @@ public class TimetableDataManager {
 	 * @return cnt
 	 */
 	public static int getTodayDownloadAvailCount(Context context){
-		SharedPreferences prefs = PreferenceManager.wrap(context, "shareCount", Context.MODE_PRIVATE);
-		//		Calendar c = GregorianCalendar.getInstance();
-		//		int year = c.get(GregorianCalendar.YEAR);
-		//		int month = c.get(GregorianCalendar.MONTH);
-		//		int day = c.get(GregorianCalendar.DAY_OF_MONTH);
-		//		String key = "downloadtable" + Integer.toString(year) + Integer.toString(month) + Integer.toString(day);
-		//		int cnt = prefs.getInt(key, 0);
+		SharedPreferences prefs = context.getSharedPreferences("shareCount", Context.MODE_PRIVATE);
 		String key = "availd";
 		int cnt = prefs.getInt(key, 10);
 		MyLog.d("ShareCount", "key : " + key + ", Avail download cnt : " + cnt);
@@ -592,34 +557,25 @@ public class TimetableDataManager {
 	 * @param context
 	 */
 	public static void setTodayDownloadAvailCount(Context context, int cnt){
-		SharedPreferences prefs = PreferenceManager.wrap(context, "shareCount", Context.MODE_PRIVATE);
-		Editor edit = prefs.edit();
-		//		Calendar c = GregorianCalendar.getInstance();
-		//		int year = c.get(GregorianCalendar.YEAR);
-		//		int month = c.get(GregorianCalendar.MONTH);
-		//		int day = c.get(GregorianCalendar.DAY_OF_MONTH);
-		//		String key = "downloadtable" + Integer.toString(year) + Integer.toString(month) + Integer.toString(day);
+		SharedPreferences prefs = context.getSharedPreferences("shareCount", Context.MODE_PRIVATE);
+		SharedPreferences.Editor edit = prefs.edit();
 		String key = "availd";
 		MyLog.d("ShareCount", "key : " + key + ", downloaded table added, now : " + cnt);
 		edit.putInt(key, cnt);
-		edit.commit();
+		edit.apply();
 	}
 	
 	public static void setConnectorBannerVersion(Context context, int version){
-		SharedPreferences prefs = PreferenceManager.wrap(context,
-				"bannerInfo", 
-				Context.MODE_PRIVATE);
-		Editor edit = prefs.edit();
+		SharedPreferences prefs = context.getSharedPreferences("bannerInfo", Context.MODE_PRIVATE);
+		SharedPreferences.Editor edit = prefs.edit();
 		String key = "version";
 		MyLog.d("bannerInfo", "banner version : " + version);
 		edit.putInt(key, version);
-		edit.commit();
+		edit.apply();
 	}
 	
 	public static int getConnectorBannerVersion(Context context){
-		SharedPreferences prefs = PreferenceManager.wrap(context, 
-				"bannerInfo", 
-				Context.MODE_PRIVATE);
+		SharedPreferences prefs = context.getSharedPreferences("bannerInfo", Context.MODE_PRIVATE);
 		String key = "version";
 		int version = prefs.getInt(key, -1);
 		MyLog.d("bannerInfo", "banner version : " + version);
@@ -627,20 +583,16 @@ public class TimetableDataManager {
 	}
 	
 	public static void setConnectorBannerLinkUrl(Context context, String linkUrl){
-		SharedPreferences prefs = PreferenceManager.wrap(context,
-				"bannerInfo", 
-				Context.MODE_PRIVATE);
-		Editor edit = prefs.edit();
+		SharedPreferences prefs = context.getSharedPreferences("bannerInfo", Context.MODE_PRIVATE);
+		SharedPreferences.Editor edit = prefs.edit();
 		String key = "linkUrl";
 		MyLog.d("bannerInfo", "banner link url : " + linkUrl);
 		edit.putString(key, linkUrl);
-		edit.commit();
+		edit.apply();
 	}
 	
 	public static String getConnectorBannerLinkUrl(Context context){
-		SharedPreferences prefs = PreferenceManager.wrap(context, 
-				"bannerInfo", 
-				Context.MODE_PRIVATE);
+		SharedPreferences prefs = context.getSharedPreferences("bannerInfo", Context.MODE_PRIVATE);
 		String key = "linkUrl";
 		String linkUrl = prefs.getString(key, null);
 		MyLog.d("bannerInfo", "banner link url : " + linkUrl);
@@ -649,9 +601,6 @@ public class TimetableDataManager {
 
 	
 	public static void saveConnectorBannerBitmap(Context context, Bitmap bitmap){
-//		File file = new File(Environment.getExternalStorageDirectory() 
-//				+ "/YooiiTable/ConnectorBanner.png");
-//		File fileCacheItem = new File(file.getPath());
 		File dir = new File(Environment.getExternalStorageDirectory() + "/YooiiTable");
 		dir.mkdirs();
 		File file = new File(dir, "ConnectorBanner.png");
@@ -687,9 +636,9 @@ public class TimetableDataManager {
 	}
 	
 	public static synchronized void makeDefaultTimetableDatas(){
-		scheduleMap = new HashMap<String, ArrayList<Schedule>>();
-		timetables = new ArrayList<Timetable>();
-		eventIDsToDeleteInGoogleCalendar = new ArrayList<String>();
+		scheduleMap = new HashMap<>();
+		timetables = new ArrayList<>();
+		eventIDsToDeleteInGoogleCalendar = new ArrayList<>();
 
 		addTimetableAtHead(new Timetable(Calendar.MONDAY, Calendar.SATURDAY, Timetable.DEFAULT_PERIOD_NUM));
 		addTimetableAtHead(new Timetable(Calendar.MONDAY, Calendar.FRIDAY, Timetable.DEFAULT_PERIOD_NUM));		

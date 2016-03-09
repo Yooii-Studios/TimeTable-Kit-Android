@@ -59,7 +59,7 @@
     <string name="timetable_setting_info_version">Version</string>
     <string name="tab_timetablesetting">Basic Settings</string>
     <string name="tab_timetabletheme">Theme</string>
-    <string name="tab_alarmandtheme">Notif\\Theme</string>
+    <string name="tab_alarmandtheme">Notif / Theme</string>
     <string name="tab_info">Store / Info</string>
     <string name="notice">Alarm!</string>
     <string name="unlock_full_version">Buy and enjoy the Pro Version!</string>
@@ -265,4 +265,10 @@
     <string name="quit_ad_dialog_title_text">Are you sure you want to quit?</string>
     <string name="store_buy_full_version">Buy the Pro Version!</string>
     <string name="minute_short">Min</string>
+
+    <!-- Permissions -->
+    <string name="need_permission_read_storage">Read Storage permission is needed to use a timetable.</string>
+    <string name="need_permission_read_contacts">Contacts permission is needed to use Connector.</string>
+    <string name="permission_granted">The permission has been granted.</string>
+    <string name="permission_not_granted">The permission was not granted.</string>
 </resources>

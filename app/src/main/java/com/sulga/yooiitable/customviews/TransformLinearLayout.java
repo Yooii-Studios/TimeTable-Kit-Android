@@ -1,7 +1,5 @@
 package com.sulga.yooiitable.customviews;
 
-import org.holoeverywhere.widget.LinearLayout;
-
 import android.content.*;
 import android.graphics.*;
 import android.util.*;

@@ -1,19 +1,21 @@
 package com.sulga.yooiitable.showalltables;
 
-import org.holoeverywhere.LayoutInflater;
-import org.holoeverywhere.app.*;
-import org.holoeverywhere.widget.FrameLayout;
-import org.holoeverywhere.widget.LinearLayout;
-import org.holoeverywhere.widget.TextView;
-
-import android.graphics.*;
-import android.view.*;
-import android.widget.*;
+import android.app.Activity;
+import android.graphics.Color;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.sulga.yooiitable.R;
-import com.sulga.yooiitable.data.*;
-import com.sulga.yooiitable.mylog.*;
-import com.sulga.yooiitable.theme.parts.*;
+import com.sulga.yooiitable.data.Lesson;
+import com.sulga.yooiitable.data.Timetable;
+import com.sulga.yooiitable.data.TimetableDataManager;
+import com.sulga.yooiitable.mylog.MyLog;
+import com.sulga.yooiitable.theme.parts.YTShapeRoundRectThemePart;
 
 public class TimetablePreviewViewCreator {
 	private Activity activity;

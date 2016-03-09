@@ -1,39 +1,61 @@
 package com.sulga.yooiitable.timetable.fragments.dialogbuilders;
 
-import java.text.*;
-import java.util.*;
+import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.TimePicker;
 
-import org.holoeverywhere.app.*;
-import org.holoeverywhere.widget.AdapterView;
-import org.holoeverywhere.widget.ArrayAdapter;
-import org.holoeverywhere.widget.DatePicker;
-import org.holoeverywhere.widget.EditText;
-import org.holoeverywhere.widget.Spinner;
-import org.holoeverywhere.widget.TimePicker;
-
-import android.content.*;
-import android.content.res.*;
-import android.graphics.*;
-import android.graphics.drawable.*;
-import android.util.*;
-import android.view.*;
-import android.widget.*;
-
-import com.flurry.android.*;
+import com.flurry.android.FlurryAgent;
 import com.sulga.yooiitable.R;
-import com.sulga.yooiitable.alarm.*;
-import com.sulga.yooiitable.constants.*;
-import com.sulga.yooiitable.data.*;
-import com.sulga.yooiitable.language.*;
-import com.sulga.yooiitable.mylog.*;
-import com.sulga.yooiitable.theme.parts.*;
-import com.sulga.yooiitable.timetable.*;
-import com.sulga.yooiitable.timetable.fragments.*;
+import com.sulga.yooiitable.alarm.YTAlarmManager;
+import com.sulga.yooiitable.constants.FixedSizes;
+import com.sulga.yooiitable.constants.FlurryConstants;
+import com.sulga.yooiitable.data.Lesson;
+import com.sulga.yooiitable.data.Schedule;
+import com.sulga.yooiitable.data.Timetable;
+import com.sulga.yooiitable.data.TimetableDataManager;
+import com.sulga.yooiitable.language.YTLanguage;
+import com.sulga.yooiitable.language.YTLanguageType;
+import com.sulga.yooiitable.mylog.MyLog;
+import com.sulga.yooiitable.theme.parts.YTShapeRoundRectThemePart;
+import com.sulga.yooiitable.timetable.TimetableActivity;
+import com.sulga.yooiitable.timetable.fragments.ScheduleFragment;
 import com.yooiistudios.common.ad.AdUtils;
 import com.yooiistudios.stevenkim.alarmsound.OnAlarmSoundClickListener;
 import com.yooiistudios.stevenkim.alarmsound.SKAlarmSound;
 import com.yooiistudios.stevenkim.alarmsound.SKAlarmSoundDialog;
 import com.yooiistudios.stevenkim.alarmsound.SKAlarmSoundManager;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ScheduleEditDialogBuilder {
 
@@ -96,7 +118,7 @@ public class ScheduleEditDialogBuilder {
 		dialog.getWindow().setLayout(
 				(int)res.getDimension(R.dimen.dialog_editelsson_width), 
 				android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
-		dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+		dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
 		float topOffset = res.getDimension(R.dimen.dialog_top_offset);
 		Window window = dialog.getWindow();
@@ -252,7 +274,7 @@ public class ScheduleEditDialogBuilder {
 		});
 
 		pickParentLesson = (Spinner) dialogView.findViewById(R.id.dialog_editschedule_lessonpick_spinner);
-		setLessonSpinner(parent.getSupportActivity(), lessonList);
+		setLessonSpinner(parent.getActivity(), lessonList);
 		if(schedule != null){
 			pickParentLesson.setSelection(
 					getParentLessonPosition(
@@ -594,7 +616,7 @@ public class ScheduleEditDialogBuilder {
 	}
 
 
-	private class ScheduleOnDateSetListener implements DatePickerDialog.OnDateSetListener{ 
+	private class ScheduleOnDateSetListener implements DatePickerDialog.OnDateSetListener{
 		private Context context;
 		public ScheduleOnDateSetListener(Context context){
 			this.context = context;

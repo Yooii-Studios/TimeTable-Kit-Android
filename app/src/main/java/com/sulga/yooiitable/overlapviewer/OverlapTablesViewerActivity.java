@@ -1,26 +1,30 @@
 package com.sulga.yooiitable.overlapviewer;
 
-import java.util.*;
-
-import org.holoeverywhere.app.*;
-import org.holoeverywhere.widget.*;
-
-import android.content.*;
-import android.os.*;
-import android.view.*;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.Toast;
 
-import com.actionbarsherlock.app.*;
-import com.actionbarsherlock.view.MenuItem;
-import com.flurry.android.*;
+import com.flurry.android.FlurryAgent;
 import com.sulga.yooiitable.R;
-import com.sulga.yooiitable.constants.*;
-import com.sulga.yooiitable.data.*;
-import com.sulga.yooiitable.mylog.*;
-import com.sulga.yooiitable.showalltables.*;
-import com.sulga.yooiitable.utils.*;
+import com.sulga.yooiitable.constants.FlurryConstants;
+import com.sulga.yooiitable.constants.RequestCodes;
+import com.sulga.yooiitable.data.Timetable;
+import com.sulga.yooiitable.data.TimetableDataManager;
+import com.sulga.yooiitable.mylog.MyLog;
+import com.sulga.yooiitable.showalltables.ShowAllTimetablesActivity;
+import com.sulga.yooiitable.utils.FixTileModeBug;
 
-public class OverlapTablesViewerActivity extends Activity {
+import java.util.ArrayList;
+
+public class OverlapTablesViewerActivity extends AppCompatActivity {
 
 	private boolean goDirectOverlapMode = false;
 	private Button goToShowAll;
