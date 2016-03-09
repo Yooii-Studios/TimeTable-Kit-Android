@@ -31,7 +31,7 @@
             android:name="com.sulga.yooiitable.splashscreen.YTSplashScreenActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
+            android:screenOrientation="sensorPortrait"
             android:theme="@style/Theme.AppCompat.NoActionBar.FullScreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,14 +43,14 @@
             android:name="com.sulga.yooiitable.timetable.TimetableActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|locale|layoutDirection"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
+            android:screenOrientation="sensorPortrait"
             android:windowSoftInputMode="adjustNothing" >
         </activity>
         <activity
             android:name=".timetableinfo.TimetableSettingInfoActivity"
             android:launchMode="singleTop"
             android:parentActivityName="com.sulga.yooiitable.timetable.TimetableActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="sensorPortrait"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|locale|layoutDirection"
             android:theme="@style/Theme.AppCompat" >
 
@@ -79,7 +79,7 @@
 
         <activity
             android:name="com.sulga.yooiitable.alarm.YTAlarmDialogPopUpActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="sensorPortrait"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|locale|layoutDirection"
             android:theme="@style/Theme.AppCompat.Dialog" >
         </activity>
@@ -87,7 +87,7 @@
             android:name="com.sulga.yooiitable.showalltables.ShowAllTimetablesActivity"
             android:launchMode="singleTop"
             android:parentActivityName="com.sulga.yooiitable.timetable.TimetableActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="sensorPortrait"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|locale|layoutDirection"
             android:theme="@style/Theme.AppCompat" >
 
@@ -100,7 +100,7 @@
             android:name="com.sulga.yooiitable.overlapviewer.OverlapTablesViewerActivity"
             android:launchMode="singleTop"
             android:parentActivityName="com.sulga.yooiitable.timetable.TimetableActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="sensorPortrait"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|locale|layoutDirection"
             android:theme="@style/Theme.AppCompat" >
 
@@ -113,7 +113,7 @@
             android:name="com.sulga.yooiitable.timetableinfo.activity.CreditsActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".timetableinfo.TimetableSettingInfoActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="sensorPortrait"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|locale|layoutDirection"
             android:theme="@style/Theme.AppCompat" >
 
@@ -126,7 +126,7 @@
             android:name="com.sulga.yooiitable.timetableinfo.activity.LicenseActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".timetableinfo.TimetableSettingInfoActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="sensorPortrait"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|locale|layoutDirection"
             android:theme="@style/Theme.AppCompat" >
 
@@ -139,7 +139,7 @@
             android:name="com.sulga.yooiitable.timetableinfo.activity.YTInfoActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".timetableinfo.TimetableSettingInfoActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="sensorPortrait"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|locale|layoutDirection"
             android:theme="@style/Theme.AppCompat" >
 
@@ -151,13 +151,13 @@
         <activity
             android:name="com.sulga.yooiitable.timetableinfo.activity.StoreActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
+            android:screenOrientation="sensorPortrait"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|locale|layoutDirection"
             android:theme="@style/Theme.AppCompat" />
         <activity
             android:name="com.sulga.yooiitable.timetableinfo.activity.NaverStoreActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
+            android:screenOrientation="sensorPortrait"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|locale|layoutDirection"
             android:theme="@style/Theme.AppCompat" />
         <activity android:name="com.sulga.yooiitable.appwidget.YTAppWidgetConfigure" >
