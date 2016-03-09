@@ -46,6 +46,7 @@ public class TimetableSettingInfoActivity extends AppCompatActivity {
 
 	private ViewPager mViewPager;
 	private ActionBar mActionBar;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -64,11 +65,9 @@ public class TimetableSettingInfoActivity extends AppCompatActivity {
         mActionBar = getSupportActionBar();
         mActionBar.setTitle(getString(R.string.app_name));
         setupActionBar();
-
     }
 
-    private void setupViewPager()
-    {
+    private void setupViewPager() {
         infoFrag = new TimetableAppInfoFragment();
         //Bundles for timetable setting
         Bundle bundle = new Bundle();
@@ -151,21 +150,6 @@ public class TimetableSettingInfoActivity extends AppCompatActivity {
 	    }
 	}
 
-    ///From Timetable Setting Activity, which now changed to fragment///
-
-//    public void onThemeSettingsChanged(){
-//        YTTimetableTheme.ThemeType[] themes =
-//                YTTimetableTheme.getThemeTypeValues();
-//        MyLog.d("TimetableThemeFragment", "pickTemeClickedItemPosition : "
-//                + pickThemeClickedItemPosition);
-//        timetable.setThemeType(
-//                themes[pickThemeClickedItemPosition]
-//        );
-//        //		pickThemeText.setText(
-//        //				themes[pickThemeClickedItemPosition].toString()
-//        //				);
-//    }
-
     /** 다시 액티비티로 복귀하였을때 이미지를 셋팅 */
     @Override
     protected void onActivityResult(int requestCode, int resultCode,
@@ -203,9 +187,7 @@ public class TimetableSettingInfoActivity extends AppCompatActivity {
                     if (data != null) {
                         Log.i(TAG, "REQ_CROP_FROM_CAMERA && RESULT_OK");
                         try {
-                            setThemeAndRelaunchApp(
-                                    YTBitmapLoader.getPortraitCroppedImageUri(
-                                            this,
+                            setThemeAndRelaunchApp(YTBitmapLoader.getPortraitCroppedImageUri(this,
                                             timetable.getId()));
                             onThemeSettled();
                         } catch (FileNotFoundException e) {
@@ -239,25 +221,13 @@ public class TimetableSettingInfoActivity extends AppCompatActivity {
 
         //settingsConfigureView.onGeneralSettingChanged();
         bitmap.recycle();
-        //timetable.getTheme().setRootBackground(resId);
-//        onThemeSettingsChanged();
-        //relaunchApplication();
     }
 
 
     public void startCropActivity(Intent data, float ratio, Uri originalPortImageUri, int requestCode) {
         Intent intent = new Intent("com.android.camera.action.CROP");
 
-        //Uri originalImageUri = data.getData();
         MyLog.d("CropActivity", "ImageToBeCropped : " + originalPortImageUri.getPath());
-		/*mImageCaptureUri = data.getData();
-        File original_file = getImageFile(mImageCaptureUri);
-
-        mImageCaptureUri = createSaveCropFile();
-        File cpoy_file = new File(mImageCaptureUri.getPath());
-
-        // SD카드에 저장된 파일을 이미지 Crop을 위해 복사한다.
-        copyFile(original_file , cpoy_file);*/
         Uri croppedImageUri = YTBitmapLoader.createPortraitCroppedImage(
                 this, originalPortImageUri, timetable.getId());
 
@@ -291,18 +261,23 @@ public class TimetableSettingInfoActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed(){
-//        onThemeSettingsChanged();
         setResultAndFinish();
     }
     public void onThemeSettled(){
-//		setResultAndFinish();
-//        onThemeSettingsChanged();
         MyLog.d(TAG, "onThemeSettled theme : " + timetable.getThemeType());
         setResultAndFinish();
     }
 
     public void onLanguageChanged(){
         MyLog.d(TAG, "onLanguageChanged called");
+        // ActionBar 관련은 언어 변경 뒤 직접 수정 필요
+        mActionBar.setTitle(getString(R.string.app_name));
+        mActionBar.getTabAt(0).setText(R.string.tab_timetablesetting);
+        mActionBar.getTabAt(1).setText(R.string.tab_alarmandtheme);
+        mActionBar.getTabAt(2).setText(R.string.tab_info);
+
+        // TODO: 메인으로 돌아갈 때 액티비티 재생성 요청, 스위시 참고
+
         Intent data = new Intent();
         data.putExtra("TimetablePageIndex", timetablePageIndex);
         data.putExtra("LanguageChanged", true);

@@ -56,7 +56,7 @@ public class YTLanguage {
 	public static void setLanguageType(YTLanguageType newNewLanguage, Context context) {
 		YTLanguage.getInstance(context).currentLanguageType = newNewLanguage;
 		context.getSharedPreferences(LANGUAGE_SHARED_PREFERENCES, Context.MODE_PRIVATE)
-		.edit().putInt(LANGUAGE_MATRIX_KEY, newNewLanguage.getUniqueId()).commit();
+		.edit().putInt(LANGUAGE_MATRIX_KEY, newNewLanguage.getUniqueId()).apply();
 	}
 
 }
