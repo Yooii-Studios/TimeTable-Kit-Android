@@ -9,7 +9,6 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="com.android.vending.BILLING" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 위험 -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- 위험 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 위험 -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.READ_CONTACTS"/> <!-- 위험, UserNameFactory -->
