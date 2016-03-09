@@ -2,6 +2,7 @@ package com.sulga.yooiitable.language;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 
 import com.sulga.yooiitable.mylog.MyLog;
 
@@ -54,9 +55,17 @@ public class YTLanguage {
 		return YTLanguage.getInstance(context).currentLanguageType; }
 
 	public static void setLanguageType(YTLanguageType newNewLanguage, Context context) {
+		// archive selection
 		YTLanguage.getInstance(context).currentLanguageType = newNewLanguage;
 		context.getSharedPreferences(LANGUAGE_SHARED_PREFERENCES, Context.MODE_PRIVATE)
 		.edit().putInt(LANGUAGE_MATRIX_KEY, newNewLanguage.getUniqueId()).apply();
-	}
 
+		// update locale
+		YTLanguageType currentLanguageType = YTLanguage.getCurrentLanguageType(context);
+		Locale locale = new Locale(currentLanguageType.getCode(), currentLanguageType.getRegion());
+		Locale.setDefault(locale);
+		Configuration config = new Configuration();
+		config.locale = locale;
+		context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
+	}
 }

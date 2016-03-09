@@ -22,6 +22,8 @@ import com.sulga.yooiitable.R;
 import com.sulga.yooiitable.constants.RequestCodes;
 import com.sulga.yooiitable.data.Timetable;
 import com.sulga.yooiitable.data.TimetableDataManager;
+import com.sulga.yooiitable.language.YTLanguage;
+import com.sulga.yooiitable.language.YTLanguageType;
 import com.sulga.yooiitable.mylog.MyLog;
 import com.sulga.yooiitable.theme.YTTimetableTheme;
 import com.sulga.yooiitable.timetablesetting.TimetableSettingFragment;
@@ -34,7 +36,9 @@ import java.io.FileNotFoundException;
 import java.util.List;
 
 public class TimetableSettingInfoActivity extends AppCompatActivity {
+    public static final String KEY_CHANGED_LANGUAGE = "key_language_changed";
 	private static String TAG = "TimetableSettingInfoActivity";
+
 	private TimetableAppInfoFragment infoFrag;
     private TimetableSettingFragment settingFrag;
     private TimetableSettingsAlarmFragment settingAlarmFrag;
@@ -46,6 +50,8 @@ public class TimetableSettingInfoActivity extends AppCompatActivity {
 
 	private ViewPager mViewPager;
 	private ActionBar mActionBar;
+
+    private int mPreviousLanguageId;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +71,7 @@ public class TimetableSettingInfoActivity extends AppCompatActivity {
         mActionBar = getSupportActionBar();
         mActionBar.setTitle(getString(R.string.app_name));
         setupActionBar();
+        savePreviousLanguage();
     }
 
     private void setupViewPager() {
@@ -127,6 +134,10 @@ public class TimetableSettingInfoActivity extends AppCompatActivity {
         String infoStr = getResources().getString(R.string.tab_info);
         ActionBar.Tab infoTab = mActionBar.newTab().setText(infoStr).setTabListener(tabListener);
         mActionBar.addTab(infoTab);
+    }
+
+    private void savePreviousLanguage() {
+        mPreviousLanguageId = YTLanguage.getCurrentLanguageType(getApplicationContext()).getUniqueId();
     }
 
 	public class SettingPagerAdapter extends FragmentStatePagerAdapter {
@@ -260,24 +271,39 @@ public class TimetableSettingInfoActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         setResultAndFinish();
     }
-    public void onThemeSettled(){
+
+    public void onThemeSettled() {
         MyLog.d(TAG, "onThemeSettled theme : " + timetable.getThemeType());
         setResultAndFinish();
     }
 
-    public void onLanguageChanged(){
+    public void onLanguageChanged() {
         MyLog.d(TAG, "onLanguageChanged called");
+        getIntent().putExtra("TimetablePageIndex", timetablePageIndex);
+
         // ActionBar 관련은 언어 변경 뒤 직접 수정 필요
         mActionBar.setTitle(getString(R.string.app_name));
         mActionBar.getTabAt(0).setText(R.string.tab_timetablesetting);
         mActionBar.getTabAt(1).setText(R.string.tab_alarmandtheme);
         mActionBar.getTabAt(2).setText(R.string.tab_info);
 
-        // TODO: 메인으로 돌아갈 때 액티비티 재생성 요청, 스위시 참고
+        YTLanguageType currentLanguageType = YTLanguage.getCurrentLanguageType(getApplicationContext());
+        if (currentLanguageType.getUniqueId() != mPreviousLanguageId) {
+            getIntent().putExtra(KEY_CHANGED_LANGUAGE, true);
+            setResult(RESULT_OK, getIntent());
+        } else {
+            getIntent().putExtra(KEY_CHANGED_LANGUAGE, false);
+            setResult(RESULT_CANCELED, getIntent());
+        }
 
+        finish();
+        overridePendingTransition(android.R.anim.slide_in_left,
+                android.R.anim.slide_out_right);
+
+        /*
         Intent data = new Intent();
         data.putExtra("TimetablePageIndex", timetablePageIndex);
         data.putExtra("LanguageChanged", true);
@@ -285,6 +311,7 @@ public class TimetableSettingInfoActivity extends AppCompatActivity {
         finish();
         overridePendingTransition(android.R.anim.slide_in_left,
                 android.R.anim.slide_out_right);
+        */
     }
 
     public void setResultAndFinish(){

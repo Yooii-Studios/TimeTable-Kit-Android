@@ -1,6 +1,5 @@
 package com.sulga.yooiitable.timetablesetting;
 
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -25,7 +24,6 @@ import com.sulga.yooiitable.timetablesetting.utils.TimetableSettingStringManager
 import com.yooiistudios.common.ad.AdUtils;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -244,7 +242,6 @@ public class TimetableSettingsAlarmFragment extends Fragment {
                             @Override
                             public void onClick(int clickedItemPosition) {
                                 onLanguageChanged(clickedItemPosition);
-                                initSettingsText();
                                 ((TimetableSettingInfoActivity)getActivity()).onLanguageChanged();
                             }
                         });
@@ -255,13 +252,7 @@ public class TimetableSettingsAlarmFragment extends Fragment {
 
     public void onLanguageChanged(int position) {
         YTLanguage.setLanguageType(YTLanguageType.valueOf(position), getActivity());
-        // update locale
-        YTLanguageType currentLanguageType = YTLanguage.getCurrentLanguageType(getActivity());
-        Locale locale = new Locale(currentLanguageType.getCode(), currentLanguageType.getRegion());
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.locale = locale;
-        getResources().updateConfiguration(config, this.getResources().getDisplayMetrics());
+        initSettingsText();
     }
 
     public boolean saveOption() {

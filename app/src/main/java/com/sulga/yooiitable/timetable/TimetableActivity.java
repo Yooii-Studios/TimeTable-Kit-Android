@@ -83,6 +83,7 @@ import com.sulga.yooiitable.utils.YTBitmapLoader;
 import com.viewpagerindicator.UnderlinePageIndicator;
 import com.yooiistudios.common.ad.AdUtils;
 import com.yooiistudios.common.ad.QuitAdDialogFactory;
+import com.yooiistudios.common.language.LocaleUtils;
 import com.yooiistudios.common.network.InternetConnectionManager;
 
 import java.io.File;
@@ -345,7 +346,6 @@ public class TimetableActivity extends AppCompatActivity {
 				InputStream in = new java.net.URL(bi.getImageUrl()).openStream();
 				mIcon11 = BitmapFactory.decodeStream(in);
 			} catch (Exception e) {
-				Log.e("Error", e.getMessage());
 				e.printStackTrace();
 			}
 			return mIcon11;
@@ -378,7 +378,6 @@ public class TimetableActivity extends AppCompatActivity {
 		newSchedule.setLastUpdated(Calendar.getInstance().getTimeInMillis());
 
 		TimetableDataManager.getInstance().putSchedule(newSchedule);
-
 	}
 
 	private int getActionBarHeight() {
@@ -404,7 +403,9 @@ public class TimetableActivity extends AppCompatActivity {
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
-		MyLog.d(TAG, "onConfigurationChanged");
+		// 강제로 Locale 고정 필요(풀리는 경우 방지)
+		LocaleUtils.updateLocale(this);
+
 		// Pass any configuration change to the drawer toggles
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
@@ -826,27 +827,27 @@ public class TimetableActivity extends AppCompatActivity {
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data){
-		//this.onActivityResult(requestCode, resultCode, data)
-		if(requestCode == RequestCodes.CALL_ACTIVITY_EDIT_TIMETABLE_SETTING)
-            if (resultCode == android.app.Activity.RESULT_OK) {
-                MyLog.d("onActivityResult", "EDIT_TIMETABLE_END!!!!!");
-                int currentPage = data.getIntExtra("TimetablePageIndex", -1);
-                MyLog.d(TAG, "Current Page : " + currentPage);
-                mPager.setAdapter(null);
-                mPager.setAdapter(mAdapter);
-                if (currentPage < 0) {
-                    mPager.setCurrentItem(mAdapter.getCount() - 2);
-                } else {
-                    mPager.setCurrentItem(currentPage);
-                }
+		super.onActivityResult(requestCode, resultCode, data);
 
-				boolean languageChanged = data.getBooleanExtra("LanguageChanged", false);
-				if(languageChanged){
-                    MyLog.d(TAG, "LanguageChanged!");
-					refreshTextForLocaleChange();
+		if(requestCode == RequestCodes.CALL_ACTIVITY_EDIT_TIMETABLE_SETTING) {
+			if (resultCode == android.app.Activity.RESULT_OK) {
+				boolean hasLanguageChanged = data.getBooleanExtra(
+						TimetableSettingInfoActivity.KEY_CHANGED_LANGUAGE, false);
+				if (hasLanguageChanged) {
+					recreate();
+//					refreshTextForLocaleChange();
+				} else {
+					int currentPage = data.getIntExtra("TimetablePageIndex", -1);
+					mPager.setAdapter(null);
+					mPager.setAdapter(mAdapter);
+					if (currentPage < 0) {
+						mPager.setCurrentItem(mAdapter.getCount() - 2);
+					} else {
+						mPager.setCurrentItem(currentPage);
+					}
 				}
-            }
-		else if(requestCode == RequestCodes.GCACCOUNT_REQUEST_CODE_PICK_ACCOUNT){
+			}
+		} else if (requestCode == RequestCodes.GCACCOUNT_REQUEST_CODE_PICK_ACCOUNT) {
 			if (resultCode == RESULT_OK) {
 				String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
 				//AccountUtils.setAccountName(this, accountName);
@@ -857,29 +858,17 @@ public class TimetableActivity extends AppCompatActivity {
 			} else if (resultCode == RESULT_CANCELED) {
 				String warn = getResources()
 						.getString(R.string.warning_gc_sync_must_have_google_account);
-				Toast.makeText(
-						this,
-						//						"구글 계정이 있어야 싱크가 가능합니다.",
-						warn,
-						Toast.LENGTH_SHORT).
-						show();
-				//finish();
+				Toast.makeText(this, warn, Toast.LENGTH_SHORT).show();
 			}
 			return;
-		}else if (requestCode == RequestCodes.GCACCOUNT_REQUEST_CODE_RECOVER_PLAY_SERVICES){
+		} else if (requestCode == RequestCodes.GCACCOUNT_REQUEST_CODE_RECOVER_PLAY_SERVICES) {
 			String warn = getResources()
 					.getString(R.string.warning_gc_sync_must_have_latest_google_play);
 			if (resultCode == RESULT_CANCELED) {
-				Toast.makeText(
-						this, 
-						//						"싱크를 위해 최신버전의 구글 플레이 서비스가 설치되어 있어야 합니다.",
-						warn,
-						Toast.LENGTH_SHORT)
-						.show();
-				//finish();
+				Toast.makeText(this, warn, Toast.LENGTH_SHORT).show();
 			}
-		}else if(requestCode == RequestCodes.GCACCOUNT_REQUEST_CODE_AUTHORIZATION){
-			if(resultCode == RESULT_OK){
+		} else if (requestCode == RequestCodes.GCACCOUNT_REQUEST_CODE_AUTHORIZATION) {
+			if (resultCode == RESULT_OK) {
 				String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
 				String loading = getResources().getString(R.string.loading);
 				String startingConnection = getResources().getString(R.string.starting_connection);
@@ -887,29 +876,23 @@ public class TimetableActivity extends AppCompatActivity {
 				progressDialog.setTitle(loading);
 				progressDialog.setMessage(startingConnection);
 				progressDialog.setCancelable(false);
-				//progressDialog.setMax(3);
 				progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 				progressDialog.show();
 
 				GCCalendarSyncManager.startSync(this, accountName, progressDialog);
-			}else if(resultCode == RESULT_CANCELED){
+			} else if (resultCode == RESULT_CANCELED) {
 				String cancelled = getResources().getString(R.string.cancelled);
-				Toast.makeText(
-						this, 
-						//						"접근 권한을 허용하셔야 싱크가 가능합니다.",
-						cancelled,
-						Toast.LENGTH_LONG)
-						.show();
+				Toast.makeText(this, cancelled, Toast.LENGTH_LONG).show();
 			}
-		}else if(requestCode == RequestCodes.CALL_ACTIVITY_SHOW_ALL){
-			if(resultCode == RESULT_OK){
+		} else if (requestCode == RequestCodes.CALL_ACTIVITY_SHOW_ALL) {
+			if (resultCode == RESULT_OK) {
 				int idx = data.getIntExtra(
 						"SelectedTimetableIndex", mPager.getChildCount() - 1);
 				mPager.setCurrentItem(idx + TIMETABLE_PAGE_OFFSET);
 			}
 		}
-		super.onActivityResult(requestCode, resultCode, data);
 	}
+
 	private boolean removingPage = false;
 	private int removingPosition = -1;
 	public void removePageAt(int position){
