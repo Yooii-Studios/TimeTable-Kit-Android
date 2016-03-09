@@ -134,6 +134,8 @@ public class TimetableActivity extends AppCompatActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+        LocaleUtils.updateLocale(this);
+
 		setContentView(R.layout.activity_timetable_main_withdrawer);
         turnOnScreen();
 
@@ -663,12 +665,6 @@ public class TimetableActivity extends AppCompatActivity {
 		return true;
 	}
 
-	private void refreshTextForLocaleChange(){
-		Intent intent = new Intent(TimetableActivity.this, TimetableActivity.class);
-		startActivity(intent);
-		finish();
-	}
-
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		MyLog.d("onOptionsItemSelected", "clicked");
@@ -827,15 +823,14 @@ public class TimetableActivity extends AppCompatActivity {
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data){
-		super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
 
 		if(requestCode == RequestCodes.CALL_ACTIVITY_EDIT_TIMETABLE_SETTING) {
-			if (resultCode == android.app.Activity.RESULT_OK) {
+			if (resultCode == RESULT_OK) {
 				boolean hasLanguageChanged = data.getBooleanExtra(
-						TimetableSettingInfoActivity.KEY_CHANGED_LANGUAGE, false);
+                        TimetableSettingInfoActivity.KEY_CHANGED_LANGUAGE, false);
 				if (hasLanguageChanged) {
 					recreate();
-//					refreshTextForLocaleChange();
 				} else {
 					int currentPage = data.getIntExtra("TimetablePageIndex", -1);
 					mPager.setAdapter(null);
@@ -891,7 +886,7 @@ public class TimetableActivity extends AppCompatActivity {
 				mPager.setCurrentItem(idx + TIMETABLE_PAGE_OFFSET);
 			}
 		}
-	}
+    }
 
 	private boolean removingPage = false;
 	private int removingPosition = -1;
@@ -1056,9 +1051,9 @@ public class TimetableActivity extends AppCompatActivity {
 		OnSettingsMenuItemClickedListener(int pageIndex){
 			this.pageIndex = pageIndex;
 		}
+
 		@Override
 		public boolean onMenuItemClick(MenuItem item) {
-			// TODO Auto-generated method stub
 			Intent act = new Intent(TimetableActivity.this, TimetableSettingInfoActivity.class);
 			act.putExtra("TimetablePageIndex", pageIndex);
 			startActivityForResult(act, RequestCodes.CALL_ACTIVITY_EDIT_TIMETABLE_SETTING);

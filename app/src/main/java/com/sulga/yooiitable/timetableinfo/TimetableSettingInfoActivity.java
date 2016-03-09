@@ -281,14 +281,15 @@ public class TimetableSettingInfoActivity extends AppCompatActivity {
     }
 
     public void onLanguageChanged() {
-        MyLog.d(TAG, "onLanguageChanged called");
-        getIntent().putExtra("TimetablePageIndex", timetablePageIndex);
-
-        // ActionBar 관련은 언어 변경 뒤 직접 수정 필요
+        // UI 관련은 언어 변경 뒤 직접 수정 필요
         mActionBar.setTitle(getString(R.string.app_name));
         mActionBar.getTabAt(0).setText(R.string.tab_timetablesetting);
         mActionBar.getTabAt(1).setText(R.string.tab_alarmandtheme);
         mActionBar.getTabAt(2).setText(R.string.tab_info);
+        setupViewPager();
+
+        // 필요한 데이터 넣어서 메인 액티비티에서 활용
+        getIntent().putExtra("TimetablePageIndex", timetablePageIndex);
 
         YTLanguageType currentLanguageType = YTLanguage.getCurrentLanguageType(getApplicationContext());
         if (currentLanguageType.getUniqueId() != mPreviousLanguageId) {
@@ -298,29 +299,11 @@ public class TimetableSettingInfoActivity extends AppCompatActivity {
             getIntent().putExtra(KEY_CHANGED_LANGUAGE, false);
             setResult(RESULT_CANCELED, getIntent());
         }
-
-        finish();
-        overridePendingTransition(android.R.anim.slide_in_left,
-                android.R.anim.slide_out_right);
-
-        /*
-        Intent data = new Intent();
-        data.putExtra("TimetablePageIndex", timetablePageIndex);
-        data.putExtra("LanguageChanged", true);
-        setResult(Activity.RESULT_OK, data);
-        finish();
-        overridePendingTransition(android.R.anim.slide_in_left,
-                android.R.anim.slide_out_right);
-        */
     }
 
     public void setResultAndFinish(){
-        Intent data = new Intent();
-        data.putExtra("TimetablePageIndex", timetablePageIndex);
-        setResult(Activity.RESULT_OK, data);
+        getIntent().putExtra("TimetablePageIndex", timetablePageIndex);
+        setResult(Activity.RESULT_OK, getIntent());
         finish();
-        overridePendingTransition(android.R.anim.slide_in_left,
-                android.R.anim.slide_out_right);
     }
-
 }
