@@ -25,7 +25,6 @@ import com.sulga.yooiitable.data.Schedule;
 import com.sulga.yooiitable.data.TimeInfo;
 import com.sulga.yooiitable.data.Timetable;
 import com.sulga.yooiitable.data.TimetableDataManager;
-import com.sulga.yooiitable.google.calendar.GCAccountManager;
 import com.sulga.yooiitable.mylog.MyLog;
 import com.sulga.yooiitable.theme.parts.YTRoundRectThemePart;
 import com.sulga.yooiitable.theme.parts.YTShapeRoundRectThemePart;
@@ -59,7 +58,7 @@ public class ScheduleFragment extends Fragment {
 	private ScrollView scheduleListScroll;
 
 	private Button addSchedule;
-	private Button syncSchedule;
+//	private Button syncSchedule; // 민수에게 문의 결과 구현중 막혀서 더이상 쓰지 않음
 
 	private Timetable mainTimetable;
 
@@ -107,16 +106,17 @@ public class ScheduleFragment extends Fragment {
 			}
 		});
 
+		/*
 		syncSchedule = (Button) scheduleView.findViewById(R.id.fragment_schedule_sync);
 		syncSchedule.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				GCAccountManager syncManager = GCAccountManager.getInstance();
 				syncManager.showAccountSelectDialog(ScheduleFragment.this.getActivity());
 			}
 		});
+		*/
 		scheduleListWrapper.removeAllViews();
 		createScheduleListView(TimetableDataManager.getSchedules());
 

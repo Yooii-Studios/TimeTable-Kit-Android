@@ -1,6 +1,5 @@
 package com.sulga.yooiitable.timetable;
 
-import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -61,8 +60,6 @@ import com.sulga.yooiitable.customviews.animation.OnDeletePageTransformer;
 import com.sulga.yooiitable.data.Schedule;
 import com.sulga.yooiitable.data.Timetable;
 import com.sulga.yooiitable.data.TimetableDataManager;
-import com.sulga.yooiitable.google.calendar.GCAccountManager;
-import com.sulga.yooiitable.google.calendar.GCCalendarSyncManager;
 import com.sulga.yooiitable.mylog.MyLog;
 import com.sulga.yooiitable.overlapviewer.OverlapTablesViewerActivity;
 import com.sulga.yooiitable.sharetable.BannerInfo;
@@ -842,7 +839,16 @@ public class TimetableActivity extends AppCompatActivity {
 					}
 				}
 			}
-		} else if (requestCode == RequestCodes.GCACCOUNT_REQUEST_CODE_PICK_ACCOUNT) {
+		} else if (requestCode == RequestCodes.CALL_ACTIVITY_SHOW_ALL) {
+            if (resultCode == RESULT_OK) {
+                int idx = data.getIntExtra(
+                        "SelectedTimetableIndex", mPager.getChildCount() - 1);
+                mPager.setCurrentItem(idx + TIMETABLE_PAGE_OFFSET);
+            }
+        }
+        // 민수에게 문의 결과 없어진 기능. 코드는 남겨두자
+        /*
+        else if (requestCode == RequestCodes.GCACCOUNT_REQUEST_CODE_PICK_ACCOUNT) {
 			if (resultCode == RESULT_OK) {
 				String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
 				//AccountUtils.setAccountName(this, accountName);
@@ -879,13 +885,8 @@ public class TimetableActivity extends AppCompatActivity {
 				String cancelled = getResources().getString(R.string.cancelled);
 				Toast.makeText(this, cancelled, Toast.LENGTH_LONG).show();
 			}
-		} else if (requestCode == RequestCodes.CALL_ACTIVITY_SHOW_ALL) {
-			if (resultCode == RESULT_OK) {
-				int idx = data.getIntExtra(
-						"SelectedTimetableIndex", mPager.getChildCount() - 1);
-				mPager.setCurrentItem(idx + TIMETABLE_PAGE_OFFSET);
-			}
-		}
+        }
+        */
     }
 
 	private boolean removingPage = false;
