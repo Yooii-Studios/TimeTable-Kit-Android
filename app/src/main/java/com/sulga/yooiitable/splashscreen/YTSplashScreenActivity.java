@@ -1,13 +1,9 @@
 package com.sulga.yooiitable.splashscreen;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ImageView;
 
 import com.sulga.yooiitable.R;
 import com.sulga.yooiitable.mylog.MyLog;
@@ -16,7 +12,8 @@ import com.sulga.yooiitable.timetable.TimetableActivity;
 public class YTSplashScreenActivity extends AppCompatActivity {
 	private static final String TAG = "YTSplashScreenActivity";
 	// Splash screen timer
-	private static int SPLASH_TIME_OUT = 800;
+	@SuppressWarnings("FieldCanBeLocal")
+	private static int SPLASH_TIME_OUT = 200;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -69,6 +66,7 @@ public class YTSplashScreenActivity extends AppCompatActivity {
 		super.onDestroy();
 	}
 
+	/*
 	private static void recycleBitmap(ImageView iv) {
 		Drawable d;
 		if(iv != null){
@@ -85,4 +83,5 @@ public class YTSplashScreenActivity extends AppCompatActivity {
 		if(d != null)
 			d.setCallback(null);
 	}
+	*/
 }
