@@ -17,14 +17,14 @@
 
         <ImageView
             android:id="@+id/splash_main"
-            android:layout_width="230dp"
-            android:layout_height="230dp"
+            android:layout_width="@dimen/splash_img_size"
+            android:layout_height="@dimen/splash_img_size"
             android:background="@drawable/splash_main" />
 
         <ImageView
-            android:layout_width="80dp"
-            android:layout_height="23dp"
-            android:layout_marginTop="30dp"
+            android:layout_width="@dimen/splash_company_logo_width"
+            android:layout_height="@dimen/splash_company_logo_height"
+            android:layout_marginTop="@dimen/splash_company_logo_margin_top"
             android:background="@drawable/splash_logo" />
     </LinearLayout>
 </RelativeLayout>
