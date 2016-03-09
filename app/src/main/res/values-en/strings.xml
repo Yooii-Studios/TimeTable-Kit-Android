@@ -59,7 +59,7 @@
     <string name="timetable_setting_info_version">Version</string>
     <string name="tab_timetablesetting">Basic Settings</string>
     <string name="tab_timetabletheme">Theme</string>
-    <string name="tab_alarmandtheme">Notif\\Theme</string>
+    <string name="tab_alarmandtheme">Notif / Theme</string>
     <string name="tab_info">Store / Info</string>
     <string name="notice">Alarm!</string>
     <string name="unlock_full_version">Buy and enjoy the Pro Version!</string>

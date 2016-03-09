@@ -53,8 +53,8 @@
     <string name="timetable_setting_info_version">버전</string>
     <string name="tab_timetablesetting">설정</string>
     <string name="tab_timetabletheme">테마</string>
-    <string name="tab_info">상점\\정보</string>
-    <string name="tab_alarmandtheme">알림\\테마</string>
+    <string name="tab_info">상점 / 정보</string>
+    <string name="tab_alarmandtheme">알림 / 테마</string>
     <string name="notice">알람!</string>
     <string name="unlock_full_version">풀버전을 구매해 주세요!</string>
     <string name="buy_full_version_explain">시간표와 이벤트 개수 증가, 광고 제거, 모든 테마와 알람을 사용하실 수 있습니다.</string>

@@ -59,7 +59,7 @@
     <string name="timetable_setting_info_version">软件版本</string>
     <string name="tab_timetablesetting">细节设置</string>
     <string name="tab_timetabletheme">主题背景</string>
-    <string name="tab_alarmandtheme">通知\\主题背景</string>
+    <string name="tab_alarmandtheme">通知 / 主题背景</string>
     <string name="tab_info">商店 / 信息</string>
     <string name="notice">闹钟!</string>
     <string name="unlock_full_version">购买完整版!</string>
