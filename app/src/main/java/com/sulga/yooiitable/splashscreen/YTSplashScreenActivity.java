@@ -1,16 +1,29 @@
 package com.sulga.yooiitable.splashscreen;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.RelativeLayout;
 
 import com.sulga.yooiitable.R;
 import com.sulga.yooiitable.mylog.MyLog;
 import com.sulga.yooiitable.timetable.TimetableActivity;
+import com.yooiistudios.common.permission.PermissionUtils;
 
 public class YTSplashScreenActivity extends AppCompatActivity {
+	private static final int REQ_PERMISSION_MULTIPLE = 108;
+	private static final int REQ_PERMISSION_READ_STORAGE = 136;
+	public static final int REQ_PERMISSION_READ_CONTACTS = 137;
 	private static final String TAG = "YTSplashScreenActivity";
+
+	RelativeLayout containerLayout;
+
 	// Splash screen timer
 	@SuppressWarnings("FieldCanBeLocal")
 	private static int SPLASH_TIME_OUT = 200;
@@ -19,7 +32,40 @@ public class YTSplashScreenActivity extends AppCompatActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash_screen);
+		containerLayout = (RelativeLayout) findViewById(R.id.splash_container);
 
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+			startMainActivity();
+		} else {
+			if (hasAllPermissions()) {
+				startMainActivity();
+			} else {
+				// 첫 시작시에 권한 요청(6.0 이상)
+				requestPermissionsToStart();
+			}
+		}
+	}
+
+	@SuppressWarnings("RedundantIfStatement")
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+	private boolean hasAllPermissions() {
+		if (PermissionUtils.hasPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) &&
+				PermissionUtils.hasPermission(this, Manifest.permission.READ_CONTACTS)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+	private void requestPermissionsToStart() {
+		String[] permissions = {
+				Manifest.permission.READ_EXTERNAL_STORAGE,
+				Manifest.permission.READ_CONTACTS};
+		PermissionUtils.requestPermissions(this, permissions, REQ_PERMISSION_MULTIPLE);
+	}
+
+	private void startMainActivity() {
 		if(startTimetableActivityHandler == null){
 			startTimetableActivityHandler = new Handler();
 			startTimetableActivityHandler.postDelayed(new Runnable() {
@@ -84,4 +130,40 @@ public class YTSplashScreenActivity extends AppCompatActivity {
 			d.setCallback(null);
 	}
 	*/
+
+	/**
+	 * 안드로이드 6.0 이후 권한 처리 콜백
+	 */
+	@Override
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+										   @NonNull int[] grantResults) {
+		if (PermissionUtils.isPermissionGranted(grantResults)) {
+			Snackbar.make(containerLayout, R.string.permission_granted,
+					Snackbar.LENGTH_SHORT).show();
+		} else {
+			Snackbar.make(containerLayout, R.string.permission_not_granted,
+					Snackbar.LENGTH_SHORT).show();
+		}
+
+		if (hasAllPermissions()) {
+			startMainActivity();
+		} else {
+			requestSpecificPermissions();
+		}
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+	}
+
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+	private void requestSpecificPermissions() {
+		if (!PermissionUtils.hasPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+			PermissionUtils.requestPermission(this, containerLayout,
+					Manifest.permission.READ_EXTERNAL_STORAGE,
+					R.string.need_permission_read_storage, REQ_PERMISSION_READ_STORAGE);
+		}
+		if (!PermissionUtils.hasPermission(this, Manifest.permission.READ_CONTACTS)) {
+			PermissionUtils.requestPermission(this, containerLayout,
+					Manifest.permission.READ_CONTACTS,
+					R.string.need_permission_read_contacts, REQ_PERMISSION_READ_CONTACTS);
+		}
+	}
 }
