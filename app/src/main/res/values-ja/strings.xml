@@ -264,4 +264,10 @@
     <string name="quit_ad_dialog_title_text">このアプリを終了しますか。</string>
     <string name="store_buy_full_version">プロバージョンをご購入ください！</string>
     <string name="minute_short">分</string>
+
+    <!-- Permissions -->
+    <string name="need_permission_read_storage">時間割の使用に外部保存所の権限が必要。</string>
+    <string name="need_permission_read_contacts">コネクタの使用にアドレス帳の権限が必要。</string>
+    <string name="permission_granted">承認を得ました。</string>
+    <string name="permission_not_granted">承認を得ません。</string>
 </resources>

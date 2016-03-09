@@ -265,4 +265,8 @@
     <string name="quit_ad_dialog_title_text">確定退出嗎？</string>
     <string name="store_buy_full_version">購買完整版!</string>
     <string name="minute_short">分鐘</string>
+
+    <!-- Permissions -->
+    <string name="permission_granted">已獲得授權。</string>
+    <string name="permission_not_granted">未允許。</string>
 </resources>
