@@ -20,15 +20,8 @@ public class TimeTableApplication extends Application {
     public void onCreate() {
         super.onCreate();
 //        Fabric.with(this, new Crashlytics());
-
-//        initFlurry();
         initLanguage();
     }
-
-//    private void initFlurry() {
-//        FlurryAgent.setLogEnabled(false);
-//        FlurryAgent.init(this, FLURRY_API_KEY);
-//    }
 
     private void initLanguage() {
         // load language from MNLanguage
