@@ -113,7 +113,7 @@ public class YTAlarmNotificationReceiver extends BroadcastReceiver {
 																 String title, String message,
 																 String tickerText) {
 		return new NotificationCompat.Builder(context)
-				.setSmallIcon(R.drawable.ic_launcher_f3)
+				.setSmallIcon(R.drawable.ic_notification)
 				.setContentTitle(title)
 				.setContentText(message)
 				.setContentIntent(contentIntent)
