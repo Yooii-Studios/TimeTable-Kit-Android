@@ -26,7 +26,7 @@ public class YTSplashScreenActivity extends AppCompatActivity {
 
 	// Splash screen timer
 	@SuppressWarnings("FieldCanBeLocal")
-	private static int SPLASH_TIME_OUT = 200;
+	private static int SPLASH_TIME_OUT = 400;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -83,6 +83,7 @@ public class YTSplashScreenActivity extends AppCompatActivity {
 					Intent i = new Intent(YTSplashScreenActivity.this, TimetableActivity.class);
 					i.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 					startActivity(i);
+					overridePendingTransition(0, 0);
 
 					// close this activity
 					finish();
