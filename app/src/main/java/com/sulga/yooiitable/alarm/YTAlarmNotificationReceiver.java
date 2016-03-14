@@ -40,9 +40,6 @@ public class YTAlarmNotificationReceiver extends BroadcastReceiver {
 
 			// 알람 노티파이를 띄움
 			startNotification(context, mainActivityIntent, stateBar, alarmTitle, alarmSummary);
-
-			// 알람 다이얼로그를 띄움
-//			displayAlarmDialog(context, alarmDialogTitle, alarmDialogMessage);
 		} else if(alarmType == YTAlarmManager.YT_ALARM_TYPE_SCHEDULE) {
 			Intent mainActivityIntent = new Intent(context, TimetableActivity.class);
 
