@@ -82,23 +82,16 @@ public class YTAlarmManager {
 		intent.putExtra("LessonWhere", lesson.getLessonWhere());
 		intent.putExtra("Professor", lesson.getProfessor());
 
-		//intent.setAction(NotificationReceiver.);
-		PendingIntent sender 
-		= PendingIntent.getBroadcast(
-				context, alarmId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, alarmId, intent,
+				PendingIntent.FLAG_UPDATE_CURRENT);
 
-		AlarmManager manager 
-		= (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+		AlarmManager manager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
 
-		//long triggerTime = SystemClock.elapsedRealtime() + 1000*60;
-		//MyLog.e("registerAlarm", calendar.getTimeInMillis() + " : timeInMillis");
-
-		//manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
-		manager.setRepeating(
-				AlarmManager.RTC_WAKEUP, 
-				calendar.getTimeInMillis(), 
-				1000 * 60 * 60 * 24 * 7, 
-				sender);
+		long repeatInterval = 1000 * 60 * 60 * 24 * 7; // 1주일
+		manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), repeatInterval,
+				pendingIntent); // setRepeating()은 원래 부정확하다는 것을 알아두자
+		// 테스트용. 정확한 시간에 울림
+//		manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
 		MyLog.d("YTAlarmManager", calendar.getTimeInMillis() + ", " + calendar.getTime().toString());
 
 	}
