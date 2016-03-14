@@ -27,8 +27,6 @@ public class YTAlarmNotificationReceiver extends BroadcastReceiver {
 		if(alarmType == YTAlarmManager.YT_ALARM_TYPE_LESSON){
 			//메인 액티비티를 실행
 			Intent mainActivityIntent = new Intent(context, TimetableActivity.class);
-			mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             mainActivityIntent.putExtra("WakeLock", true);
 
 			String lessonName = intent.getStringExtra("LessonName");
@@ -71,9 +69,9 @@ public class YTAlarmNotificationReceiver extends BroadcastReceiver {
 		//noinspection ConstantConditions
 		String tickerString = Devs.isDevMode ? stateBar += ", AlarmId : " + alarmId : stateBar;
 
-		// 이 인텐트는 노티피케이션을 클릭하면 실행되는 액티비티의 인텐트.
+		// 이 인텐트는 노티피케이션을 클릭하면 실행되는 액티비티의 인텐트
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
 		// 수정: 새 API 를 사용해 노티피케이션 로직 변경
