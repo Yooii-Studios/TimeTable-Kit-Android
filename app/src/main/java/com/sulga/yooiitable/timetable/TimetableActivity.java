@@ -570,6 +570,7 @@ public class TimetableActivity extends AppCompatActivity {
 		this.menu = menu;
 		//init share item
 		MenuItem item = menu.findItem(R.id.menu_item_share);
+		item.setIcon(R.drawable.ic_share_white_32dp);
 
 		// Locate MenuItem with ShareActionProvider
 		if( mPager.getCurrentItem() == mAdapter.getCount() - 1){
@@ -579,7 +580,12 @@ public class TimetableActivity extends AppCompatActivity {
 		}
 
 		// Fetch and store ShareActionProvider
-		mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+		mShareActionProvider = new ShareActionProvider(this) {
+			@Override
+			public View onCreateActionView() {
+				return null;
+			}
+		};
 
 		/** Getting the target intent */
 		Intent intent = getShareIntent();
@@ -595,6 +601,8 @@ public class TimetableActivity extends AppCompatActivity {
 				return false;
 			}
 		});
+		MenuItemCompat.setActionProvider(item, mShareActionProvider);
+
 		//init overflow menu
 		//		MenuItem overflowItem = menu.findItem(R.id.menu_item_overflow);
 		MenuItem storeItem = menu.findItem(R.id.menu_item_store);

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!--<style name="MainTheme" parent="@android:style/Theme.Light.NoTitleBar">-->
         <!--<item name="android:typeface">normal</item>-->
@@ -11,12 +11,16 @@
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
-    <style name="YTActionBarTitleText" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"></style>
+    <style name="YTActionBarTitleText" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"/>
 
     <style name="Theme.AppCompat.NoActionBar.FullScreen" parent="@style/Theme.AppCompat">
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="AppTheme.MainActivity" parent="@style/Theme.AppCompat">
+        <item name="android:actionModeShareDrawable" tools:ignore="NewApi">@drawable/ic_share_white_32dp</item>
     </style>
 </resources>

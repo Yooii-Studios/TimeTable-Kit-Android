@@ -6,33 +6,31 @@
 
     <item
         android:id="@+id/menu_item_share"
-        android:icon="@drawable/abs__ic_menu_share_holo_dark"
         android:title="Share"
-        app:showAsAction="always"
-        app:actionProviderClass="android.support.v7.widget.ShareActionProvider"/>
+        app:showAsAction="always"/>
+
     <item
         android:id="@+id/menu_item_overflow"
-        android:icon="@drawable/abs__ic_menu_moreoverflow_normal_holo_dark"
+        android:icon="@drawable/ic_menu_moreoverflow_mtrl_alpha"
         app:showAsAction="always"
         android:title="Overflow">
         <menu>
             <item
                 android:id="@+id/menu_item_store"
-                app:showAsAction="ifRoom"
+                app:showAsAction="never"
                 android:title="@string/menu_store"/>
             <item
                 android:id="@+id/menu_item_settings"
-                app:showAsAction="ifRoom"
+                app:showAsAction="never"
                 android:title="@string/menu_settings"/>
             <item 
                 android:id="@+id/menu_item_rate"
-                app:showAsAction="ifRoom"
+                app:showAsAction="never"
                 android:title="@string/timetable_setting_info_rate"/>
             <item
                 android:id="@+id/menu_item_likeinfacebook"
-                app:showAsAction="ifRoom"
+                app:showAsAction="never"
                 android:title="@string/timetable_setting_info_linkfacebook"/>
         </menu>
     </item>
-
 </menu>
