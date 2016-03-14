@@ -252,7 +252,6 @@ public class TimetableSettingsAlarmFragment extends Fragment {
 
     public void onLanguageChanged(int position) {
         YTLanguage.setLanguageType(YTLanguageType.valueOf(position), getActivity());
-        initSettingsText();
     }
 
     public boolean saveOption() {

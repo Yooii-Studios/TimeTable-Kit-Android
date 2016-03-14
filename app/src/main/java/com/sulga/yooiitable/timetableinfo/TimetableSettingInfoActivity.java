@@ -287,6 +287,7 @@ public class TimetableSettingInfoActivity extends AppCompatActivity {
         mActionBar.getTabAt(1).setText(R.string.tab_alarmandtheme);
         mActionBar.getTabAt(2).setText(R.string.tab_info);
         setupViewPager();
+        mViewPager.setCurrentItem(1);
 
         // 필요한 데이터 넣어서 메인 액티비티에서 활용
         getIntent().putExtra("TimetablePageIndex", timetablePageIndex);
