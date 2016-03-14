@@ -10,8 +10,6 @@ import com.sulga.yooiitable.data.Lesson;
 import com.sulga.yooiitable.data.Schedule;
 import com.sulga.yooiitable.data.Timetable;
 import com.sulga.yooiitable.mylog.MyLog;
-import com.yooiistudios.stevenkim.alarmsound.SKAlarmSoundManager;
-import com.yooiistudios.stevenkim.alarmsound.SKAlarmSoundPlayer;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -22,19 +20,6 @@ public class YTAlarmManager {
 	//알람 타입 식별
 	public static final int YT_ALARM_TYPE_LESSON = 0;
 	public static final int YT_ALARM_TYPE_SCHEDULE = 1;
-
-	private static volatile YTAlarmManager ytam;
-
-	public static YTAlarmManager getInstance(Context context){
-		if(ytam == null){
-			synchronized(YTAlarmManager.class){
-				if(ytam == null)
-					ytam = new YTAlarmManager();
-				//readAlarmIdInHistoryFromPref(context);
-			}
-		}
-		return ytam;
-	}
 
 	public static void startTimetableAlarm(Context context, Timetable timetable){
 		if(timetable.getLessonAlarmTime() == Timetable.LESSON_ALARM_NONE){
@@ -76,7 +61,7 @@ public class YTAlarmManager {
 		calendar.set(Calendar.MINUTE, lesson.getLessonInfo().getStartMin());
 		calendar.set(Calendar.SECOND, 0);
 		calendar.add(Calendar.MINUTE, lessonAlarmBeforeByMin * -1);
-		if(lesson.shouldAlarmNextDay() == true){
+		if(lesson.shouldAlarmNextDay()){
 			MyLog.d("YTAlarmManager", "Lesson Alarm Should work next day.");
 			calendar.add(Calendar.DAY_OF_WEEK, 1);
 		}
@@ -97,23 +82,16 @@ public class YTAlarmManager {
 		intent.putExtra("LessonWhere", lesson.getLessonWhere());
 		intent.putExtra("Professor", lesson.getProfessor());
 
-		//intent.setAction(NotificationReceiver.);
-		PendingIntent sender 
-		= PendingIntent.getBroadcast(
-				context, alarmId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, alarmId, intent,
+				PendingIntent.FLAG_UPDATE_CURRENT);
 
-		AlarmManager manager 
-		= (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+		AlarmManager manager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
 
-		//long triggerTime = SystemClock.elapsedRealtime() + 1000*60;
-		//MyLog.e("registerAlarm", calendar.getTimeInMillis() + " : timeInMillis");
-
-		//manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
-		manager.setRepeating(
-				AlarmManager.RTC_WAKEUP, 
-				calendar.getTimeInMillis(), 
-				1000 * 60 * 60 * 24 * 7, 
-				sender);
+		long repeatInterval = 1000 * 60 * 60 * 24 * 7; // 1주일
+		manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), repeatInterval,
+				pendingIntent); // setRepeating()은 원래 부정확하다는 것을 알아두자
+		// 테스트용. 정확한 시간에 울림
+//		manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
 		MyLog.d("YTAlarmManager", calendar.getTimeInMillis() + ", " + calendar.getTime().toString());
 
 	}
@@ -122,8 +100,7 @@ public class YTAlarmManager {
 		int alarmId = lesson.getAlarmId();
 		if(alarmId == YTAlarmManager.YT_ALARM_NOT_REGISTERED){
 			//lesson.setAlarmId(getNewAlarmId(context));
-			MyLog.d("YTAlarmManager", 
-					"Lesson Alarm cancel failed, id not registered!");
+			MyLog.d("YTAlarmManager", "Lesson Alarm cancel failed, id not registered!");
 			return;
 		}
 		MyLog.d("YTAlarmManager", "Lesson Alarm Id : " + lesson.getAlarmId() + " Canceled!");
@@ -136,25 +113,11 @@ public class YTAlarmManager {
 		intent.putExtra("LessonWhere", lesson.getLessonWhere());
 		intent.putExtra("Professor", lesson.getProfessor());
 
-		//intent.setAction(NotificationReceiver.);
-		PendingIntent sender 
-		= PendingIntent.getBroadcast(
-				context, alarmId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, alarmId, intent,
+				PendingIntent.FLAG_CANCEL_CURRENT);
 
-		AlarmManager manager 
-		= (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-
-		//long triggerTime = SystemClock.elapsedRealtime() + 1000*60;
-		//MyLog.e("registerAlarm", calendar.getTimeInMillis() + " : timeInMillis");
-
-		//manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
-		//		manager.setRepeating(
-		//				AlarmManager.RTC_WAKEUP, 
-		//				calendar.getTimeInMillis(), 
-		//				1000 * 60 * 60 * 24 * 7, 
-		//				sender);
-
-		manager.cancel(sender);
+		AlarmManager manager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+		manager.cancel(pendingIntent);
 	}
 
 	public static void startScheduleAlarm(Context context, Schedule schedule){
@@ -162,7 +125,7 @@ public class YTAlarmManager {
 			cancelScheduleAlarm(context, schedule);
 			return;
 		}
-		//스케쥴에서 YTAlarm객체를 받아와 id를 가져오고, 스케쥴에서 정보를 읽어와 캘린더를 설정한다.
+		//스케쥴에서 YTAlarm 객체를 받아와 id를 가져오고, 스케쥴에서 정보를 읽어와 캘린더를 설정
 		Calendar calNow = Calendar.getInstance();
 		Calendar calendar = Calendar.getInstance();
 		//calendar.setTimeInMillis(System.currentTimeMillis());
@@ -198,17 +161,12 @@ public class YTAlarmManager {
 		intent.putExtra("ScheduleMemo", schedule.getScheduleMemo());
 
 		//intent.setAction(NotificationReceiver.);
-		PendingIntent sender 
-		= PendingIntent.getBroadcast(
-				context, alarmId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, alarmId, intent,
+				PendingIntent.FLAG_UPDATE_CURRENT);
 
-		AlarmManager manager 
-		= (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+		AlarmManager manager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
 
-		//long triggerTime = SystemClock.elapsedRealtime() + 1000*60;
-		//MyLog.e("registerAlarm", calendar.getTimeInMillis() + " : timeInMillis");
-
-		manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
+		manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
 	}
 
 	public static void cancelScheduleAlarm(Context context, Schedule schedule){
@@ -227,12 +185,10 @@ public class YTAlarmManager {
 		intent.putExtra("ScheduleName", schedule.getScheduleName());
 		intent.putExtra("ScheduleMemo", schedule.getScheduleMemo());
 
-		PendingIntent sender = 
-				PendingIntent.getBroadcast(
-						context, alarmId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+		PendingIntent sender = PendingIntent.getBroadcast(context, alarmId, intent,
+				PendingIntent.FLAG_CANCEL_CURRENT);
 
-		AlarmManager manager
-		= (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+		AlarmManager manager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
 		manager.cancel(sender);
 	}
 
@@ -252,7 +208,7 @@ public class YTAlarmManager {
 				YT_ALARM_HISTORY_FILE_NAME, Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = pref.edit();
 		editor.putInt("LatestAlarmId", latestAlarmId);
-		editor.commit();
+		editor.apply();
 	}
 
 	private static int readAlarmIdInHistoryFromPref(Context context){

@@ -27,8 +27,6 @@ public class YTAlarmNotificationReceiver extends BroadcastReceiver {
 		if(alarmType == YTAlarmManager.YT_ALARM_TYPE_LESSON){
 			//메인 액티비티를 실행
 			Intent mainActivityIntent = new Intent(context, TimetableActivity.class);
-			mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             mainActivityIntent.putExtra("WakeLock", true);
 
 			String lessonName = intent.getStringExtra("LessonName");
@@ -40,9 +38,6 @@ public class YTAlarmNotificationReceiver extends BroadcastReceiver {
 
 			// 알람 노티파이를 띄움
 			startNotification(context, mainActivityIntent, stateBar, alarmTitle, alarmSummary);
-
-			// 알람 다이얼로그를 띄움
-//			displayAlarmDialog(context, alarmDialogTitle, alarmDialogMessage);
 		} else if(alarmType == YTAlarmManager.YT_ALARM_TYPE_SCHEDULE) {
 			Intent mainActivityIntent = new Intent(context, TimetableActivity.class);
 
@@ -74,10 +69,14 @@ public class YTAlarmNotificationReceiver extends BroadcastReceiver {
 		//noinspection ConstantConditions
 		String tickerString = Devs.isDevMode ? stateBar += ", AlarmId : " + alarmId : stateBar;
 
-		// 이 인텐트는 노티피케이션을 클릭하면 실행되는 액티비티의 인텐트.
+		// 이 인텐트는 노티피케이션을 클릭하면 실행되는 액티비티의 인텐트
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, 0);
+
+		// reqCode 를 1000번 이상으로 해야 여러 기기에서 이슈를 해결할 수 있다고 함
+		// http://stackoverflow.com/a/19166954/1287336
+		PendingIntent contentIntent = PendingIntent.getActivity(context, 1001, intent,
+				PendingIntent.FLAG_UPDATE_CURRENT);
 
 		// 수정: 새 API 를 사용해 노티피케이션 로직 변경
 		/*
