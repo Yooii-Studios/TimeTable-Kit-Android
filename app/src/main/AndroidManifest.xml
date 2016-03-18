@@ -187,6 +187,9 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/appwidget_4x4_info_yooiitable" />
         </receiver>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="d4d973ae6c793dbe15f130c5d8aa828f24d40f97" />
     </application>
 
 </manifest>
