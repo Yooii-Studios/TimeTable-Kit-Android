@@ -3,9 +3,11 @@ package com.sulga.yooiitable;
 import android.app.Application;
 import android.content.res.Configuration;
 
+import com.crashlytics.android.Crashlytics;
 import com.sulga.yooiitable.language.YTLanguage;
 import com.sulga.yooiitable.language.YTLanguageType;
 
+import io.fabric.sdk.android.Fabric;
 import java.util.Locale;
 
 /**
@@ -19,6 +21,7 @@ public class TimeTableApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
 //        Fabric.with(this, new Crashlytics());
         initLanguage();
     }
