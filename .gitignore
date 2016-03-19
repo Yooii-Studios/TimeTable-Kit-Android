@@ -44,4 +44,7 @@ build/
 
 *.iml
 
+# Fabric plugin
+fabric.properties
+
 infer-out
