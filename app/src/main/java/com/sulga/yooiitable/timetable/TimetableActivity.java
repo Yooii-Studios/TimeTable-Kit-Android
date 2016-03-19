@@ -49,6 +49,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.sulga.yooiitable.R;
+import com.sulga.yooiitable.TimeTableApplication;
 import com.sulga.yooiitable.appwidget.YTAppWidgetProvider_2x4;
 import com.sulga.yooiitable.appwidget.YTAppWidgetProvider_4x4;
 import com.sulga.yooiitable.constants.FixedSizes;
@@ -81,6 +82,7 @@ import com.sulga.yooiitable.utils.YTBitmapLoader;
 import com.viewpagerindicator.UnderlinePageIndicator;
 import com.yooiistudios.common.ad.AdUtils;
 import com.yooiistudios.common.ad.QuitAdDialogFactory;
+import com.yooiistudios.common.analytics.AnalyticsUtils;
 import com.yooiistudios.common.language.LocaleUtils;
 import com.yooiistudios.common.network.InternetConnectionManager;
 
@@ -218,6 +220,8 @@ public class TimetableActivity extends AppCompatActivity {
 		// 풀버전 테스트 시 아래 부분 주석 풀자(삭제하지 말 것)
 //		TimetableDataManager.saveFullVersionState(TimetableActivity.this, true);
 //		dogEar.setVisibility(View.GONE);
+
+		AnalyticsUtils.startAnalytics((TimeTableApplication) getApplication(), R.string.screen_main);
     }
 
     @Override

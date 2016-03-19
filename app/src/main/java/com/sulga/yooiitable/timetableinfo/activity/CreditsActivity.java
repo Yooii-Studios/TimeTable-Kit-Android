@@ -3,37 +3,28 @@ package com.sulga.yooiitable.timetableinfo.activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
 
 import com.flurry.android.FlurryAgent;
 import com.sulga.yooiitable.R;
+import com.sulga.yooiitable.TimeTableApplication;
 import com.sulga.yooiitable.constants.FlurryConstants;
+import com.yooiistudios.common.analytics.AnalyticsUtils;
 
 public class CreditsActivity extends AppCompatActivity {
-	ListView creditListView;
-
-	Menu m_menu;
-
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-
-//		getActionBar().setTitle(getResources().getString(R.string.timetable_setting_info_credit));
-//		getActionBar().setDisplayShowHomeEnabled(false);
 
 		setContentView(R.layout.activity_timetable_option_credits);
-		this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		if (this.getSupportActionBar() != null) {
+			this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		}
 		getSupportActionBar().setTitle(getString(R.string.app_name));
-		//creditListView = (ListView) findViewById(R.id.listView1);
-		//initCreditListView();
-
-		//FlurryAgent.onEvent("Configure - InfoPage - Credit");
+		AnalyticsUtils.startAnalytics((TimeTableApplication) getApplication(), R.string.screen_credit);
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -43,7 +34,7 @@ public class CreditsActivity extends AppCompatActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}	
+	}
 
 
 	@Override
@@ -59,7 +50,7 @@ public class CreditsActivity extends AppCompatActivity {
 		}
 		return true;
 	}
-	
+
 	public void onStart(){
 		super.onStart();
 		FlurryAgent.onStartSession(this, FlurryConstants.APP_KEY);

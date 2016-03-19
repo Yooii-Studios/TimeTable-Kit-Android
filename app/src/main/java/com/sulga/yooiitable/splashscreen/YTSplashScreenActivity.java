@@ -12,8 +12,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.RelativeLayout;
 
 import com.sulga.yooiitable.R;
+import com.sulga.yooiitable.TimeTableApplication;
 import com.sulga.yooiitable.mylog.MyLog;
 import com.sulga.yooiitable.timetable.TimetableActivity;
+import com.yooiistudios.common.analytics.AnalyticsUtils;
 import com.yooiistudios.common.permission.PermissionUtils;
 
 public class YTSplashScreenActivity extends AppCompatActivity {
@@ -33,6 +35,9 @@ public class YTSplashScreenActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash_screen);
 		containerLayout = (RelativeLayout) findViewById(R.id.splash_container);
+
+		// 스플래시 화면만 예외적으로 먼저 통계, 분기가 나뉘기 때문
+		AnalyticsUtils.startAnalytics((TimeTableApplication) getApplication(), R.string.screen_splash);
 
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
 			startMainActivity();

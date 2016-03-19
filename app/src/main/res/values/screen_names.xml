@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="screen_splash">Splash</string>
+    <string name="screen_main">Main</string>
+    <string name="screen_show_all_tables">Show All Tables</string>
+    <string name="screen_overlap_tables">Overlab Tables</string>
+    <string name="screen_alarm_dialog_popup">Alarm Dialog Popup</string>
+    <string name="screen_settings">Settings</string>
+    <string name="screen_store">Store</string>
+    <string name="screen_store_naver">Store(Naver)</string>
+    <string name="screen_info">Info</string>
+    <string name="screen_credit">Credit</string>
+    <string name="screen_license">License</string>
+</resources>

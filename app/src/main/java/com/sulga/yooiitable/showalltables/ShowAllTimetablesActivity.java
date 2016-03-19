@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
 import com.sulga.yooiitable.R;
+import com.sulga.yooiitable.TimeTableApplication;
 import com.sulga.yooiitable.constants.FlurryConstants;
 import com.sulga.yooiitable.customviews.SnappingHorizontalScrollView;
 import com.sulga.yooiitable.customviews.TransformLinearLayout;
@@ -20,6 +21,7 @@ import com.sulga.yooiitable.data.Timetable;
 import com.sulga.yooiitable.data.TimetableDataManager;
 import com.sulga.yooiitable.overlapviewer.OverlapTablesViewerActivity;
 import com.sulga.yooiitable.utils.FixTileModeBug;
+import com.yooiistudios.common.analytics.AnalyticsUtils;
 
 import java.util.ArrayList;
 
@@ -115,26 +117,25 @@ public class ShowAllTimetablesActivity extends AppCompatActivity {
 		
 		//		initModeButtons();
 
-		if(fromOverlapMode == true){
-			
+		if (fromOverlapMode) {
 			//must post this because checkbox is hidden before timetable view.
-			wrapper.post(new Runnable(){
+			wrapper.post(new Runnable() {
 				@Override
 				public void run() {
-					// TODO Auto-generated method stub
-					ArrayList<Integer> selectedItems = 
-							(ArrayList<Integer>) 
-							getIntent().getSerializableExtra("OverlapIndex");
-					if(selectedItems == null)
+					ArrayList<Integer> selectedItems = (ArrayList<Integer>) getIntent()
+							.getSerializableExtra("OverlapIndex");
+					if (selectedItems == null) {
 						goOverlapMode();
-					else
+					} else {
 						goOverlapMode(selectedItems);
+					}
 					scr.scrollTo(scr.getWidth(), 0);
 				}
 			});
-		}else{
+		} else {
 			hidePreViewsCheckBox();
 		}
+		AnalyticsUtils.startAnalytics((TimeTableApplication) getApplication(), R.string.screen_show_all_tables);
 	}
 	
 	public void onStart(){
