@@ -14,8 +14,10 @@ import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
 import com.sulga.yooiitable.R;
+import com.sulga.yooiitable.TimeTableApplication;
 import com.sulga.yooiitable.constants.FlurryConstants;
 import com.sulga.yooiitable.constants.YTUrls;
+import com.yooiistudios.common.analytics.AnalyticsUtils;
 
 
 public class YTInfoActivity extends AppCompatActivity {
@@ -89,6 +91,7 @@ public class YTInfoActivity extends AppCompatActivity {
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}
+		AnalyticsUtils.startAnalytics((TimeTableApplication) getApplication(), R.string.screen_info);
 	}
 
 	@Override

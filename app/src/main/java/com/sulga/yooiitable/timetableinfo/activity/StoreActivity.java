@@ -17,12 +17,14 @@ import com.sulga.inappbilling.testapp.util.Inventory;
 import com.sulga.inappbilling.testapp.util.Purchase;
 import com.sulga.inappbilling.testapp.util.SkuDetails;
 import com.sulga.yooiitable.R;
+import com.sulga.yooiitable.TimeTableApplication;
 import com.sulga.yooiitable.constants.FlurryConstants;
 import com.sulga.yooiitable.constants.InApp;
 import com.sulga.yooiitable.constants.RequestCodes;
 import com.sulga.yooiitable.data.TimetableDataManager;
 import com.sulga.yooiitable.mylog.MyLog;
 import com.sulga.yooiitable.utils.InAppBillingManager;
+import com.yooiistudios.common.analytics.AnalyticsUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,6 +90,7 @@ public class StoreActivity extends AppCompatActivity {
 				mHelper,
 				mOnSetupFinishedListener,
 				mGotInventoryListener);
+		AnalyticsUtils.startAnalytics((TimeTableApplication) getApplication(), R.string.screen_store);
 	}
 
 	// Listener that's called when we finish querying the items and subscriptions we own

@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
 import com.sulga.yooiitable.R;
+import com.sulga.yooiitable.TimeTableApplication;
 import com.sulga.yooiitable.constants.FlurryConstants;
 import com.sulga.yooiitable.constants.RequestCodes;
 import com.sulga.yooiitable.data.Timetable;
@@ -21,6 +22,7 @@ import com.sulga.yooiitable.data.TimetableDataManager;
 import com.sulga.yooiitable.mylog.MyLog;
 import com.sulga.yooiitable.showalltables.ShowAllTimetablesActivity;
 import com.sulga.yooiitable.utils.FixTileModeBug;
+import com.yooiistudios.common.analytics.AnalyticsUtils;
 
 import java.util.ArrayList;
 
@@ -104,6 +106,7 @@ public class OverlapTablesViewerActivity extends AppCompatActivity {
 		});
 
 		root.addView(widgetView);
+		AnalyticsUtils.startAnalytics((TimeTableApplication) getApplication(), R.string.screen_overlap_tables);
 	}
 //
 	@Override

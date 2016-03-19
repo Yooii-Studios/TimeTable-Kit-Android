@@ -7,7 +7,9 @@ import android.view.MenuItem;
 
 import com.flurry.android.FlurryAgent;
 import com.sulga.yooiitable.R;
+import com.sulga.yooiitable.TimeTableApplication;
 import com.sulga.yooiitable.constants.FlurryConstants;
+import com.yooiistudios.common.analytics.AnalyticsUtils;
 
 public class CreditsActivity extends AppCompatActivity {
 	/** Called when the activity is first created. */
@@ -20,6 +22,7 @@ public class CreditsActivity extends AppCompatActivity {
 			this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		}
 		getSupportActionBar().setTitle(getString(R.string.app_name));
+		AnalyticsUtils.startAnalytics((TimeTableApplication) getApplication(), R.string.screen_credit);
 	}
 
 	@Override

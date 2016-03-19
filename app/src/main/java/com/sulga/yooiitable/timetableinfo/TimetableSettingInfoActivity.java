@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.sulga.yooiitable.R;
+import com.sulga.yooiitable.TimeTableApplication;
 import com.sulga.yooiitable.constants.RequestCodes;
 import com.sulga.yooiitable.data.Timetable;
 import com.sulga.yooiitable.data.TimetableDataManager;
@@ -30,6 +31,7 @@ import com.sulga.yooiitable.timetablesetting.TimetableSettingFragment;
 import com.sulga.yooiitable.timetablesetting.TimetableSettingsAlarmFragment;
 import com.sulga.yooiitable.utils.MNDeviceSizeChecker;
 import com.sulga.yooiitable.utils.YTBitmapLoader;
+import com.yooiistudios.common.analytics.AnalyticsUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -72,6 +74,7 @@ public class TimetableSettingInfoActivity extends AppCompatActivity {
         mActionBar.setTitle(getString(R.string.app_name));
         setupActionBar();
         savePreviousLanguage();
+        AnalyticsUtils.startAnalytics((TimeTableApplication) getApplication(), R.string.screen_settings);
     }
 
     private void setupViewPager() {
