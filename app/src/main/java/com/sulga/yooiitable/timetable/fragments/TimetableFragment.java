@@ -162,7 +162,7 @@ public class TimetableFragment extends Fragment {
 	private ImageView lessonEditLength;
 
 	//
-	ModeRelativeLayout testPanel;
+	ModeRelativeLayout modeRelativeLayout;
 	PathButton modeButton_add_row;
 	PathButton modeButton_remove_row;
 	PathButton modeButton_clear_timetable;
@@ -318,16 +318,16 @@ public class TimetableFragment extends Fragment {
 		gridOverlapLayout.addView(lessonCopy);
 		gridOverlapLayout.addView(lessonEditLength);
 
-		testPanel = (ModeRelativeLayout) fragmentView.findViewById(R.id.fragment_timetable_menu_button_panel);
-		testPanel.setModeOpenBtnClickedListener(new ModeRelativeLayout.ModeOpenBtnClickedListener() {
+		modeRelativeLayout = (ModeRelativeLayout) fragmentView.findViewById(R.id.fragment_timetable_menu_button_panel);
+		modeRelativeLayout.setModeOpenBtnClickedListener(new ModeRelativeLayout.ModeOpenBtnClickedListener() {
 
 			@Override
 			public void onClick() {}
 		});
-		ImageView panelWrapperIcon = (ImageView) testPanel.findViewById(R.id.ico_plus);
+		ImageView panelWrapperIcon = (ImageView) modeRelativeLayout.findViewById(R.id.ico_plus);
 		ytTheme.getModeButtonsWrapperIcon().setViewTheme(getActivity(), panelWrapperIcon);
 		ImageView panelWrapperBackgroundIcon =
-				(ImageView) testPanel.findViewById(R.id.ico_plus_background);
+				(ImageView) modeRelativeLayout.findViewById(R.id.ico_plus_background);
 		ytTheme.getModeButtonsWrapperbackgroundIcon().setViewTheme(
 				getActivity(), panelWrapperBackgroundIcon);
 		modeButton_add_row = (PathButton) fragmentView.findViewById(R.id.fragment_timetable_button_add);
@@ -348,10 +348,10 @@ public class TimetableFragment extends Fragment {
 		ytTheme.getDeleteTimetableIcon().setViewTheme(getActivity(), modeButton_delete_timetable);
 		modeButton_delete_timetable.setTag("4");
 
-		testPanel.addMenuButtons(modeButton_add_row);
-		testPanel.addMenuButtons(modeButton_remove_row);
-		testPanel.addMenuButtons(modeButton_clear_timetable);
-		testPanel.addMenuButtons(modeButton_delete_timetable);
+		modeRelativeLayout.addMenuButtons(modeButton_add_row);
+		modeRelativeLayout.addMenuButtons(modeButton_remove_row);
+		modeRelativeLayout.addMenuButtons(modeButton_clear_timetable);
+		modeRelativeLayout.addMenuButtons(modeButton_delete_timetable);
 
 		createTimetable();
 
