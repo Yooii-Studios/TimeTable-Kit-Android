@@ -319,6 +319,7 @@ public class TimetableFragment extends Fragment {
 		gridOverlapLayout.addView(lessonEditLength);
 
 		modeRelativeLayout = (ModeRelativeLayout) fragmentView.findViewById(R.id.fragment_timetable_menu_button_panel);
+		modeRelativeLayout.setUpViews();
 		modeRelativeLayout.setModeOpenBtnClickedListener(new ModeRelativeLayout.ModeOpenBtnClickedListener() {
 
 			@Override

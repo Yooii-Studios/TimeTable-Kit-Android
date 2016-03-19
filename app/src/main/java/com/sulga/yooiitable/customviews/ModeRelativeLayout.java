@@ -1,7 +1,9 @@
 package com.sulga.yooiitable.customviews;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Rect;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -35,7 +37,7 @@ public class ModeRelativeLayout extends RelativeLayout{
 	private Button plusBtn;
 	private ModeOpenBtnClickedListener mModeOpenBtnClickedListener;
 	private boolean isOpened = false;
-	private ImageView plusIco;
+	private ImageView plusIconImageView;
 	
 	public enum ANIMATION_DIRECTION {RIGHT, LEFT, UP, DOWN}
 	private ANIMATION_DIRECTION mAnimationDirection = ANIMATION_DIRECTION.RIGHT;
@@ -77,18 +79,28 @@ public class ModeRelativeLayout extends RelativeLayout{
 	}
 	
 	private void init(Context context){
-		menuButtons = new ArrayList<PathButton>();
+		menuButtons = new ArrayList<>();
 		mContext = context;
 		subMenuTransLength = (int) context.getResources()
 				.getDimension(R.dimen.fragment_timetable_panel_button_offset);
 		subMenuSelectorGap = (int) context.getResources()
 				.getDimension(R.dimen.fragment_timetable_panel_button_offset);
-
 	}
-//
-//	public ArrayList<PathButton> getMenuButtons() {
-//		return menuButtons;
-//	}
+
+	public void setUpViews() {
+		plusBtn = (Button) findViewById(R.id.btn_plus);
+		plusIconImageView = (ImageView) findViewById(R.id.ico_plus);
+
+		bringMenuIconViewToFront();
+	}
+
+	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
+	private void bringMenuIconViewToFront() {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+			RelativeLayout hitLayout = (RelativeLayout) findViewById(R.id.hit_layout);
+			hitLayout.setZ(9.f);
+		}
+	}
 
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent e) {
@@ -100,9 +112,7 @@ public class ModeRelativeLayout extends RelativeLayout{
 			int[] plusBtnLocationOnScreen = new int[2];
 			
 			this.getLocationOnScreen(thisLocationOnScreen);
-			plusBtn = (Button)findViewById(R.id.btn_plus);
 			plusBtn.getLocationOnScreen(plusBtnLocationOnScreen);
-			
 			plusBtn.getHitRect(curr);
 			
 			int btnLeft = plusBtnLocationOnScreen[0] - thisLocationOnScreen[0];
@@ -183,8 +193,7 @@ public class ModeRelativeLayout extends RelativeLayout{
 		rotate.setFillAfter(true);
 		rotate.setDuration(MENU_ROTATE_DURATION);
 
-		plusIco = (ImageView)findViewById(R.id.ico_plus);
-		plusIco.startAnimation(rotate);
+		plusIconImageView.startAnimation(rotate);
 
 		for(int i = 0 ; i < menuButtons.size() ; i++) {
 			startSubButtonAnimation(i, open);
@@ -323,9 +332,7 @@ public class ModeRelativeLayout extends RelativeLayout{
 					android.R.anim.anticipate_overshoot_interpolator));
 			rotate.setFillAfter(true);
 			rotate.setDuration(SUB_MENU_SEL_DURATION);
-
-			plusIco = (ImageView)findViewById(R.id.ico_plus);
-			plusIco.startAnimation(rotate);
+			plusIconImageView.startAnimation(rotate);
 		}
 	}
 }

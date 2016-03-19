@@ -180,6 +180,7 @@
                                 android:visibility="visible" />
 
                             <RelativeLayout
+                                android:id="@+id/hit_layout"
                                 android:layout_width="@dimen/fragment_timetable_panelbutton_hitrect_wh"
                                 android:layout_height="@dimen/fragment_timetable_panelbutton_hitrect_wh"
                                 android:layout_alignParentBottom="true"
