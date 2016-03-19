@@ -115,24 +115,22 @@ public class ShowAllTimetablesActivity extends AppCompatActivity {
 		
 		//		initModeButtons();
 
-		if(fromOverlapMode == true){
-			
+		if (fromOverlapMode) {
 			//must post this because checkbox is hidden before timetable view.
-			wrapper.post(new Runnable(){
+			wrapper.post(new Runnable() {
 				@Override
 				public void run() {
-					// TODO Auto-generated method stub
-					ArrayList<Integer> selectedItems = 
-							(ArrayList<Integer>) 
-							getIntent().getSerializableExtra("OverlapIndex");
-					if(selectedItems == null)
+					ArrayList<Integer> selectedItems = (ArrayList<Integer>) getIntent()
+							.getSerializableExtra("OverlapIndex");
+					if (selectedItems == null) {
 						goOverlapMode();
-					else
+					} else {
 						goOverlapMode(selectedItems);
+					}
 					scr.scrollTo(scr.getWidth(), 0);
 				}
 			});
-		}else{
+		} else {
 			hidePreViewsCheckBox();
 		}
 	}

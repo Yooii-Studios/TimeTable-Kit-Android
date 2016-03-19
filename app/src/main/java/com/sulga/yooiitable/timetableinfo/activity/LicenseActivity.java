@@ -27,7 +27,9 @@ public class LicenseActivity extends AppCompatActivity {
 
 		String vpS = getLicenseString(R.raw.viewpagerindicator_license_text);
 		viewPagerIndicator.setText(vpS);
-		getSupportActionBar().setTitle(getString(R.string.app_name));
+		if (getSupportActionBar() != null) {
+			getSupportActionBar().setTitle(getString(R.string.app_name));
+		}
 	}
 
 	public String getLicenseString(int rawId){

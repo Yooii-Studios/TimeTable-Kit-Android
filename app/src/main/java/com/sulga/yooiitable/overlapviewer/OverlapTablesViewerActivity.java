@@ -104,7 +104,6 @@ public class OverlapTablesViewerActivity extends AppCompatActivity {
 		});
 
 		root.addView(widgetView);
-		//		OverlapTablesViewCreator.addLessonViews(context, widgetView, widgetRowNum, widgetColumnNum, timetable)
 	}
 //
 	@Override

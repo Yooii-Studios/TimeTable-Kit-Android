@@ -19,10 +19,6 @@ import com.sulga.yooiitable.constants.YTUrls;
 
 
 public class YTInfoActivity extends AppCompatActivity {
-	ListView creditListView;
-
-	//Menu m_menu;
-	
 	View yt_yooiistudios;
 	View yt_termsOfService;
 	View yt_help;
@@ -35,9 +31,6 @@ public class YTInfoActivity extends AppCompatActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-//		getActionBar().setTitle(getResources().getString(R.string.timetable_setting_info_yooii_info));
-//		getActionBar().setDisplayShowHomeEnabled(false);
-
 		setContentView(R.layout.activity_timetable_option_ytinfo);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setTitle(getString(R.string.app_name));
@@ -47,8 +40,7 @@ public class YTInfoActivity extends AppCompatActivity {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent browserIntent = 
+				Intent browserIntent =
 						new Intent(Intent.ACTION_VIEW, 
 								Uri.parse(YTUrls.TERMS_OF_SERVICE_URL));
 				startActivity(browserIntent);
@@ -59,8 +51,7 @@ public class YTInfoActivity extends AppCompatActivity {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent browserIntent = 
+				Intent browserIntent =
 						new Intent(Intent.ACTION_VIEW, 
 								Uri.parse(YTUrls.TIMETABLE_HELP_URL));
 				startActivity(browserIntent);
@@ -72,8 +63,7 @@ public class YTInfoActivity extends AppCompatActivity {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent licenseIntent = 
+				Intent licenseIntent =
 						new Intent(YTInfoActivity.this, LicenseActivity.class);
 				YTInfoActivity.this.startActivity(licenseIntent);
 
@@ -85,8 +75,7 @@ public class YTInfoActivity extends AppCompatActivity {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent browserIntent = 
+				Intent browserIntent =
 						new Intent(Intent.ACTION_VIEW, Uri.parse(YTUrls.HOMPAGE_URL));
 				YTInfoActivity.this.startActivity(browserIntent);
 			}
@@ -98,20 +87,12 @@ public class YTInfoActivity extends AppCompatActivity {
 			String versionName = pinfo.versionName;
 			yt_version_prompt.setText(versionName);
 		} catch (NameNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		//creditListView = (ListView) findViewById(R.id.listView1);
-		//initCreditListView();
-
-		//FlurryAgent.onEvent("Configure - InfoPage - Credit");
 	}
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		// TODO Auto-generated method stub
 		switch (keyCode) {
 		case KeyEvent.KEYCODE_BACK:
 			finish();
